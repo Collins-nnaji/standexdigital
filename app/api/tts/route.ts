@@ -19,17 +19,23 @@ export async function POST(req: Request) {
   }
 
   try {
-    const { text, voice = "alloy" } = await req.json();
+    const { text, voice = "alloy", speed } = await req.json();
 
     if (!text || typeof text !== "string") {
       return NextResponse.json({ error: "Text is required" }, { status: 400 });
     }
+
+    // Clamp speed to the range the OpenAI/Azure speech API accepts (0.25–4.0).
+    // Falls back to 1.0 (normal) when omitted or invalid.
+    const parsedSpeed = typeof speed === "number" ? speed : Number(speed);
+    const safeSpeed = Number.isFinite(parsedSpeed) ? Math.min(4, Math.max(0.25, parsedSpeed)) : 1;
 
     // Azure OpenAI TTS request body — model must match the deployed TTS model name.
     const body = {
       model: getTtsDeploymentName(),
       voice,
       input: text,
+      speed: safeSpeed,
     };
 
     const response = await fetch(url, {

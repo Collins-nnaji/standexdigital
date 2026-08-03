@@ -123,7 +123,11 @@ const Footer = () => {
             <a href="mailto:support@standexdigital.com" className="text-[11px] font-bold text-zinc-400 hover:text-emerald-500 transition-colors">support@standexdigital.com</a>
             <a href="mailto:hr@standexdigital.com" className="text-[11px] font-bold text-emerald-500 hover:text-white transition-colors">hr@standexdigital.com</a>
           </div>
-          <Link href="/console" className="text-[11px] font-bold text-zinc-400 hover:text-emerald-500 transition-colors sm:ml-auto">Console</Link>
+          <div className="flex items-center gap-4 sm:ml-auto">
+            <Link href="/terms" className="text-[11px] font-bold text-zinc-400 hover:text-emerald-500 transition-colors">Terms of Service</Link>
+            <Link href="/privacy" className="text-[11px] font-bold text-zinc-400 hover:text-emerald-500 transition-colors">Privacy Policy</Link>
+            <Link href="/console" className="text-[11px] font-bold text-zinc-400 hover:text-emerald-500 transition-colors">Console</Link>
+          </div>
         </div>
       </div>
     </footer>

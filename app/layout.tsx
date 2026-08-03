@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const fontSans = Plus_Jakarta_Sans({
@@ -46,6 +47,19 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="antialiased min-h-screen text-zinc-900 bg-white">
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=AW-17962581203"
+          strategy="beforeInteractive"
+        />
+        <Script id="google-tag-init" strategy="beforeInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'AW-17962581203');
+          `}
+        </Script>
         <div className="fixed inset-0 z-[-1] bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
         {children}
       </body>

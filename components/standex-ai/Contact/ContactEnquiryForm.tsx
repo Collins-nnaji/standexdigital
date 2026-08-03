@@ -16,10 +16,20 @@ const ENQUIRY_TYPES = [
 const inputClass =
   "w-full rounded-xl border border-white/10 bg-zinc-900 px-4 py-3 text-sm font-medium text-white placeholder:text-zinc-500 focus:border-[#7C5CFC]/50 focus:outline-none focus:ring-2 focus:ring-[#7C5CFC]/20";
 
-const ContactEnquiryForm = () => {
+type ContactEnquiryFormProps = {
+  defaultEnquiryType?: (typeof ENQUIRY_TYPES)[number];
+  eyebrow?: string;
+  heading?: string;
+};
+
+const ContactEnquiryForm = ({
+  defaultEnquiryType = ENQUIRY_TYPES[0],
+  eyebrow = "Submit an Enquiry",
+  heading = "Tell us what you need.",
+}: ContactEnquiryFormProps) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [enquiryType, setEnquiryType] = useState(ENQUIRY_TYPES[0]);
+  const [enquiryType, setEnquiryType] = useState<string>(defaultEnquiryType);
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -47,7 +57,7 @@ const ContactEnquiryForm = () => {
       setSubmitted(true);
       setName("");
       setEmail("");
-      setEnquiryType(ENQUIRY_TYPES[0]);
+      setEnquiryType(defaultEnquiryType);
       setMessage("");
     } catch {
       setError("Unable to submit. Please try again or email support@standexdigital.com.");
@@ -89,10 +99,10 @@ const ContactEnquiryForm = () => {
     >
       <div>
         <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-500 mb-1">
-          Submit an Enquiry
+          {eyebrow}
         </p>
         <h2 className="text-lg sm:text-xl font-bold tracking-tight text-white">
-          Tell us what you need.
+          {heading}
         </h2>
       </div>
 

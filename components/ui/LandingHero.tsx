@@ -39,7 +39,7 @@ export function LandingHero() {
         />
       </div>
 
-      <div className="relative mx-auto max-w-7xl h-full flex flex-col justify-center min-h-[calc(100dvh-1.5rem)] sm:min-h-[calc(100dvh-2rem)] md:min-h-[calc(100dvh-2.5rem)] pt-16 sm:pt-20 pb-8 sm:pb-10">
+      <div className="relative mx-auto max-w-7xl h-full flex flex-col justify-center min-h-[calc(100dvh-1.5rem)] sm:min-h-[calc(100dvh-2rem)] md:min-h-[calc(100dvh-2.5rem)] pt-28 sm:pt-24 md:pt-20 pb-10 sm:pb-10">
         <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 sm:gap-16 lg:gap-24 items-center py-4 sm:py-6">
           <div className="landing-hero-enter flex flex-col gap-6 sm:gap-8 lg:gap-10 z-10 text-center lg:text-left">
             <div className="space-y-4 sm:space-y-6">

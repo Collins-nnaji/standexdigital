@@ -2,7 +2,9 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import Script from "next/script";
 import { TopNav } from "@/components/network/TopNav";
+import ContactEnquiryForm from "@/components/standex-ai/Contact/ContactEnquiryForm";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowRight, Sparkles, Rocket,
@@ -540,6 +542,9 @@ export default function TrainingPage() {
 
   return (
     <div className="min-h-screen bg-[#FDFDFF] selection:bg-[#7C5CFC]/15 font-sans pb-24 overflow-x-hidden">
+      <Script id="training-page-conversion" strategy="afterInteractive">
+        {`gtag('event', 'conversion', {'send_to': 'AW-17962581203/ZfLnCM-w_vobENP5nPVC'});`}
+      </Script>
       <TopNav forceDark />
 
       {/* ── PREMIUM BACKGROUND ARCHITECTURE ── */}
@@ -766,6 +771,19 @@ export default function TrainingPage() {
                 </div>
               </motion.div>
 
+              {/* ENQUIRE BUTTON — scrolls to enquiry form below */}
+              <button
+                type="button"
+                onClick={() =>
+                  document.getElementById("training-enquiry")?.scrollIntoView({ behavior: "smooth", block: "start" })
+                }
+                className="w-full inline-flex items-center justify-center gap-3 rounded-2xl border-2 px-8 py-4 text-[12px] font-bold uppercase tracking-[0.2em] transition-all hover:opacity-70 active:scale-95"
+                style={{ borderColor: cfg.color, color: cfg.color }}
+              >
+                Enquire Now
+                <ArrowRight className="h-4 w-4" />
+              </button>
+
               {/* Graduate Trust Segment */}
               <div className="px-10 py-6 bg-zinc-50/50 rounded-[32px] border border-zinc-100 flex flex-col gap-4">
                  <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">
@@ -866,6 +884,28 @@ export default function TrainingPage() {
                    </div>
                 </div>
              </div>
+          </section>
+
+          {/* TRAINING ENQUIRY SECTION */}
+          <section
+            id="training-enquiry"
+            className="mt-4 mb-20 scroll-mt-24 rounded-[40px] bg-zinc-950 px-6 py-16 sm:px-12 lg:px-16"
+          >
+            <div className="max-w-2xl mx-auto">
+              <div className="text-center mb-10">
+                <div className="inline-flex items-center gap-2 rounded-full border border-violet-400/20 bg-violet-500/10 px-3 py-1 mb-4">
+                  <GraduationCap className="h-3.5 w-3.5 text-violet-400" />
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-violet-400">Cohort Enquiry</span>
+                </div>
+                <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-3">Have questions about this track?</h2>
+                <p className="text-zinc-400 font-medium">Tell us what you&apos;re looking to build and we&apos;ll get back to you shortly.</p>
+              </div>
+              <ContactEnquiryForm
+                defaultEnquiryType="Training & Academy"
+                eyebrow="Training Enquiry"
+                heading="Reserve your seat or ask a question."
+              />
+            </div>
           </section>
 
         </div>

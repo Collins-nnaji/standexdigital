@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, ChevronRight, ChevronDown } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -56,8 +56,34 @@ export function TopNav({ forceDark }: TopNavProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [mounted, setMounted] = useState(false);
+  const [solutionsOpen, setSolutionsOpen] = useState(false);
+  const solutionsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => { setMounted(true); }, []);
+
+  useEffect(() => {
+    if (!solutionsOpen) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (solutionsRef.current && !solutionsRef.current.contains(event.target as Node)) {
+        setSolutionsOpen(false);
+      }
+    };
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setSolutionsOpen(false);
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    window.addEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("keydown", handleEscape);
+    };
+  }, [solutionsOpen]);
+
+  useEffect(() => {
+    setSolutionsOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -151,31 +177,34 @@ export function TopNav({ forceDark }: TopNavProps) {
         {/* Center: Desktop Nav */}
         <nav className="hidden items-center gap-1 md:flex">
           {/* Solutions Dropdown */}
-          <div className="relative group">
-            <button className="flex items-center gap-1 rounded-xl px-4 py-2 text-sm font-bold text-white hover:bg-zinc-800 transition-all duration-300 border border-zinc-800/50 hover:border-[#7C5CFC]/30">
+          <div className="relative" ref={solutionsRef}>
+            <button
+              type="button"
+              onClick={() => setSolutionsOpen((open) => !open)}
+              aria-haspopup="true"
+              aria-expanded={solutionsOpen}
+              className="flex items-center gap-1 rounded-xl px-4 py-2 text-sm font-bold text-white hover:bg-zinc-800 transition-all duration-300 border border-zinc-800/50 hover:border-[#7C5CFC]/30"
+            >
               Solutions
-              <ChevronDown className="h-3.5 w-3.5 opacity-50 transition-transform group-hover:rotate-180" />
+              <ChevronDown className={cn("h-3.5 w-3.5 opacity-50 transition-transform", solutionsOpen && "rotate-180")} />
             </button>
-            <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+            <div
+              className={cn(
+                "absolute top-full left-0 pt-2 transition-all duration-200 z-50",
+                solutionsOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
+              )}
+            >
               <div className="w-[280px] rounded-3xl border border-zinc-800 bg-zinc-900 p-3 shadow-[0_20px_80px_-15px_rgba(0,0,0,0.5)] flex flex-col gap-0.5">
-                <Link href="/solutions/artificial-intelligence" className="flex flex-col rounded-2xl px-4 py-3 transition-all hover:bg-zinc-800/60">
-                  <span className="text-sm font-bold text-white tracking-tight">Artificial Intelligence</span>
-                </Link>
-                <Link href="/solutions/power-apps" className="flex flex-col rounded-2xl px-4 py-3 transition-all hover:bg-zinc-800/60">
-                  <span className="text-sm font-bold text-white tracking-tight">Power Apps</span>
-                </Link>
-                <Link href="/solutions/power-automate" className="flex flex-col rounded-2xl px-4 py-3 transition-all hover:bg-zinc-800/60">
-                  <span className="text-sm font-bold text-white tracking-tight">Power Automate</span>
-                </Link>
-                <Link href="/solutions/power-bi" className="flex flex-col rounded-2xl px-4 py-3 transition-all hover:bg-zinc-800/60">
-                  <span className="text-sm font-bold text-white tracking-tight">Power BI</span>
-                </Link>
-                <Link href="/solutions/power-platform" className="flex flex-col rounded-2xl px-4 py-3 transition-all hover:bg-zinc-800/60">
-                  <span className="text-sm font-bold text-white tracking-tight">Power Platform Governance</span>
-                </Link>
-                <Link href="/solutions/data-readiness" className="flex flex-col rounded-2xl px-4 py-3 transition-all hover:bg-zinc-800/60">
-                  <span className="text-sm font-bold text-white tracking-tight">Data Engineering & Analytics</span>
-                </Link>
+                {solutionLinks.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setSolutionsOpen(false)}
+                    className="flex flex-col rounded-2xl px-4 py-3 transition-all hover:bg-zinc-800/60"
+                  >
+                    <span className="text-sm font-bold text-white tracking-tight">{item.label}</span>
+                  </Link>
+                ))}
               </div>
             </div>
           </div>

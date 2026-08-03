@@ -23,9 +23,17 @@ const VOICES = [
   { id: "shimmer", label: "Shimmer", desc: "Clear, expressive", accent: "#14b8a6" },
 ];
 
+const SPEEDS = [
+  { value: 0.75, label: "0.75×", desc: "Slower" },
+  { value: 1, label: "1×", desc: "Normal" },
+  { value: 1.25, label: "1.25×", desc: "Faster" },
+  { value: 1.5, label: "1.5×", desc: "Fast" },
+];
+
 export function TTSTool({ text, themeMode, onClose }: TTSToolProps) {
   const t = CONSOLE_THEMES[themeMode];
   const [voice, setVoice] = useState("alloy");
+  const [speed, setSpeed] = useState(1);
   const [loading, setLoading] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -45,7 +53,7 @@ export function TTSTool({ text, themeMode, onClose }: TTSToolProps) {
       const res = await fetch("/api/tts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text, voice }),
+        body: JSON.stringify({ text, voice, speed }),
       });
 
       if (!res.ok) {
@@ -143,6 +151,37 @@ export function TTSTool({ text, themeMode, onClose }: TTSToolProps) {
                   >
                     {active ? <Check className="h-3 w-3" strokeWidth={3} /> : null}
                   </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Speed picker */}
+        <div className="space-y-2">
+          <Label className={cn("text-[10px] font-bold uppercase tracking-wider", t.muted2)}>Speed</Label>
+          <div role="radiogroup" aria-label="Playback speed" className="grid grid-cols-4 gap-1.5">
+            {SPEEDS.map((s) => {
+              const active = speed === s.value;
+              return (
+                <button
+                  key={s.value}
+                  type="button"
+                  role="radio"
+                  aria-checked={active}
+                  onClick={() => setSpeed(s.value)}
+                  className={cn(
+                    "flex flex-col items-center gap-0.5 rounded-xl border px-2 py-2 text-center transition-all",
+                    active
+                      ? "border-[var(--brand-teal)] ring-1 ring-[var(--brand-teal)]/40"
+                      : isLight
+                        ? "border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50"
+                        : "border-white/[0.1] hover:border-white/20 hover:bg-white/[0.03]",
+                    active && (isLight ? "bg-[var(--brand-teal)]/[0.06]" : "bg-[var(--brand-teal)]/[0.1]"),
+                  )}
+                >
+                  <span className={cn("text-[13px] font-semibold leading-tight", t.text)}>{s.label}</span>
+                  <span className={cn("text-[10px] leading-tight", t.muted2)}>{s.desc}</span>
                 </button>
               );
             })}
