@@ -126,7 +126,6 @@ const Footer = () => {
           <div className="flex items-center gap-4 sm:ml-auto">
             <Link href="/terms" className="text-[11px] font-bold text-zinc-400 hover:text-emerald-500 transition-colors">Terms of Service</Link>
             <Link href="/privacy" className="text-[11px] font-bold text-zinc-400 hover:text-emerald-500 transition-colors">Privacy Policy</Link>
-            <Link href="/console" className="text-[11px] font-bold text-zinc-400 hover:text-emerald-500 transition-colors">Console</Link>
           </div>
         </div>
       </div>

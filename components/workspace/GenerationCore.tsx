@@ -168,7 +168,7 @@ export function GenerationCore({ themeMode }: Props) {
           <div className="flex flex-wrap items-center gap-2">
             <button
               type="button"
-              onClick={() => router.replace("/console?tab=lab", { scroll: false })}
+              onClick={() => router.replace("/studio/writing?tab=lab", { scroll: false })}
               className={cn(
                 "inline-flex shrink-0 items-center gap-2 rounded-xl border px-3 py-2 text-[12px] font-semibold",
                 t.borderSub,
@@ -307,7 +307,7 @@ export function GenerationCore({ themeMode }: Props) {
                       type="button"
                       onClick={() => {
                         const text = stripHtmlToText(out.html);
-                        router.replace(`/console?tab=lab&text=${encodeURIComponent(text)}`, { scroll: false });
+                        router.replace(`/studio/writing?tab=lab&text=${encodeURIComponent(text)}`, { scroll: false });
                       }}
                       className={cn(
                         "inline-flex items-center gap-1.5 rounded-xl border px-3 py-2 text-[12px] font-semibold",

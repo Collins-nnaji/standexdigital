@@ -4,14 +4,16 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build --webpack",
+    "build": "node scripts/copy-wasm.mjs && prisma generate && next build --webpack",
     "start": "next start",
     "lint": "eslint",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name init",
     "prisma:push": "prisma db push",
     "prisma:seed": "tsx prisma/seed.ts",
-    "db:seed": "npm run prisma:seed"
+    "db:seed": "npm run prisma:seed",
+    "copy-wasm": "node scripts/copy-wasm.mjs",
+    "postinstall": "node scripts/copy-wasm.mjs"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -19,6 +21,8 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.74.0",
     "@azure/storage-blob": "^12.31.0",
+    "@codemirror/lang-python": "^6.2.1",
+    "@codemirror/lang-sql": "^6.10.0",
     "@gravity-ui/icons": "^2.18.0",
     "@heroui/react": "^3.0.1",
     "@heroui/theme": "^2.4.26",
@@ -55,6 +59,8 @@
     "@tiptap/pm": "^3.19.0",
     "@tiptap/react": "^3.19.0",
     "@tiptap/starter-kit": "^3.19.0",
+    "@uiw/codemirror-theme-github": "^4.25.11",
+    "@uiw/react-codemirror": "^4.25.11",
     "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -68,10 +74,12 @@
     "next": "16.1.6",
     "openai": "^6.21.0",
     "pdf-parse": "^2.4.5",
+    "pyodide": "^314.0.3",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-hook-form": "^7.71.1",
     "recharts": "^3.7.0",
+    "sql.js": "^1.14.1",
     "stripe": "^21.0.1",
     "tailwind-merge": "^3.4.0",
     "zod": "^4.3.6",

@@ -706,7 +706,7 @@ function WritingLabInner({
     if (!activePersonaId) return;
     if (personas.some((p) => p.id === activePersonaId)) return;
     setActivePersonaId(null);
-    router.replace(`/console?tab=lab&rewriteMode=${encodeURIComponent(studioMode)}`, { scroll: false });
+    router.replace(`/studio/writing?tab=lab&rewriteMode=${encodeURIComponent(studioMode)}`, { scroll: false });
   }, [personasLoading, activePersonaId, personas, router, studioMode]);
 
   useEffect(() => {
@@ -767,7 +767,7 @@ function WritingLabInner({
     setBatchSelected(new Set());
     setToolErrors({});
     setLoadingTools({});
-    router.replace("/console?tab=lab", { scroll: false });
+    router.replace("/studio/writing?tab=lab", { scroll: false });
   }, [historySnapshot, router]);
 
   const clearAnalysis = () => {
@@ -1058,14 +1058,14 @@ function WritingLabInner({
     setStudioMode(m);
     setStudioResult(null);
     setStudioError("");
-    router.replace(`/console?tab=lab&rewriteMode=${encodeURIComponent(m)}`, { scroll: false });
+    router.replace(`/studio/writing?tab=lab&rewriteMode=${encodeURIComponent(m)}`, { scroll: false });
   };
 
   const selectPersona = (id: string) => {
     setActivePersonaId(id);
     setStudioResult(null);
     setStudioError("");
-    router.replace(`/console?tab=lab&persona=${encodeURIComponent(id)}`, { scroll: false });
+    router.replace(`/studio/writing?tab=lab&persona=${encodeURIComponent(id)}`, { scroll: false });
   };
 
   /** Switch back to built-in modes (dropdown “Prebuilt”). */
@@ -1073,7 +1073,7 @@ function WritingLabInner({
     setActivePersonaId(null);
     setStudioResult(null);
     setStudioError("");
-    router.replace(`/console?tab=lab&rewriteMode=${encodeURIComponent(studioMode)}`, { scroll: false });
+    router.replace(`/studio/writing?tab=lab&rewriteMode=${encodeURIComponent(studioMode)}`, { scroll: false });
   }, [router, studioMode]);
 
   const openPersonaModal = () => {
@@ -1147,7 +1147,7 @@ function WritingLabInner({
       }
       if (activePersonaId === id) {
         setActivePersonaId(null);
-        router.replace(`/console?tab=lab&rewriteMode=${encodeURIComponent(studioMode)}`, { scroll: false });
+        router.replace(`/studio/writing?tab=lab&rewriteMode=${encodeURIComponent(studioMode)}`, { scroll: false });
       }
       await loadPersonas();
     } catch (err) {

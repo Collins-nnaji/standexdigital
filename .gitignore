@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Studio Code Lab runtimes — copied from node_modules by scripts/copy-wasm.mjs
+/public/wasm/

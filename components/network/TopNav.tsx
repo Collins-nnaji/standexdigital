@@ -46,6 +46,7 @@ const solutionLinks = [
 
 const primaryLinks = [
   { href: "/Training", label: "Training" },
+  { href: "/studio", label: "Studio" },
   { href: "/Contact", label: "Contact" },
 ];
 
@@ -218,7 +219,14 @@ export function TopNav({ forceDark }: TopNavProps) {
             Training
           </Link>
 
-          
+          <Link
+            href="/studio"
+            className="rounded-xl px-4 py-2 text-sm font-bold text-white hover:bg-white/10 transition-all border border-transparent hover:border-white/20"
+            style={{ color: '#FFFFFF' }}
+          >
+            Studio
+          </Link>
+
           <Link
             href="/Contact"
             className="ml-2 inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-6 py-2.5 text-sm font-bold text-white shadow-lg shadow-emerald-500/20 transition-all hover:bg-emerald-600 active:scale-95"
