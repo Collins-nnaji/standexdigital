@@ -5,7 +5,7 @@ import type { LucideIcon } from "lucide-react";
 import {
   Sparkles, Loader2, PenTool, Smile, Zap, CheckCircle2, Minus, Minimize2,
   Briefcase, HeartHandshake, Volume2, Copy, Download, Wand2, PanelRightClose,
-  PanelRightOpen, X,
+  PanelRightOpen, X, Dumbbell, MessageSquare,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -15,6 +15,7 @@ import {
 import { stripHtmlToText } from "@/lib/strip-html";
 import type { RewriteMode } from "@/lib/communication-llm";
 import { TTSTool } from "@/components/workspace/TTSTool";
+import { WritingChallenges } from "@/components/console/WritingChallenges";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -62,8 +63,9 @@ export function ConsoleStudio({ themeMode = "light" }: Props) {
   // Speech
   const [ttsOpen, setTtsOpen] = useState(false);
 
-  // Copilot (custom instructions + refine)
+  // Copilot (custom instructions + refine, or writing challenges)
   const [copilotOpen, setCopilotOpen] = useState(false);
+  const [copilotTab, setCopilotTab] = useState<"assistant" | "challenges">("assistant");
   const [instructions, setInstructions] = useState("");
   const [refineLoading, setRefineLoading] = useState(false);
   const [refineError, setRefineError] = useState("");
@@ -187,7 +189,7 @@ export function ConsoleStudio({ themeMode = "light" }: Props) {
   const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
   const hasText = Boolean(text.trim());
 
-  const copilotBody = (
+  const assistantBody = (
     <div className="space-y-4">
       <div>
         <Label htmlFor="copilot-instructions" className={cn("mb-1.5 block text-[10px] font-bold uppercase tracking-wider", t.muted2)}>
@@ -233,6 +235,37 @@ export function ConsoleStudio({ themeMode = "light" }: Props) {
           </Button>
         </div>
       ) : null}
+    </div>
+  );
+
+  const copilotBody = (
+    <div className="space-y-4">
+      <div className={cn("inline-flex items-center gap-0.5 rounded-lg border p-0.5", t.borderSub)}>
+        <button
+          type="button"
+          onClick={() => setCopilotTab("assistant")}
+          className={cn(
+            "inline-flex items-center gap-1.5 rounded-[6px] px-2.5 py-1.5 text-[12px] font-semibold transition-colors",
+            copilotTab === "assistant" ? t.navActive : cn(t.muted, t.navHover),
+          )}
+        >
+          <MessageSquare className="h-3.5 w-3.5" />
+          Assistant
+        </button>
+        <button
+          type="button"
+          onClick={() => setCopilotTab("challenges")}
+          className={cn(
+            "inline-flex items-center gap-1.5 rounded-[6px] px-2.5 py-1.5 text-[12px] font-semibold transition-colors",
+            copilotTab === "challenges" ? t.navActive : cn(t.muted, t.navHover),
+          )}
+        >
+          <Dumbbell className="h-3.5 w-3.5" />
+          Challenges
+        </button>
+      </div>
+
+      {copilotTab === "assistant" ? assistantBody : <WritingChallenges t={t} editorText={text} />}
     </div>
   );
 

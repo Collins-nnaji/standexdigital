@@ -642,10 +642,10 @@ model AssessmentRun {
 }
 
 // ============================================================================
-// STUDIO CODE LAB
+// STUDIO ACCOUNT (shared by Code Lab and Writing Lab)
 // ============================================================================
 //
-// Self-contained account system for the Code Lab, separate from the main
+// Self-contained account system for the Studio tools, separate from the main
 // User/NextAuth model. Sign-in is intentionally simple for now: first name as
 // username, surname as password. Swap for real auth later without touching
 // the rest of the schema.
@@ -675,11 +675,12 @@ model StudioAccount {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  lessonPlans   CodeLabLessonPlan[]
-  lessons       CodeLabLesson[]
-  practiceItems CodeLabPracticeItem[]
-  attempts      CodeLabAttempt[]
-  errorLogs     CodeLabErrorLog[]
+  lessonPlans      CodeLabLessonPlan[]
+  lessons          CodeLabLesson[]
+  practiceItems    CodeLabPracticeItem[]
+  attempts         CodeLabAttempt[]
+  errorLogs        CodeLabErrorLog[]
+  writingAttempts  WritingChallengeAttempt[]
 }
 
 model CodeLabLessonPlan {
@@ -760,6 +761,34 @@ model CodeLabErrorLog {
   errorText   String          @db.Text
   explanation String?         @db.Text
   createdAt   DateTime        @default(now())
+
+  @@index([accountId, createdAt(sort: Desc)])
+}
+
+// ============================================================================
+// STUDIO WRITING LAB — CHALLENGES
+// ============================================================================
+
+enum WritingLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+model WritingChallengeAttempt {
+  id           String        @id @default(cuid())
+  accountId    String
+  account      StudioAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  skillFocus   String
+  level        WritingLevel
+  title        String
+  brief        String        @db.Text
+  targetWords  Int?
+  text         String        @db.Text
+  score        Int?
+  strengths    Json
+  improvements Json
+  createdAt    DateTime      @default(now())
 
   @@index([accountId, createdAt(sort: Desc)])
 }
