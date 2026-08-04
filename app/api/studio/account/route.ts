@@ -1,21 +1,21 @@
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 import {
-  CODELAB_COOKIE,
-  CODELAB_SESSION_MAX_AGE,
-  createCodeLabSessionValue,
+  STUDIO_ACCOUNT_COOKIE,
+  STUDIO_ACCOUNT_SESSION_MAX_AGE,
+  createStudioAccountSessionValue,
   normalizeFirstNameKey,
-} from "@/lib/codelab-auth";
-import { getCodeLabAccountId } from "@/lib/code-lab/server-helpers";
+} from "@/lib/studio-account-auth";
+import { getStudioAccountId } from "@/lib/studio-account";
 import { prisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
 
 const NAME_MAX_LENGTH = 60;
 
-/** Who's signed in, if anyone. */
+/** Who's signed in, if anyone. Shared across every Studio tool (Code Lab, Writing Lab, ...). */
 export async function GET() {
-  const accountId = await getCodeLabAccountId();
+  const accountId = await getStudioAccountId();
   if (!accountId) return NextResponse.json({ signedIn: false });
 
   const account = await prisma.studioAccount.findUnique({ where: { id: accountId } });
@@ -25,25 +25,25 @@ export async function GET() {
 }
 
 /**
- * First name is the username, surname is the password. The first person to
- * sign in with a given first name registers it; everyone after must match
- * the surname on file.
+ * Sign-in is just two fields: your first name is the username, your last
+ * name is the password. The first person to sign in with a given first name
+ * registers it; everyone after must match the last name on file.
  */
 export async function POST(request: Request) {
-  let body: { firstName?: string; surname?: string };
+  let body: { firstName?: string; lastName?: string };
   try {
-    body = (await request.json()) as { firstName?: string; surname?: string };
+    body = (await request.json()) as { firstName?: string; lastName?: string };
   } catch {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
   const firstName = (body.firstName ?? "").trim().slice(0, NAME_MAX_LENGTH);
-  const surname = (body.surname ?? "").trim().slice(0, NAME_MAX_LENGTH);
+  const lastName = (body.lastName ?? "").trim().slice(0, NAME_MAX_LENGTH);
 
-  if (!firstName || !surname) {
-    return NextResponse.json({ error: "Enter both your first name and surname." }, { status: 400 });
+  if (!firstName || !lastName) {
+    return NextResponse.json({ error: "Enter both your first name and last name." }, { status: 400 });
   }
-  if (!/^[a-zA-Z' -]+$/.test(firstName) || !/^[a-zA-Z' -]+$/.test(surname)) {
+  if (!/^[a-zA-Z' -]+$/.test(firstName) || !/^[a-zA-Z' -]+$/.test(lastName)) {
     return NextResponse.json({ error: "Names can only contain letters, spaces, hyphens and apostrophes." }, { status: 400 });
   }
 
@@ -52,15 +52,15 @@ export async function POST(request: Request) {
   let account = await prisma.studioAccount.findUnique({ where: { firstNameKey } });
 
   if (!account) {
-    const surnameHash = await bcrypt.hash(surname, 10);
+    const lastNameHash = await bcrypt.hash(lastName, 10);
     account = await prisma.studioAccount.create({
-      data: { firstName, firstNameKey, surnameHash },
+      data: { firstName, firstNameKey, lastNameHash },
     });
   } else {
-    const matches = await bcrypt.compare(surname, account.surnameHash);
+    const matches = await bcrypt.compare(lastName, account.lastNameHash);
     if (!matches) {
       return NextResponse.json(
-        { error: "That surname doesn't match the account for this first name." },
+        { error: "That last name doesn't match the account for this first name." },
         { status: 401 },
       );
     }
@@ -68,13 +68,13 @@ export async function POST(request: Request) {
 
   const response = NextResponse.json({ signedIn: true, firstName: account.firstName });
   response.cookies.set({
-    name: CODELAB_COOKIE,
-    value: await createCodeLabSessionValue(account.id),
+    name: STUDIO_ACCOUNT_COOKIE,
+    value: await createStudioAccountSessionValue(account.id),
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
     path: "/",
-    maxAge: CODELAB_SESSION_MAX_AGE,
+    maxAge: STUDIO_ACCOUNT_SESSION_MAX_AGE,
   });
   return response;
 }
@@ -82,7 +82,7 @@ export async function POST(request: Request) {
 export async function DELETE() {
   const response = NextResponse.json({ ok: true });
   response.cookies.set({
-    name: CODELAB_COOKIE,
+    name: STUDIO_ACCOUNT_COOKIE,
     value: "",
     httpOnly: true,
     sameSite: "lax",

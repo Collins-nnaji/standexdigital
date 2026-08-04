@@ -1,20 +1,12 @@
-import { cookies } from "next/headers";
 import { CodeLabLanguage, CodeLabLevel } from "@prisma/client";
-import { CODELAB_COOKIE, readCodeLabSession } from "@/lib/codelab-auth";
-import { prisma } from "@/lib/prisma";
+import { getStudioAccountId, requireStudioAccount } from "@/lib/studio-account";
 
-/** Resolves the signed-in Code Lab account from the request cookies, or null. */
-export async function getCodeLabAccountId(): Promise<string | null> {
-  const store = await cookies();
-  return readCodeLabSession(store.get(CODELAB_COOKIE)?.value);
-}
-
-export async function requireCodeLabAccount() {
-  const accountId = await getCodeLabAccountId();
-  if (!accountId) return null;
-  const account = await prisma.studioAccount.findUnique({ where: { id: accountId } });
-  return account;
-}
+/**
+ * Code Lab reads/writes the shared Studio account (see lib/studio-account.ts) —
+ * these names are kept for the existing Code Lab API routes.
+ */
+export const getCodeLabAccountId = getStudioAccountId;
+export const requireCodeLabAccount = requireStudioAccount;
 
 export function toDbLanguage(language: string): CodeLabLanguage {
   return language === "sql" ? CodeLabLanguage.SQL : CodeLabLanguage.PYTHON;

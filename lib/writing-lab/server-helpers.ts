@@ -1,6 +1,6 @@
 import { WritingLevel } from "@prisma/client";
 
-export { getCodeLabAccountId as getStudioAccountId } from "@/lib/code-lab/server-helpers";
+export { getStudioAccountId } from "@/lib/studio-account";
 
 export function toWritingLevel(level: string): WritingLevel {
   if (level === "advanced") return WritingLevel.ADVANCED;

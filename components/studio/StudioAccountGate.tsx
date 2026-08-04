@@ -5,30 +5,33 @@ import { Loader2, LogOut, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ConsoleTheme } from "@/components/console/console-theme";
 
-type CodeLabAccountGateProps = {
+type StudioAccountGateProps = {
   theme: ConsoleTheme;
   isDark: boolean;
+  /** Shown in the sign-in card header, e.g. "Code Lab" or "Writing Lab". */
+  toolName: string;
   children: (account: { firstName: string; onSignOut: () => void }) => React.ReactNode;
 };
 
 /**
- * Simple per-user sign-in for the Code Lab: first name as username, surname
- * as password. Nested inside the shared Studio password gate, so this is
- * just enough to keep one person's saved lessons, plans and progress apart
- * from another's — not real authentication.
+ * Simple sign-in shared by every Studio tool: your first name is the
+ * username, your last name is the password. One sign-in works across Code
+ * Lab, Writing Lab and anything else added under Studio — nested inside the
+ * shared Studio password gate. This is just enough to keep one person's
+ * saved work apart from another's, not real authentication.
  */
-export function CodeLabAccountGate({ theme, isDark, children }: CodeLabAccountGateProps) {
+export function StudioAccountGate({ theme, isDark, toolName, children }: StudioAccountGateProps) {
   const [status, setStatus] = useState<"loading" | "signedOut" | "signedIn">("loading");
   const [firstName, setFirstName] = useState("");
 
   const [formFirstName, setFormFirstName] = useState("");
-  const [formSurname, setFormSurname] = useState("");
+  const [formLastName, setFormLastName] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
-    fetch("/api/studio/codelab/account")
+    fetch("/api/studio/account")
       .then((res) => res.json())
       .then((data) => {
         if (cancelled) return;
@@ -49,10 +52,10 @@ export function CodeLabAccountGate({ theme, isDark, children }: CodeLabAccountGa
     setSubmitting(true);
     setFormError(null);
     try {
-      const res = await fetch("/api/studio/codelab/account", {
+      const res = await fetch("/api/studio/account", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ firstName: formFirstName, surname: formSurname }),
+        body: JSON.stringify({ firstName: formFirstName, lastName: formLastName }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error || "Could not sign in.");
@@ -63,14 +66,14 @@ export function CodeLabAccountGate({ theme, isDark, children }: CodeLabAccountGa
     } finally {
       setSubmitting(false);
     }
-  }, [formFirstName, formSurname]);
+  }, [formFirstName, formLastName]);
 
   const handleSignOut = useCallback(async () => {
-    await fetch("/api/studio/codelab/account", { method: "DELETE" });
+    await fetch("/api/studio/account", { method: "DELETE" });
     setStatus("signedOut");
     setFirstName("");
     setFormFirstName("");
-    setFormSurname("");
+    setFormLastName("");
   }, []);
 
   if (status === "loading") {
@@ -88,12 +91,13 @@ export function CodeLabAccountGate({ theme, isDark, children }: CodeLabAccountGa
           <div className="flex items-center gap-2">
             <User className={cn("h-4 w-4", theme.muted)} />
             <p className={cn("text-[10px] font-black uppercase tracking-[0.2em]", theme.muted)}>
-              Sign in to Code Lab
+              Sign in to {toolName}
             </p>
           </div>
           <p className={cn("mt-2 text-[12px] leading-relaxed", theme.muted)}>
-            Enter your first name and surname. Your lessons, plans and progress are saved under
-            this name — this is a lightweight sign-in, not a secure account.
+            Just your first and last name — first name is your username, last name is your
+            password. The same sign-in works across every Studio tool, and your work is saved
+            under this name. This is a lightweight sign-in, not a secure account.
           </p>
 
           <form
@@ -103,10 +107,13 @@ export function CodeLabAccountGate({ theme, isDark, children }: CodeLabAccountGa
             }}
             className="mt-3 flex flex-col gap-2"
           >
+            <label className={cn("text-[10.5px] font-semibold uppercase tracking-wide", theme.muted)}>
+              First name (username)
+            </label>
             <input
               value={formFirstName}
               onChange={(e) => setFormFirstName(e.target.value)}
-              placeholder="First name"
+              placeholder="e.g. Collins"
               autoComplete="off"
               className={cn(
                 "w-full rounded-lg border px-3 py-2 text-[13px] outline-none transition-colors placeholder:opacity-60 focus:border-emerald-500/50",
@@ -115,10 +122,13 @@ export function CodeLabAccountGate({ theme, isDark, children }: CodeLabAccountGa
                 theme.text,
               )}
             />
+            <label className={cn("mt-1 text-[10.5px] font-semibold uppercase tracking-wide", theme.muted)}>
+              Last name (password)
+            </label>
             <input
-              value={formSurname}
-              onChange={(e) => setFormSurname(e.target.value)}
-              placeholder="Surname"
+              value={formLastName}
+              onChange={(e) => setFormLastName(e.target.value)}
+              placeholder="e.g. Nnaji"
               type="password"
               autoComplete="off"
               className={cn(
@@ -131,7 +141,7 @@ export function CodeLabAccountGate({ theme, isDark, children }: CodeLabAccountGa
             {formError && <p className="text-[12px] text-rose-500">{formError}</p>}
             <button
               type="submit"
-              disabled={submitting || !formFirstName.trim() || !formSurname.trim()}
+              disabled={submitting || !formFirstName.trim() || !formLastName.trim()}
               className="mt-1 inline-flex items-center justify-center gap-1.5 rounded-lg bg-emerald-500 px-3.5 py-2 text-[12.5px] font-bold text-white transition-colors hover:bg-emerald-600 disabled:opacity-50"
             >
               {submitting && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
@@ -146,7 +156,7 @@ export function CodeLabAccountGate({ theme, isDark, children }: CodeLabAccountGa
   return <>{children({ firstName, onSignOut: handleSignOut })}</>;
 }
 
-export function CodeLabAccountBadge({
+export function StudioAccountBadge({
   firstName,
   onSignOut,
   theme,

@@ -24,7 +24,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ConsoleTheme, ConsoleThemeMode } from "@/components/console/console-theme";
-import { CodeLabAccountBadge, CodeLabAccountGate } from "@/components/studio/CodeLabAccountGate";
+import { StudioAccountBadge, StudioAccountGate } from "@/components/studio/StudioAccountGate";
 import { CodeLabLibrary } from "@/components/studio/CodeLabLibrary";
 import { CodeLabLesson, type Lesson } from "@/components/studio/CodeLabLesson";
 import { CodeLabPlans, type LessonPlan } from "@/components/studio/CodeLabPlans";
@@ -74,11 +74,11 @@ const TABS: { id: CodeLabTab; label: string; icon: typeof Code2 }[] = [
 
 export function CodeLab({ theme, themeMode }: CodeLabProps) {
   return (
-    <CodeLabAccountGate theme={theme} isDark={themeMode === "dark"}>
+    <StudioAccountGate theme={theme} isDark={themeMode === "dark"} toolName="Code Lab">
       {({ firstName, onSignOut }) => (
         <CodeLabWorkspace theme={theme} themeMode={themeMode} firstName={firstName} onSignOut={onSignOut} />
       )}
-    </CodeLabAccountGate>
+    </StudioAccountGate>
   );
 }
 
@@ -357,7 +357,7 @@ function CodeLabWorkspace({
             </div>
           )}
 
-          <CodeLabAccountBadge firstName={firstName} onSignOut={onSignOut} theme={theme} />
+          <StudioAccountBadge firstName={firstName} onSignOut={onSignOut} theme={theme} />
         </div>
 
         {/* Panels */}

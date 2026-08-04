@@ -647,7 +647,7 @@ model AssessmentRun {
 //
 // Self-contained account system for the Studio tools, separate from the main
 // User/NextAuth model. Sign-in is intentionally simple for now: first name as
-// username, surname as password. Swap for real auth later without touching
+// username, last name as password. Swap for real auth later without touching
 // the rest of the schema.
 
 enum CodeLabLanguage {
@@ -671,7 +671,7 @@ model StudioAccount {
   id           String   @id @default(cuid())
   firstName    String
   firstNameKey String   @unique
-  surnameHash  String
+  lastNameHash String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 

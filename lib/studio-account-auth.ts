@@ -1,22 +1,23 @@
 /**
- * Per-user account layer for the Code Lab, nested inside the shared Studio
- * password gate (see lib/studio-auth.ts). Sign-in is intentionally simple —
- * first name as username, surname as password — so each person's lesson
- * plans, saved lessons, practice attempts and error history stay separate.
- * Swap for real auth later without touching the rest of the app.
+ * Shared account layer for the Studio tools (Code Lab, Writing Lab, ...),
+ * nested inside the Studio password gate (see lib/studio-auth.ts). Sign-in
+ * is intentionally simple — first name as username, last name as password —
+ * so each person's saved lessons, plans, practice, challenges and progress
+ * stay separate across every Studio tool under one shared account. Swap for
+ * real auth later without touching the rest of the app.
  */
 
-export const CODELAB_COOKIE = "codelab_session";
+export const STUDIO_ACCOUNT_COOKIE = "studio_account_session";
 
 /** How long a session stays valid. */
-export const CODELAB_SESSION_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
+export const STUDIO_ACCOUNT_SESSION_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 
 function getSecret(): string {
   return (
-    process.env.CODELAB_SESSION_SECRET ||
+    process.env.STUDIO_ACCOUNT_SESSION_SECRET ||
     process.env.STUDIO_SESSION_SECRET ||
     process.env.STUDIO_PASSWORD ||
-    "codelab-dev-secret-change-me"
+    "studio-account-dev-secret-change-me"
   );
 }
 
@@ -53,14 +54,14 @@ export function normalizeFirstNameKey(firstName: string): string {
 }
 
 /** Builds the cookie value: accountId + expiry, plus a signature. */
-export async function createCodeLabSessionValue(accountId: string): Promise<string> {
-  const expiresAt = Date.now() + CODELAB_SESSION_MAX_AGE * 1000;
+export async function createStudioAccountSessionValue(accountId: string): Promise<string> {
+  const expiresAt = Date.now() + STUDIO_ACCOUNT_SESSION_MAX_AGE * 1000;
   const payload = `${accountId}.${expiresAt}`;
   return `${payload}.${await sign(payload)}`;
 }
 
 /** Verifies a session cookie and returns the accountId, or null if invalid/expired. */
-export async function readCodeLabSession(cookieValue: string | undefined): Promise<string | null> {
+export async function readStudioAccountSession(cookieValue: string | undefined): Promise<string | null> {
   if (!cookieValue) return null;
 
   const lastDot = cookieValue.lastIndexOf(".");

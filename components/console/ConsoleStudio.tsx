@@ -16,6 +16,7 @@ import { stripHtmlToText } from "@/lib/strip-html";
 import type { RewriteMode } from "@/lib/communication-llm";
 import { TTSTool } from "@/components/workspace/TTSTool";
 import { WritingChallenges } from "@/components/console/WritingChallenges";
+import { StudioAccountBadge } from "@/components/studio/StudioAccountGate";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -40,9 +41,9 @@ const REWRITE_MODES: { id: RewriteMode; label: string; icon: LucideIcon }[] = [
   { id: "empathetic", label: "Empathetic", icon: HeartHandshake },
 ];
 
-type Props = { themeMode?: ConsoleThemeMode };
+type Props = { themeMode?: ConsoleThemeMode; firstName?: string; onSignOut?: () => void };
 
-export function ConsoleStudio({ themeMode = "light" }: Props) {
+export function ConsoleStudio({ themeMode = "light", firstName, onSignOut }: Props) {
   const t = CONSOLE_THEMES[themeMode];
 
   const [text, setText] = useState("");
@@ -287,17 +288,20 @@ export function ConsoleStudio({ themeMode = "light" }: Props) {
                 Generate a draft, rewrite the tone, then listen with speech.
               </p>
             </div>
-            {/* Copilot toggle — desktop */}
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => setCopilotOpen((v) => !v)}
-              className={cn("hidden shrink-0 gap-1.5 shadow-none lg:inline-flex", t.borderSub, t.text)}
-            >
-              {copilotOpen ? <PanelRightClose className="h-4 w-4" /> : <PanelRightOpen className="h-4 w-4" />}
-              Copilot
-            </Button>
+            <div className="flex shrink-0 items-center gap-2">
+              {firstName && onSignOut && <StudioAccountBadge firstName={firstName} onSignOut={onSignOut} theme={t} />}
+              {/* Copilot toggle — desktop */}
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setCopilotOpen((v) => !v)}
+                className={cn("hidden gap-1.5 shadow-none lg:inline-flex", t.borderSub, t.text)}
+              >
+                {copilotOpen ? <PanelRightClose className="h-4 w-4" /> : <PanelRightOpen className="h-4 w-4" />}
+                Copilot
+              </Button>
+            </div>
           </div>
 
           <div className="space-y-1.5">

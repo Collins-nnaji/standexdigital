@@ -252,8 +252,7 @@ export function WritingChallenges({ t, editorText }: WritingChallengesProps) {
         </div>
         {signedIn === false && (
           <p className={cn("mt-1.5 text-[11.5px] leading-relaxed", t.muted2)}>
-            Sign in from the Code Lab (Studio) to keep a running history and score trend here — challenges
-            still work without it.
+            Your session may have expired — sign back in to keep saving your history.
           </p>
         )}
         {history === null && signedIn !== false && (
