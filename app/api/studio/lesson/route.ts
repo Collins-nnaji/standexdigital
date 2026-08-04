@@ -29,6 +29,13 @@ function buildPrompt(input: {
       ? `\nThe learner's database already contains these tables, so every example must run against them unchanged:\n${SAMPLE_SCHEMA}\n`
       : "\nExamples must run on a plain Python interpreter with no third-party packages installed (no pandas, no numpy, no network access).\n";
 
+  const levelRule =
+    input.level === "beginner"
+      ? "The example must be heavily commented, line by line, explaining what each part does. The exercise should be a small, single-step tweak to the example with an obvious right answer."
+      : input.level === "advanced"
+        ? "The example should be idiomatic and only lightly commented — assume the reader can follow it. The exercise should require combining this idea with something not shown in the example, or handling an edge case."
+        : "The example should be commented at the key steps, not every line. The exercise should extend the example in one new direction.";
+
   return `Write a short, practical lesson on "${input.topic}" in ${input.language} for a ${input.level} learner.
 ${sqlContext}${input.request ? `\nThe learner also asked: "${input.request}"\n` : ""}
 Output JSON only:
@@ -38,7 +45,8 @@ Output JSON only:
   "keyPoints": string[],
   "example": string,
   "exampleNote": string,
-  "exercise": string
+  "exercise": string,
+  "hints": string[]
 }
 
 Rules:
@@ -47,7 +55,10 @@ Rules:
 - "example" is runnable ${input.language} code only — no markdown fences, no commentary outside comments.
 - The example must run exactly as written and print or return something visible.
 - "exampleNote" is one sentence on what the example demonstrates.
-- "exercise" is one small task for the learner to try by modifying the example.
+- "exercise" is one small task for the learner to try by modifying the example. ${levelRule}
+- "hints" is an ordered list of progressively more specific hints for the exercise: ${
+    input.level === "beginner" ? "provide 3-4, the last one nearly giving the answer" : input.level === "advanced" ? "provide 0-1, only a nudge" : "provide 2"
+  }.
 - No markdown fences anywhere.`;
 }
 
@@ -109,6 +120,7 @@ export async function POST(request: Request) {
         example: typeof parsed.example === "string" ? parsed.example : "",
         exampleNote: typeof parsed.exampleNote === "string" ? parsed.exampleNote : "",
         exercise: typeof parsed.exercise === "string" ? parsed.exercise : "",
+        hints: Array.isArray(parsed.hints) ? parsed.hints.filter((h: unknown) => typeof h === "string").slice(0, 5) : [],
       });
     } catch {
       console.error("[studio/lesson] unparseable model output");

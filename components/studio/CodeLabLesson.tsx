@@ -1,6 +1,7 @@
 "use client";
 
-import { BookOpen, Loader2, PlayCircle } from "lucide-react";
+import { useState } from "react";
+import { BookOpen, Check, Lightbulb, Loader2, PlayCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ConsoleTheme } from "@/components/console/console-theme";
 
@@ -11,6 +12,7 @@ export type Lesson = {
   example: string;
   exampleNote: string;
   exercise: string;
+  hints?: string[];
 };
 
 type CodeLabLessonProps = {
@@ -21,6 +23,8 @@ type CodeLabLessonProps = {
   isDark: boolean;
   /** Loads the lesson's example into the editor. */
   onUseExample: (code: string) => void;
+  /** Whether this lesson has been persisted to the learner's history. */
+  saved?: boolean;
 };
 
 export function CodeLabLesson({
@@ -30,8 +34,17 @@ export function CodeLabLesson({
   theme,
   isDark,
   onUseExample,
+  saved,
 }: CodeLabLessonProps) {
   const surface = isDark ? "bg-white/[0.03]" : "bg-black/[0.02]";
+  const [hintsRevealed, setHintsRevealed] = useState(0);
+  const [lessonKey, setLessonKey] = useState<string | null>(null);
+
+  const currentKey = lesson ? `${lesson.title}|${lesson.example}` : null;
+  if (currentKey !== lessonKey) {
+    setLessonKey(currentKey);
+    setHintsRevealed(0);
+  }
 
   if (loading) {
     return (
@@ -63,7 +76,14 @@ export function CodeLabLesson({
 
   return (
     <div className="flex-1 overflow-y-auto p-4 sm:p-5">
-      <h2 className={cn("text-lg font-bold tracking-tight", theme.text)}>{lesson.title}</h2>
+      <div className="flex items-center gap-2">
+        <h2 className={cn("text-lg font-bold tracking-tight", theme.text)}>{lesson.title}</h2>
+        {saved && (
+          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-emerald-500">
+            <Check className="h-3 w-3" /> Saved
+          </span>
+        )}
+      </div>
 
       {lesson.explanation && (
         <div className="mt-3 flex flex-col gap-3">
@@ -135,6 +155,36 @@ export function CodeLabLesson({
             Try it
           </p>
           <p className={cn("mt-2 text-[12.5px] leading-relaxed", theme.text)}>{lesson.exercise}</p>
+
+          {lesson.hints && lesson.hints.length > 0 && (
+            <div className="mt-3">
+              {lesson.hints.slice(0, hintsRevealed).map((hint, i) => (
+                <p
+                  key={i}
+                  className={cn(
+                    "mt-1.5 flex items-start gap-1.5 text-[12px] leading-relaxed",
+                    theme.text,
+                  )}
+                >
+                  <Lightbulb className="mt-0.5 h-3 w-3 shrink-0 text-amber-500" />
+                  <span>{hint}</span>
+                </p>
+              ))}
+              {hintsRevealed < lesson.hints.length && (
+                <button
+                  type="button"
+                  onClick={() => setHintsRevealed((n) => n + 1)}
+                  className="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-amber-500/15 px-2.5 py-1 text-[11px] font-bold text-amber-600 transition-colors hover:bg-amber-500/25 dark:text-amber-400"
+                >
+                  <Lightbulb className="h-3.5 w-3.5" />
+                  {hintsRevealed === 0 ? "Show a hint" : "Show another hint"}
+                  <span className="opacity-60">
+                    ({hintsRevealed}/{lesson.hints.length})
+                  </span>
+                </button>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>

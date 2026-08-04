@@ -640,3 +640,126 @@ model AssessmentRun {
 
   @@index([userId, createdAt(sort: Desc)])
 }
+
+// ============================================================================
+// STUDIO CODE LAB
+// ============================================================================
+//
+// Self-contained account system for the Code Lab, separate from the main
+// User/NextAuth model. Sign-in is intentionally simple for now: first name as
+// username, surname as password. Swap for real auth later without touching
+// the rest of the schema.
+
+enum CodeLabLanguage {
+  PYTHON
+  SQL
+}
+
+enum CodeLabLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum CodeLabPracticeStatus {
+  OPEN
+  PASSED
+  NEEDS_REVIEW
+}
+
+model StudioAccount {
+  id           String   @id @default(cuid())
+  firstName    String
+  firstNameKey String   @unique
+  surnameHash  String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  lessonPlans   CodeLabLessonPlan[]
+  lessons       CodeLabLesson[]
+  practiceItems CodeLabPracticeItem[]
+  attempts      CodeLabAttempt[]
+  errorLogs     CodeLabErrorLog[]
+}
+
+model CodeLabLessonPlan {
+  id          String          @id @default(cuid())
+  accountId   String
+  account     StudioAccount   @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  title       String
+  description String?         @db.Text
+  language    CodeLabLanguage
+  level       CodeLabLevel
+  moduleIds   Json
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([accountId])
+}
+
+model CodeLabLesson {
+  id          String          @id @default(cuid())
+  accountId   String
+  account     StudioAccount   @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  language    CodeLabLanguage
+  level       CodeLabLevel
+  moduleId    String?
+  topic       String
+  title       String
+  explanation String          @db.Text
+  keyPoints   Json
+  example     String          @db.Text
+  exampleNote String?         @db.Text
+  exercise    String?         @db.Text
+  createdAt   DateTime        @default(now())
+
+  @@index([accountId, language, createdAt(sort: Desc)])
+}
+
+model CodeLabPracticeItem {
+  id          String                 @id @default(cuid())
+  accountId   String
+  account     StudioAccount          @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  language    CodeLabLanguage
+  level       CodeLabLevel
+  moduleId    String?
+  topic       String
+  prompt      String                 @db.Text
+  starterCode String?                @db.Text
+  status      CodeLabPracticeStatus  @default(OPEN)
+  createdAt   DateTime               @default(now())
+  updatedAt   DateTime               @updatedAt
+
+  attempts CodeLabAttempt[]
+
+  @@index([accountId, status])
+}
+
+model CodeLabAttempt {
+  id             String              @id @default(cuid())
+  accountId      String
+  account        StudioAccount       @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  practiceItemId String
+  practiceItem   CodeLabPracticeItem @relation(fields: [practiceItemId], references: [id], onDelete: Cascade)
+  code           String              @db.Text
+  passed         Boolean?
+  feedback       String?             @db.Text
+  createdAt      DateTime            @default(now())
+
+  @@index([practiceItemId, createdAt(sort: Desc)])
+}
+
+model CodeLabErrorLog {
+  id          String          @id @default(cuid())
+  accountId   String
+  account     StudioAccount   @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  language    CodeLabLanguage
+  level       CodeLabLevel
+  topic       String?
+  code        String          @db.Text
+  errorText   String          @db.Text
+  explanation String?         @db.Text
+  createdAt   DateTime        @default(now())
+
+  @@index([accountId, createdAt(sort: Desc)])
+}

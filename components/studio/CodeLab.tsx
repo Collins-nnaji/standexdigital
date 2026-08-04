@@ -7,12 +7,16 @@ import { sql } from "@codemirror/lang-sql";
 import { githubDark, githubLight } from "@uiw/codemirror-theme-github";
 import {
   AlertTriangle,
+  BarChart3,
+  BookMarked,
   BookOpen,
   CheckCircle2,
   Code2,
   Database,
+  Dumbbell,
   Loader2,
   Menu,
+  MessageCircleQuestion,
   Play,
   RotateCcw,
   Sparkles,
@@ -20,8 +24,12 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ConsoleTheme, ConsoleThemeMode } from "@/components/console/console-theme";
+import { CodeLabAccountBadge, CodeLabAccountGate } from "@/components/studio/CodeLabAccountGate";
 import { CodeLabLibrary } from "@/components/studio/CodeLabLibrary";
 import { CodeLabLesson, type Lesson } from "@/components/studio/CodeLabLesson";
+import { CodeLabPlans, type LessonPlan } from "@/components/studio/CodeLabPlans";
+import { CodeLabPractice } from "@/components/studio/CodeLabPractice";
+import { CodeLabProgress } from "@/components/studio/CodeLabProgress";
 import { CodeLabReview } from "@/components/studio/CodeLabReview";
 import type { LearningLevel } from "@/lib/code-lab/modules";
 import {
@@ -43,7 +51,7 @@ const CodeMirror = dynamic(() => import("@uiw/react-codemirror"), {
   ),
 });
 
-type CodeLabTab = "editor" | "lesson" | "review";
+type CodeLabTab = "editor" | "lesson" | "plans" | "practice" | "review" | "progress";
 
 type CodeLabProps = {
   theme: ConsoleTheme;
@@ -58,10 +66,28 @@ const LANGUAGES: { id: CodeLanguage; label: string }[] = [
 const TABS: { id: CodeLabTab; label: string; icon: typeof Code2 }[] = [
   { id: "editor", label: "Editor", icon: Code2 },
   { id: "lesson", label: "Lesson", icon: BookOpen },
+  { id: "plans", label: "Plans", icon: BookMarked },
+  { id: "practice", label: "Practice", icon: Dumbbell },
   { id: "review", label: "Review", icon: Sparkles },
+  { id: "progress", label: "Progress", icon: BarChart3 },
 ];
 
 export function CodeLab({ theme, themeMode }: CodeLabProps) {
+  return (
+    <CodeLabAccountGate theme={theme} isDark={themeMode === "dark"}>
+      {({ firstName, onSignOut }) => (
+        <CodeLabWorkspace theme={theme} themeMode={themeMode} firstName={firstName} onSignOut={onSignOut} />
+      )}
+    </CodeLabAccountGate>
+  );
+}
+
+function CodeLabWorkspace({
+  theme,
+  themeMode,
+  firstName,
+  onSignOut,
+}: CodeLabProps & { firstName: string; onSignOut: () => void }) {
   const isDark = themeMode === "dark";
 
   const [language, setLanguage] = useState<CodeLanguage>("python");
@@ -79,6 +105,10 @@ export function CodeLab({ theme, themeMode }: CodeLabProps) {
   const [loadingModuleId, setLoadingModuleId] = useState<string | null>(null);
   const [lesson, setLesson] = useState<Lesson | null>(null);
   const [lessonError, setLessonError] = useState<string | null>(null);
+  const [lessonSaved, setLessonSaved] = useState(false);
+
+  const [explaining, setExplaining] = useState(false);
+  const [errorExplanation, setErrorExplanation] = useState<string | null>(null);
 
   // Python's first run downloads the interpreter; only warn about it once.
   const pythonBooted = useRef(false);
@@ -94,6 +124,7 @@ export function CodeLab({ theme, themeMode }: CodeLabProps) {
   const handleRun = useCallback(async () => {
     setRunning(true);
     setResult(null);
+    setErrorExplanation(null);
     if (language === "python" && !pythonBooted.current) setBooting(true);
 
     try {
@@ -113,12 +144,42 @@ export function CodeLab({ theme, themeMode }: CodeLabProps) {
     }
   }, [current, language]);
 
+  const handleExplainError = useCallback(async () => {
+    if (!result?.error) return;
+    setExplaining(true);
+    try {
+      const res = await fetch("/api/studio/codelab/errors", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          language,
+          level,
+          topic: lesson?.title ?? null,
+          code: current,
+          errorText: result.error,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok) setErrorExplanation(data.explanation || data.warning || "No explanation available.");
+    } finally {
+      setExplaining(false);
+    }
+  }, [current, language, level, lesson, result]);
+
   const handleSelectModule = useCallback(
-    async (moduleId: string, title: string) => {
+    async (moduleId: string, title: string, overrides?: { language: CodeLanguage; level: LearningLevel }) => {
+      const effLanguage = overrides?.language ?? language;
+      const effLevel = overrides?.level ?? level;
+      if (overrides) {
+        setLanguage(overrides.language);
+        setLevel(overrides.level);
+      }
+
       setLoadingModuleId(moduleId);
       setActiveModuleId(moduleId);
       setLesson(null);
       setLessonError(null);
+      setLessonSaved(false);
       setTab("lesson");
       setLibraryOpen(false);
 
@@ -126,11 +187,19 @@ export function CodeLab({ theme, themeMode }: CodeLabProps) {
         const res = await fetch("/api/studio/lesson", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ language, topic: title, level, request }),
+          body: JSON.stringify({ language: effLanguage, topic: title, level: effLevel, request }),
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data?.error || "The lesson could not be generated.");
         setLesson(data as Lesson);
+
+        fetch("/api/studio/codelab/lessons", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ language: effLanguage, level: effLevel, moduleId, topic: title, ...data }),
+        })
+          .then((r) => r.ok && setLessonSaved(true))
+          .catch(() => undefined);
       } catch (err) {
         setLessonError(err instanceof Error ? err.message : "The lesson could not be generated.");
       } finally {
@@ -261,7 +330,7 @@ export function CodeLab({ theme, themeMode }: CodeLabProps) {
           </div>
 
           {tab === "editor" && (
-            <div className="ml-auto flex items-center gap-1.5">
+            <div className="flex items-center gap-1.5">
               <button
                 type="button"
                 onClick={handleReset}
@@ -287,6 +356,8 @@ export function CodeLab({ theme, themeMode }: CodeLabProps) {
               </button>
             </div>
           )}
+
+          <CodeLabAccountBadge firstName={firstName} onSignOut={onSignOut} theme={theme} />
         </div>
 
         {/* Panels */}
@@ -323,7 +394,17 @@ export function CodeLab({ theme, themeMode }: CodeLabProps) {
                 </div>
               )}
 
-              {result && <RunOutput result={result} theme={theme} isDark={isDark} surface={surface} />}
+              {result && (
+                <RunOutput
+                  result={result}
+                  theme={theme}
+                  isDark={isDark}
+                  surface={surface}
+                  explaining={explaining}
+                  explanation={errorExplanation}
+                  onExplain={handleExplainError}
+                />
+              )}
             </div>
           </div>
         )}
@@ -337,13 +418,37 @@ export function CodeLab({ theme, themeMode }: CodeLabProps) {
               theme={theme}
               isDark={isDark}
               onUseExample={handleUseExample}
+              saved={lessonSaved}
             />
           </div>
+        )}
+
+        {tab === "plans" && (
+          <CodeLabPlans
+            theme={theme}
+            isDark={isDark}
+            onStudyModule={(plan: LessonPlan, moduleId, title) =>
+              handleSelectModule(moduleId, title, { language: plan.language, level: plan.level })
+            }
+          />
+        )}
+
+        {tab === "practice" && (
+          <CodeLabPractice
+            theme={theme}
+            isDark={isDark}
+            language={language}
+            level={level}
+            editorCode={current}
+            onOpenInEditor={handleUseExample}
+          />
         )}
 
         {tab === "review" && (
           <CodeLabReview language={language} theme={theme} isDark={isDark} editorCode={current} />
         )}
+
+        {tab === "progress" && <CodeLabProgress theme={theme} isDark={isDark} />}
       </div>
     </div>
   );
@@ -354,11 +459,17 @@ function RunOutput({
   theme,
   isDark,
   surface,
+  explaining,
+  explanation,
+  onExplain,
 }: {
   result: RunResult;
   theme: ConsoleTheme;
   isDark: boolean;
   surface: string;
+  explaining: boolean;
+  explanation: string | null;
+  onExplain: () => void;
 }) {
   return (
     <div className="p-4">
@@ -375,14 +486,34 @@ function RunOutput({
       </div>
 
       {result.error && (
-        <pre
-          className={cn(
-            "mt-2 overflow-x-auto whitespace-pre-wrap rounded-lg border border-rose-500/30 bg-rose-500/[0.07] p-3 text-[12px] text-rose-500",
-            theme.mono,
+        <>
+          <pre
+            className={cn(
+              "mt-2 overflow-x-auto whitespace-pre-wrap rounded-lg border border-rose-500/30 bg-rose-500/[0.07] p-3 text-[12px] text-rose-500",
+              theme.mono,
+            )}
+          >
+            {result.error}
+          </pre>
+
+          {!explanation && (
+            <button
+              type="button"
+              onClick={onExplain}
+              disabled={explaining}
+              className="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-amber-500/15 px-2.5 py-1.5 text-[11.5px] font-bold text-amber-600 transition-colors hover:bg-amber-500/25 disabled:opacity-60 dark:text-amber-400"
+            >
+              {explaining ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <MessageCircleQuestion className="h-3.5 w-3.5" />}
+              Explain this error
+            </button>
           )}
-        >
-          {result.error}
-        </pre>
+
+          {explanation && (
+            <div className={cn("mt-2 rounded-lg border p-3 text-[12.5px] leading-relaxed", theme.borderSub, surface, theme.text)}>
+              {explanation}
+            </div>
+          )}
+        </>
       )}
 
       {result.output && (
