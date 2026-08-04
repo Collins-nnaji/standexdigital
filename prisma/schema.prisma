@@ -681,6 +681,7 @@ model StudioAccount {
   attempts         CodeLabAttempt[]
   errorLogs        CodeLabErrorLog[]
   writingAttempts  WritingChallengeAttempt[]
+  chatMessages     CodeLabChatMessage[]
 }
 
 model CodeLabLessonPlan {
@@ -791,4 +792,25 @@ model WritingChallengeAttempt {
   createdAt    DateTime      @default(now())
 
   @@index([accountId, createdAt(sort: Desc)])
+}
+
+// ============================================================================
+// STUDIO CODE LAB — AI CHAT (freeform tutoring conversation)
+// ============================================================================
+
+enum CodeLabChatRole {
+  USER
+  ASSISTANT
+}
+
+model CodeLabChatMessage {
+  id        String          @id @default(cuid())
+  accountId String
+  account   StudioAccount   @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  language  CodeLabLanguage
+  role      CodeLabChatRole
+  content   String          @db.Text
+  createdAt DateTime        @default(now())
+
+  @@index([accountId, language, createdAt])
 }

@@ -16,6 +16,7 @@ import {
   Dumbbell,
   Loader2,
   Menu,
+  MessageCircle,
   MessageCircleQuestion,
   Play,
   RotateCcw,
@@ -25,6 +26,7 @@ import {
 import { cn } from "@/lib/utils";
 import type { ConsoleTheme, ConsoleThemeMode } from "@/components/console/console-theme";
 import { StudioAccountBadge, StudioAccountGate } from "@/components/studio/StudioAccountGate";
+import { CodeLabChat } from "@/components/studio/CodeLabChat";
 import { CodeLabLibrary } from "@/components/studio/CodeLabLibrary";
 import { CodeLabLesson, type Lesson } from "@/components/studio/CodeLabLesson";
 import { CodeLabPlans, type LessonPlan } from "@/components/studio/CodeLabPlans";
@@ -51,7 +53,7 @@ const CodeMirror = dynamic(() => import("@uiw/react-codemirror"), {
   ),
 });
 
-type CodeLabTab = "editor" | "lesson" | "plans" | "practice" | "review" | "progress";
+type CodeLabTab = "editor" | "lesson" | "chat" | "plans" | "practice" | "review" | "progress";
 
 type CodeLabProps = {
   theme: ConsoleTheme;
@@ -66,6 +68,7 @@ const LANGUAGES: { id: CodeLanguage; label: string }[] = [
 const TABS: { id: CodeLabTab; label: string; icon: typeof Code2 }[] = [
   { id: "editor", label: "Editor", icon: Code2 },
   { id: "lesson", label: "Lesson", icon: BookOpen },
+  { id: "chat", label: "Chat", icon: MessageCircle },
   { id: "plans", label: "Plans", icon: BookMarked },
   { id: "practice", label: "Practice", icon: Dumbbell },
   { id: "review", label: "Review", icon: Sparkles },
@@ -421,6 +424,10 @@ function CodeLabWorkspace({
               saved={lessonSaved}
             />
           </div>
+        )}
+
+        {tab === "chat" && (
+          <CodeLabChat theme={theme} isDark={isDark} language={language} level={level} editorCode={current} />
         )}
 
         {tab === "plans" && (
