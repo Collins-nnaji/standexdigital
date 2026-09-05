@@ -1,4 +1,4 @@
-# StandexAI 2.0 - AI Data Analysis & Modeling Platform
+# Standex 2.0 - AI Data Analysis & Modeling Platform
 
 **AI-powered data readiness platform.** Schema profiling, data quality diagnostics, and model-readiness scoring for regulated industries.
 
