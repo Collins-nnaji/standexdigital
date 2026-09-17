@@ -43,14 +43,14 @@ export function LandingHero() {
         <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 sm:gap-16 lg:gap-24 items-center py-4 sm:py-6">
           <div className="landing-hero-enter flex flex-col gap-6 sm:gap-8 lg:gap-10 z-10 text-center lg:text-left">
             <div className="space-y-4 sm:space-y-6">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight leading-[0.95] text-white">
+              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight leading-[0.95] text-white">
                 Architecting <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-emerald-300 to-teal-400">
                   Intelligent
                 </span>
                 <br />
                 Systems.
-              </h1>
+              </h2>
               <p className="text-lg sm:text-xl md:text-2xl font-semibold text-emerald-400/90 tracking-tight">
                 Automate and save cost.
               </p>
@@ -70,7 +70,7 @@ export function LandingHero() {
                   href="/Contact"
                   className="group relative flex h-12 sm:h-14 lg:h-16 w-full sm:w-auto items-center justify-center gap-3 sm:gap-4 overflow-hidden rounded-2xl bg-emerald-500 px-6 sm:px-8 lg:px-10 text-xs sm:text-sm font-bold tracking-widest text-white transition-all hover:bg-emerald-600 shadow-lg shadow-emerald-200"
                 >
-                  <span>ENGINEER A SOLUTION</span>
+                  <span>BOOK A GROWTH CONSULTATION</span>
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </div>

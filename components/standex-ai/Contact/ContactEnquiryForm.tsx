@@ -3,15 +3,7 @@
 import React, { useState, FormEvent } from "react";
 import { motion } from "framer-motion";
 import { Loader2, Send, CheckCircle2 } from "lucide-react";
-
-const ENQUIRY_TYPES = [
-  "General Enquiry",
-  "Power Platform Solutions",
-  "AI & Agentic Systems",
-  "Training & Academy",
-  "Partnership & Collaboration",
-  "Careers",
-];
+import { ENQUIRY_TYPES } from "@/lib/enquiry-types";
 
 const inputClass =
   "w-full rounded-xl border border-white/10 bg-zinc-900 px-4 py-3 text-sm font-medium text-white placeholder:text-zinc-500 focus:border-[#7C5CFC]/50 focus:outline-none focus:ring-2 focus:ring-[#7C5CFC]/20";
@@ -24,8 +16,8 @@ type ContactEnquiryFormProps = {
 
 const ContactEnquiryForm = ({
   defaultEnquiryType = ENQUIRY_TYPES[0],
-  eyebrow = "Submit an Enquiry",
-  heading = "Tell us what you need.",
+  eyebrow = "Book a Growth Consultation",
+  heading = "Tell us about your growth goals.",
 }: ContactEnquiryFormProps) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -189,7 +181,7 @@ const ContactEnquiryForm = ({
           </>
         ) : (
           <>
-            Submit Enquiry
+            Book a Growth Consultation
             <Send className="h-4 w-4" />
           </>
         )}

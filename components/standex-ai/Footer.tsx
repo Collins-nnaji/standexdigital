@@ -22,13 +22,14 @@ const Footer = () => {
       threshold: 0.1,
     });
     
-    if (footerRef.current) {
-      observer.observe(footerRef.current);
+    const footerElement = footerRef.current;
+    if (footerElement) {
+      observer.observe(footerElement);
     }
     
     return () => {
-      if (footerRef.current) {
-        observer.unobserve(footerRef.current);
+      if (footerElement) {
+        observer.unobserve(footerElement);
       }
     };
   }, []);
@@ -118,7 +119,7 @@ const Footer = () => {
         <div className={`mt-5 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 transition-all duration-700 delay-100 ${
           animationStarted ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
         }`}>
-          <p className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-500">Engineering Intake</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-500">Growth & Support</p>
           <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
             <a href="mailto:support@standexdigital.com" className="text-[11px] font-bold text-zinc-400 hover:text-emerald-500 transition-colors">support@standexdigital.com</a>
             <a href="mailto:hr@standexdigital.com" className="text-[11px] font-bold text-emerald-500 hover:text-white transition-colors">hr@standexdigital.com</a>

@@ -126,7 +126,7 @@ const HomeAbout = () => {
             />
             <div className="hidden lg:block mt-8">
               <Link
-                href="/#about"
+                href="/data-solutions#about"
                 className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-2xl bg-zinc-900 px-6 py-3.5 text-[11px] font-bold tracking-tight uppercase tracking-widest text-white shadow-lg transition-all active:scale-95"
               >
                 Learn More
@@ -188,7 +188,7 @@ const HomeAbout = () => {
         <div className={`lg:hidden mt-8 transform transition-all duration-700 delay-800 ${
           animationStarted ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
         }`}>
-          <Link href="/#about">
+          <Link href="/data-solutions#about">
            <button className="inline-flex items-center gap-2 bg-[#7C5CFC] text-white px-6 py-3 rounded-md hover:bg-[#6B4FE0] transition-all duration-200 hover:scale-105 transform">
              More About us
              <ArrowRight className="w-5 h-5" />

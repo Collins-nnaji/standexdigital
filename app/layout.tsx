@@ -26,9 +26,9 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Standex Digital — Applied AI & Power Platform Engineering",
+  title: "Standex Digital — Digital Growth & BI Solutions",
   description:
-    "Premier Applied AI, Microsoft Power Platform engineering, and professional training solutions for modern digital infrastructure.",
+    "Digital strategy and growth alongside Power Apps, Power Automate and Power BI solutions for established international businesses.",
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",

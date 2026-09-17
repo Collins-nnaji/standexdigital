@@ -798,5 +798,74 @@ section#how:not(.landing-how-revealed) .landing-how-flow-connector {
   .font-syne {
     font-family: var(--font-standex-sans), ui-sans-serif, system-ui, sans-serif;
   }
+
+  /* Keep all supporting copy fully legible on the site's dark surfaces. */
+  :is([class*="bg-zinc-9"], [class*="bg-black"]) {
+    color: #ffffff;
+  }
+
+  :is([class*="bg-zinc-9"], [class*="bg-black"]) :is(h1, h2, h3, h4, h5, h6) {
+    color: #ffffff !important;
+  }
+
+  :is([class*="bg-zinc-9"], [class*="bg-black"]) :is(.bg-white, [class*="bg-zinc-50"]) {
+    color: #18181b;
+  }
+
+  :is([class*="bg-zinc-9"], [class*="bg-black"]) :is(
+    .text-zinc-200, .text-zinc-300, .text-zinc-400, .text-zinc-500,
+    .text-zinc-600, .text-zinc-700, .text-gray-300, .text-gray-400,
+    .text-gray-500, .text-gray-600, .text-slate-200, .text-slate-300,
+    .text-slate-400, .text-slate-500, .text-slate-600
+  ),
+  :is([class*="bg-zinc-9"], [class*="bg-black"]):is(
+    .text-zinc-200, .text-zinc-300, .text-zinc-400, .text-zinc-500,
+    .text-zinc-600, .text-zinc-700, .text-gray-300, .text-gray-400,
+    .text-gray-500, .text-gray-600, .text-slate-200, .text-slate-300,
+    .text-slate-400, .text-slate-500, .text-slate-600
+  ) {
+    color: #ffffff !important;
+  }
+
+  :is([class*="bg-zinc-9"], [class*="bg-black"]) :is(.bg-white, [class*="bg-zinc-50"]) .text-zinc-300 { color: #d4d4d8 !important; }
+  :is([class*="bg-zinc-9"], [class*="bg-black"]) :is(.bg-white, [class*="bg-zinc-50"]) .text-zinc-400 { color: #a1a1aa !important; }
+  :is([class*="bg-zinc-9"], [class*="bg-black"]) :is(.bg-white, [class*="bg-zinc-50"]) .text-zinc-500 { color: #71717a !important; }
+  :is([class*="bg-zinc-9"], [class*="bg-black"]) :is(.bg-white, [class*="bg-zinc-50"]) .text-zinc-600,
+  :is([class*="bg-zinc-9"], [class*="bg-black"]) :is(.bg-white, [class*="bg-zinc-50"]) .text-zinc-700 { color: #3f3f46 !important; }
+}
+
+/* Contrast guardrails must remain unlayered so they outrank the legacy global
+   heading and anchor rules near the top of this file. */
+:is([class*="bg-zinc-9"], [class*="bg-black"]) :is(h1, h2, h3, h4, h5, h6) {
+  color: #ffffff !important;
+}
+
+:is([class*="bg-zinc-9"], [class*="bg-black"]) :is(.bg-white, [class*="bg-zinc-50"]),
+:is([class*="bg-zinc-9"], [class*="bg-black"]) :is(.bg-white, [class*="bg-zinc-50"]) :is(h1, h2, h3, h4, h5, h6) {
+  color: #18181b !important;
+}
+
+:is(.bg-white, [class*="bg-zinc-50"]) :is(.text-zinc-300, .text-zinc-400, .text-zinc-500, .text-zinc-600, .text-zinc-700) {
+  color: #3f3f46 !important;
+}
+
+a:is([class*="bg-zinc-9"], [class*="bg-black"], [class*="bg-emerald-"], [class*="bg-violet-"]),
+button:is([class*="bg-zinc-9"], [class*="bg-black"], [class*="bg-emerald-"], [class*="bg-violet-"]) {
+  color: #ffffff !important;
+}
+
+@media (max-width: 640px) {
+  h1, h2, h3 {
+    overflow-wrap: anywhere;
+  }
+
+  main {
+    max-width: 100vw;
+    overflow-x: clip;
+  }
+
+  a, button {
+    min-width: 0;
+  }
 }
 
