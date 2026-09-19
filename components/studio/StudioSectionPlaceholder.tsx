@@ -12,7 +12,7 @@ type StudioSectionPlaceholderProps = {
 /** Mounts a not-yet-built section inside the Studio shell so nav stays available. */
 export function StudioSectionPlaceholder({ section, planned }: StudioSectionPlaceholderProps) {
   return (
-    <StudioShell active={section}>
+    <StudioShell>
       {({ theme, themeMode }) => (
         <StudioComingSoon section={section} theme={theme} themeMode={themeMode} planned={planned} />
       )}

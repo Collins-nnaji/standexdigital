@@ -1,209 +1,470 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { Activity, ArrowDownToLine, ArrowRight, BarChart3, Check, ChevronRight, CircleHelp, FileBarChart2, FolderKanban, FolderOpen, ImagePlus, LayoutDashboard, Megaphone, Plug, Plus, Sparkles, Target, UploadCloud } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Activity, ArrowDownToLine, ArrowRight, Check, FolderOpen, PenLine, Sparkles, UploadCloud } from 'lucide-react';
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { StudioShell } from '@/components/studio/StudioShell';
 import { analyse, autoMap, demoWorkspace, fields, normalizeRows, type Mapping, type Workspace } from '@/lib/marketing/analytics';
 import { readCampaignFile } from '@/lib/marketing/import';
 import styles from './marketing.module.css';
-import { StudioFileLibrary } from '../files/StudioFileLibrary';
 import { saveStudioFile } from '@/lib/studio-files/client';
 import type { FileCategory } from '@/lib/studio-files/policy';
-import { restoreWorkspace, workspaceFile } from '@/lib/marketing/workspace-file';
+import { restoreWorkspace } from '@/lib/marketing/workspace-file';
+import { handoffToWriting, takeMarketingHandoff } from '@/lib/studio-handoff';
+import { useStudioView } from '@/components/studio/useStudioView';
 
-const tabs = [
-  { name: 'Overview', icon: LayoutDashboard }, { name: 'Workspaces', icon: FolderKanban }, { name: 'Data upload', icon: UploadCloud },
-  { name: 'Performance', icon: BarChart3 }, { name: 'Recommendations', icon: Sparkles }, { name: 'Creative vision', icon: ImagePlus },
-  { name: 'Report builder', icon: FileBarChart2 }, { name: 'Saved files', icon: FolderOpen }, { name: 'Integrations', icon: Plug },
-] as const;
-type Tab = typeof tabs[number]['name'];
-type SavedReport = { id: string; workspaceId: string; name: string; created: string; text: string; colour: string; demo: boolean; chart?: { date: string; spend: number; revenue: number | null }[] };
-const reportSections = ['Executive summary', 'KPI overview', 'Performance trends', 'Campaign rankings', 'Wasted-spend analysis', 'Recommended actions', 'Data-quality observations', 'Next-month plan'];
+const MARKETING_VIEWS = ['campaigns', 'ads', 'performance'] as const;
+const BRAND_STORAGE = 'standex-marketing-brand-v1';
 const STORAGE = 'standex-marketing-v1';
 const money = (n: number | null, currency: string) => n === null ? '—' : new Intl.NumberFormat('en-GB', { style: 'currency', currency, maximumFractionDigits: 0 }).format(n);
 const num = (n: number | null, suffix = '') => n === null ? '—' : `${n.toLocaleString('en-GB', { maximumFractionDigits: 2 })}${suffix}`;
-function Panel({ children, className = '' }: { children: ReactNode; className?: string }) { return <section className={`${styles.panel} ${className}`}>{children}</section>; }
-function download(name: string, text: string, type: string) { const url = URL.createObjectURL(new Blob([text], { type })); const a = document.createElement('a'); a.href = url; a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); }
+function Panel({ children, className = '' }: { children: ReactNode; className?: string }) {
+  return <section className={`${styles.panel} ${className}`}>{children}</section>;
+}
+function download(name: string, text: string, type: string) {
+  const url = URL.createObjectURL(new Blob([text], { type }));
+  const a = document.createElement('a'); a.href = url; a.download = name; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+type Brand = { name: string; website: string; offer: string; audience: string; proof: string; tone: string };
+const emptyBrand: Brand = { name: '', website: '', offer: '', audience: '', proof: '', tone: 'clear and confident' };
+type CampaignIdea = { name: string; angle: string; channel: string; message: string; cta: string };
+type GoogleAd = { finalUrl: string; path1: string; path2: string; headlines: string[]; descriptions: string[]; keywords: string[] };
+function blankAd(brand: Brand): GoogleAd {
+  return {
+    finalUrl: brand.website || '',
+    path1: '',
+    path2: '',
+    headlines: Array(15).fill(''),
+    descriptions: Array(4).fill(''),
+    keywords: [],
+  };
+}
 
 export function MarketingStudio() {
+  return (
+    <StudioShell>
+      {({ themeMode }) => <MarketingBody themeMode={themeMode} />}
+    </StudioShell>
+  );
+}
+
+function MarketingBody({ themeMode }: { themeMode: 'light' | 'dark' }) {
+  const router = useRouter();
   const contextVersion = useRef(0);
-  const [tab, setTab] = useState<Tab>('Overview');
+  const [view] = useStudioView(MARKETING_VIEWS, 'campaigns');
+  const [brand, setBrand] = useState<Brand>(emptyBrand);
+  const [ideas, setIdeas] = useState<CampaignIdea[]>([]);
+  const [ad, setAd] = useState<GoogleAd | null>(null);
+  const [genBusy, setGenBusy] = useState(false);
   const [workspaces, setWorkspaces] = useState<Workspace[]>([demoWorkspace()]);
   const [active, setActive] = useState('demo');
   const [ready, setReady] = useState(false);
-  const [reports, setReports] = useState<SavedReport[]>([]);
   const [notice, setNotice] = useState('');
   const [table, setTable] = useState<string[][] | null>(null);
   const [mapping, setMapping] = useState<Mapping>(autoMap([]));
   const [fileName, setFileName] = useState('');
   const [sourceFile, setSourceFile] = useState<File | null>(null);
-  const [creativeFile, setCreativeFile] = useState<File | null>(null);
   const [savingFile, setSavingFile] = useState(false);
-  const [platform, setPlatform] = useState('Meta Ads');
   const [busy, setBusy] = useState(false);
-  const [sections, setSections] = useState(reportSections);
-  const [image, setImage] = useState('');
-  const [brief, setBrief] = useState('');
-  const [review, setReview] = useState('');
-  const [visionBusy, setVisionBusy] = useState(false);
-  const [showScore, setShowScore] = useState(false);
   const [briefing, setBriefing] = useState('');
   const [analystBusy, setAnalystBusy] = useState(false);
-  const workspace = workspaces.find(w => w.id === active) || workspaces[0];
+  const workspace = workspaces.find((w) => w.id === active) || workspaces[0];
   const analysis = useMemo(() => analyse(workspace), [workspace]);
-  const ownReports = reports.filter(r => r.workspaceId === workspace.id);
   const cash = (n: number | null) => money(n, workspace.currency);
 
   useEffect(() => {
     try {
+      const savedBrand = localStorage.getItem(BRAND_STORAGE);
+      if (savedBrand) setBrand({ ...emptyBrand, ...JSON.parse(savedBrand) });
       const raw = localStorage.getItem(STORAGE);
       if (raw) {
         const saved = JSON.parse(raw);
-        if (Array.isArray(saved.workspaces) && saved.workspaces.length && saved.workspaces.every((w: Workspace) => typeof w.id === 'string' && typeof w.name === 'string' && ['GBP', 'USD', 'EUR'].includes(w.currency) && w.targetCPA > 0 && w.targetROAS > 0 && w.budget > 0 && Array.isArray(w.warnings) && w.warnings.every(s => typeof s === 'string') && Array.isArray(w.rows) && w.rows.every(r => typeof r.campaign === 'string' && typeof r.date === 'string' && ['spend', 'revenue', 'conversions', 'clicks', 'impressions'].every(k => Number.isFinite(r[k as keyof typeof r]) && Number(r[k as keyof typeof r]) >= 0)))) {
-          setWorkspaces(saved.workspaces); setActive(saved.active || saved.workspaces[0].id);
-          setReports(Array.isArray(saved.reports) ? saved.reports.filter((r: SavedReport) => typeof r.text === 'string' && typeof r.created === 'string' && typeof r.name === 'string' && typeof r.colour === 'string') : []);
-        } else setNotice('Saved workspaces could not be restored. The sample workspace is shown.');
+        if (Array.isArray(saved.workspaces) && saved.workspaces.length) {
+          setWorkspaces(saved.workspaces);
+          setActive(saved.active || saved.workspaces[0].id);
+        }
       }
-    } catch { setNotice('Browser storage could not be read. Export reports to keep a copy.'); }
+    } catch { /* keep defaults */ }
+    const handoff = takeMarketingHandoff();
+    if (handoff?.kind === 'copy' && handoff.text) {
+      const incoming = handoff.text;
+      setBrand((prev) => ({ ...prev, offer: prev.offer ? `${prev.offer}\n\n${incoming}` : incoming }));
+      setNotice('Copy from Writing Lab was added to your brand brief.');
+    } else if (handoff?.kind === 'workspace' && handoff.text) {
+      try {
+        const restored = restoreWorkspace(handoff.text);
+        setWorkspaces((prev) => [...prev, restored]);
+        setActive(restored.id);
+        setNotice('Brand workspace restored from Data Hub.');
+      } catch (error) {
+        setNotice(error instanceof Error ? error.message : 'Workspace could not be restored.');
+      }
+    } else if (handoff?.kind === 'campaign' && handoff.text) {
+      void upload(new File([handoff.text], handoff.fileName || 'campaign-export.csv'));
+      setNotice('Campaign file from Data Hub is ready to map.');
+    } else if (handoff?.text) {
+      const incoming = handoff.text;
+      setBrand((prev) => ({ ...prev, offer: prev.offer ? `${prev.offer}\n\n${incoming}` : incoming }));
+      setNotice('Notes from Data Hub were added to your brand brief.');
+    }
     setReady(true);
   }, []);
+
   useEffect(() => {
     if (!ready) return;
-    try { localStorage.setItem(STORAGE, JSON.stringify({ workspaces, active, reports })); }
-    catch { setNotice('Browser storage is full or unavailable. Your latest changes are not saved; download a report.'); }
-  }, [workspaces, active, reports, ready]);
+    try {
+      localStorage.setItem(BRAND_STORAGE, JSON.stringify(brand));
+      localStorage.setItem(STORAGE, JSON.stringify({ workspaces, active }));
+    } catch { setNotice('Browser storage is full. Download a copy if you need to keep this work.'); }
+  }, [brand, workspaces, active, ready]);
 
-  function updateWorkspace(patch: Partial<Workspace>) { contextVersion.current++; setBriefing(''); setWorkspaces(current => current.map(w => w.id === workspace.id ? { ...w, ...patch } : w)); }
-  function switchWorkspace(id: string) { contextVersion.current++; setBriefing(''); setActive(id); setTable(null); setSourceFile(null); setCreativeFile(null); setImage(''); setReview(''); setBrief(''); setNotice(''); }
+  function patchBrand(patch: Partial<Brand>) { setBrand((prev) => ({ ...prev, ...patch })); }
+
+  async function generate(mode: 'campaigns' | 'ads') {
+    setGenBusy(true); setNotice('');
+    try {
+      const response = await fetch('/api/studio/marketing/generate', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mode, brand }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Generation failed.');
+      if (mode === 'campaigns') setIdeas(Array.isArray(data.ideas) ? data.ideas : []);
+      else {
+        const headlines = Array.isArray(data.headlines) ? data.headlines.map(String) : [];
+        const descriptions = Array.isArray(data.descriptions) ? data.descriptions.map(String) : [];
+        setAd({
+          finalUrl: String(data.finalUrl || brand.website || ''),
+          path1: String(data.path1 || '').slice(0, 15),
+          path2: String(data.path2 || '').slice(0, 15),
+          headlines: [...headlines, ...Array(Math.max(0, 15 - headlines.length)).fill('')].slice(0, 15),
+          descriptions: [...descriptions, ...Array(Math.max(0, 4 - descriptions.length)).fill('')].slice(0, 4),
+          keywords: Array.isArray(data.keywords) ? data.keywords.map(String) : [],
+        });
+      }
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : 'Generation failed.');
+    } finally { setGenBusy(false); }
+  }
+
+  function openInWriting(text: string, title?: string) {
+    handoffToWriting({ text, title, from: 'marketing' });
+    router.push('/studio/writing');
+  }
+
+  async function saveText(name: string, text: string, category: FileCategory) {
+    setSavingFile(true); setNotice('');
+    try {
+      await saveStudioFile(new File([text], name, { type: 'text/plain' }), category);
+      setNotice(`${name} saved to Data Hub.`);
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : 'Could not save to Data Hub.');
+    } finally { setSavingFile(false); }
+  }
+
   async function upload(file?: File) {
     if (!file) return; setBusy(true); setNotice(''); setTable(null); setSourceFile(null);
-    try { const parsed = await readCampaignFile(file); setTable(parsed); setMapping(autoMap(parsed[0])); setFileName(file.name); setSourceFile(file); }
-    catch (error) { setNotice(error instanceof Error ? error.message : 'Upload failed.'); }
-    finally { setBusy(false); }
+    try {
+      const parsed = await readCampaignFile(file);
+      setTable(parsed); setMapping(autoMap(parsed[0])); setFileName(file.name); setSourceFile(file);
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : 'Upload failed.');
+    } finally { setBusy(false); }
   }
+
   function runAnalysis() {
     if (!table) return;
     try {
-      const result = normalizeRows(table, mapping); contextVersion.current++; setBriefing('');
+      const result = normalizeRows(table, mapping);
+      contextVersion.current++; setBriefing('');
       if (workspace.demo) {
-        const id = crypto.randomUUID(); setWorkspaces(w => [...w, { ...workspace, ...result, id, name: 'My first client', demo: false, source: `${platform} · ${fileName}` }]); setActive(id);
-      } else updateWorkspace({ ...result, source: `${platform} · ${fileName}`, demo: false });
-      setTable(null); setTab('Overview'); setNotice(`Analysis complete: ${result.rows.length.toLocaleString()} valid rows. ${result.warnings.length} validation warnings.`);
-    } catch (error) { setNotice(error instanceof Error ? error.message : 'Check your data.'); }
-  }
-  async function saveToFiles(file: File, category: FileCategory) {
-    setSavingFile(true); setNotice('');
-    try { await saveStudioFile(file, category); setNotice(`${file.name} saved to your private Neon Files.`); }
-    catch (error) { setNotice(error instanceof Error ? error.message : 'File was not saved.'); }
-    finally { setSavingFile(false); }
-  }
-  async function exportPDF(report: SavedReport, save = false) {
-    if (save) setSavingFile(true);
-    try {
-      const { jsPDF } = await import('jspdf'); const pdf = new jsPDF(); let y = 24;
-      pdf.setFontSize(18); pdf.setTextColor(/^#[0-9a-f]{6}$/i.test(report.colour) ? report.colour : '#6366f1'); pdf.text(report.name.slice(0, 65), 18, y); y += 12;
-      if (report.chart?.length) {
-        const points = report.chart.slice(-14); const max = Math.max(1, ...points.flatMap(p => [p.spend, p.revenue ?? 0]));
-        pdf.setFontSize(9); pdf.setTextColor('#64748b'); pdf.text('Daily spend (purple) and revenue (green) · last 14 dates', 18, y); y += 8;
-        const baseline = y + 37; const width = 174 / points.length;
-        points.forEach((point, i) => {
-          const x = 18 + i * width;
-          pdf.setFillColor('#6366f1'); pdf.rect(x, baseline - point.spend / max * 34, width * .32, point.spend / max * 34, 'F');
-          if (point.revenue !== null) { pdf.setFillColor('#10b981'); pdf.rect(x + width * .35, baseline - point.revenue / max * 34, width * .32, point.revenue / max * 34, 'F'); }
-          pdf.setFontSize(6); pdf.text(point.date.slice(5), x, baseline + 5);
-        });
-        y = baseline + 16;
+        const id = crypto.randomUUID();
+        setWorkspaces((w) => [...w, { ...workspace, ...result, id, name: brand.name || 'My brand', demo: false, source: `Google Ads · ${fileName}` }]);
+        setActive(id);
+      } else {
+        setWorkspaces((current) => current.map((w) => w.id === workspace.id ? { ...w, ...result, source: `Google Ads · ${fileName}`, demo: false } : w));
       }
-      pdf.setFontSize(10); pdf.setTextColor('#334155');
-      for (const paragraph of report.text.split('\n')) {
-        const lines: string[] = pdf.splitTextToSize(paragraph || ' ', 174);
-        for (const line of lines) { if (y > 274) { pdf.addPage(); y = 22; } pdf.text(line, 18, y); y += 5; }
-      }
-      for (let i = 1; i <= pdf.getNumberOfPages(); i++) { pdf.setPage(i); pdf.setFontSize(8); pdf.text(`Standex Studio ${report.demo ? '| SAMPLE DATA ' : ''}| ${i} / ${pdf.getNumberOfPages()}`, 18, 289); }
-      const filename = `${report.name.replace(/[^a-z0-9 -]/gi, '')}.pdf`;
-      if (save) await saveToFiles(new File([pdf.output('blob')], filename, { type: 'application/pdf' }), 'reports');
-      else pdf.save(filename);
-    } catch { setNotice('PDF export failed. Please try again.'); } finally { if (save) setSavingFile(false); }
-  }
-  function buildReport(save = false) {
-    const a = analysis; const t = a.totals;
-    const text: Record<string, string> = {
-      'Executive summary': `${workspace.name} recorded ${cash(t.spend)} spend and ${num(t.conversions)} conversions. CPA: ${cash(t.cpa)} against ${cash(workspace.targetCPA)} target. Performance score: ${num(a.score)}/100 with ${a.coverage}% category coverage. ${a.recommendations.length} evidence-backed actions identified.`,
-      'KPI overview': `Spend: ${cash(t.spend)} | Revenue: ${a.available('revenue') ? cash(t.revenue) : 'Unavailable'} | ROAS: ${a.available('revenue') ? num(t.roas, 'x') : 'Unavailable'} | Conversions: ${num(t.conversions)} | CPA: ${cash(t.cpa)}\nCTR: ${a.available('clicks') && a.available('impressions') ? num(t.ctr, '%') : 'Unavailable'} | CPC: ${a.available('clicks') ? cash(t.cpc) : 'Unavailable'} | Budget utilisation: ${num(a.budgetUtilisation, '%')} (uploaded period vs entered budget).\n\nScore methodology:\n${a.categories.map(c => `${c.name}: ${num(c.value)}/100; weight ${c.weight}%. ${c.formula}`).join('\n')}\nUnavailable categories are excluded and remaining weights renormalised.`,
-      'Performance trends': a.trends.length ? a.trends.map(t => `${t.date}: ${cash(t.spend)} spend, ${num(t.conversions)} conversions, ${cash(t.cpa)} CPA`).join('\n') : 'Dated rows are unavailable.',
-      'Campaign rankings': [...a.campaigns].sort((x, y) => (x.cpa ?? Infinity) - (y.cpa ?? Infinity)).map((c, i) => `${i + 1}. ${c.name}: ${cash(c.spend)} spend; ${num(c.conversions)} conversions; ${cash(c.cpa)} CPA.`).join('\n'),
-      'Wasted-spend analysis': `${cash(a.atRiskSpend)} spent on campaigns above target CPA or without conversions. This is spend to investigate, not proven waste or guaranteed savings. Verify attribution and conversion lag.`,
-      'Recommended actions': a.recommendations.map(r => `${r.priority}: ${r.title}\nFinding: ${r.finding}\nEvidence: ${r.evidence}\nImpact: ${r.impact}\nAction: ${r.action}\nConfidence: ${r.confidence}`).join('\n\n') || 'No campaign rules triggered. Continue monitoring.',
-      'Data-quality observations': workspace.warnings.join('\n') || 'No import validation warnings. This does not verify platform tracking or attribution accuracy.',
-      'Next-month plan': '1. Resolve data-quality and tracking concerns.\n2. Test changes on campaigns above target CPA.\n3. Test modest increases on efficient campaigns.\n4. Compare a matching period before expanding changes.',
-    };
-    const report: SavedReport = { id: crypto.randomUUID(), workspaceId: workspace.id, name: `${workspace.name} - Performance report`, created: new Date().toISOString(), colour: workspace.colour, demo: Boolean(workspace.demo), chart: sections.includes('Performance trends') ? a.trends.slice(-14).map(t => ({ date: t.date, spend: t.spend, revenue: a.available('revenue') ? t.revenue : null })) : undefined, text: `${workspace.demo ? 'ILLUSTRATIVE SAMPLE DATA\n' : ''}${workspace.source}\nCreated ${new Date().toLocaleDateString('en-GB')}\n${workspace.contact || ''}\nCurrency: ${workspace.currency}. Revenue and conversions use the source attribution; channels may overlap.\n\n${sections.map(s => `${s.toUpperCase()}\n${text[s]}`).join('\n\n')}` };
-    setReports(prev => [report, ...prev].slice(0, 50)); void exportPDF(report, save);
+      setTable(null);
+      setNotice(`Analysis complete: ${result.rows.length.toLocaleString()} valid rows.`);
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : 'Check your data.');
+    }
   }
 
-  const recommendations = <div className={styles.stack}>{analysis.recommendations.length ? analysis.recommendations.map((r, i) => <Panel key={r.title}><div className={styles.between}><span className={styles.eyebrow}>ACTION {String(i + 1).padStart(2, '0')}</span><span className={r.priority === 'High' ? styles.warning : styles.badge}>{r.priority} priority</span></div><h3>{r.title}</h3><p>{r.finding}</p><dl className={styles.evidence}>{[['Evidence', r.evidence], ['Impact', r.impact], ['Action', r.action], ['Confidence', r.confidence]].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl></Panel>) : <Panel><Check size={24} /><h3>{workspace.rows.length ? 'No campaign rules triggered' : 'Your next action starts with data'}</h3><p>{workspace.rows.length ? 'Keep monitoring. A quiet alert list is not proof of perfect performance.' : 'Upload an export to uncover performance issues and opportunities.'}</p></Panel>}</div>;
-  const campaignTable = <div className={styles.tableWrap}><table><thead><tr>{['Campaign', 'Spend', 'Revenue', 'Conversions', 'CPA', 'ROAS', 'Status'].map(h => <th key={h}>{h}</th>)}</tr></thead><tbody>{analysis.campaigns.map(c => <tr key={c.name}><td><strong>{c.name}</strong></td><td>{cash(c.spend)}</td><td>{analysis.available('revenue') ? cash(c.revenue) : '—'}</td><td>{num(c.conversions)}</td><td>{cash(c.cpa)}</td><td>{analysis.available('revenue') ? num(c.roas, 'x') : '—'}</td><td><span className={c.cpa !== null && c.cpa <= workspace.targetCPA ? styles.good : styles.warning}>{c.cpa === null ? 'Check tracking' : c.cpa <= workspace.targetCPA ? 'On target' : 'Above target'}</span></td></tr>)}</tbody></table>{!analysis.campaigns.length && <p className={styles.empty}>No campaigns yet. Upload your first export.</p>}</div>;
-
-  return <StudioShell active="marketing">{({ theme, themeMode }) => <div className={`${styles.app} ${themeMode === 'dark' ? styles.dark : ''}`}>
-    <aside className={styles.sidebar}>
-      <div className={styles.moduleBrand}><span className={styles.brandIcon}><Megaphone size={20} /></span><div><strong>Marketing</strong><small>INTELLIGENCE STUDIO</small></div></div>
-      <label className={styles.workspaceSelect}>CLIENT WORKSPACE<select value={workspace.id} onChange={e => switchWorkspace(e.target.value)}>{workspaces.map(w => <option key={w.id} value={w.id}>{w.name}{w.demo ? ' · Demo' : ''}</option>)}</select></label>
-      <nav aria-label="Marketing navigation">{tabs.map(({ name, icon: Icon }) => <button key={name} onClick={() => { setTab(name); setNotice(''); }} aria-current={tab === name ? 'page' : undefined} className={tab === name ? styles.navActive : ''}><Icon size={18} /><span>{name}</span>{name === 'Recommendations' && analysis.recommendations.length > 0 && <b>{analysis.recommendations.length}</b>}</button>)}</nav>
-      <div className={styles.sidebarBottom}><span className={styles.badge}>EARLY ACCESS</span><h4>Built for better decisions.</h4><p>Real data. Clear evidence. Reports your clients can use.</p><Link href="/studio/writing">Open Writing Lab <ArrowRight size={14} /></Link></div>
-      <small className={styles.storageNote}>Working data stays in this browser. Save files and workspace snapshots to Neon from Saved files.</small>
-    </aside>
-    <main className={styles.main}>
-      <div className={styles.topline}><span>Studio <ChevronRight size={13} /> Marketing <ChevronRight size={13} /> {tab}</span><span className={styles.badge}>{workspace.demo ? 'Sample workspace' : 'Local workspace'}</span></div>
-      <header className={styles.pageHeader}><div><span className={styles.eyebrow}>MARKETING INTELLIGENCE</span><h1>{tab === 'Overview' ? 'See the signal. Make your next move.' : tab}</h1><p>{tab === 'Overview' ? `A clearer view of ${workspace.name} — from campaign performance to what comes next.` : { Workspaces: 'Give every client a focused space, with targets that make insights meaningful.', 'Data upload': 'Bring your campaign exports. We’ll connect the columns and calculate the numbers.', Performance: 'Understand where your budget goes, what converts and what needs attention.', Recommendations: 'Prioritised actions with visible evidence. Calculated rules, with no invented figures.', 'Creative vision': 'Turn an ad image into a practical creative review with computer vision.', 'Saved files': 'Keep your campaign exports, creative assets, workspace snapshots and reports in private Neon storage.', 'Report builder': 'Turn your analysis into a clear, branded PDF your clients can keep.', Integrations: 'Bring the rest of your marketing workflow into focus.' }[tab]}</p></div><button className={styles.primary} onClick={() => setTab(tab === 'Data upload' ? 'Workspaces' : 'Data upload')}>{tab === 'Data upload' ? <Plus size={16} /> : <UploadCloud size={16} />}{tab === 'Data upload' ? 'Manage workspaces' : 'Upload campaign data'}</button></header>
-      {notice && <div className={styles.notice} role="status">{notice}<button onClick={() => setNotice('')} aria-label="Dismiss notification">×</button></div>}
-      {workspace.demo && <div className={styles.demo}><Sparkles size={16} /><span>You’re exploring sample data. Upload your own export to create a real client workspace.</span><button onClick={() => setTab('Data upload')}>Use my data <ArrowRight size={14} /></button></div>}
-
-      {tab === 'Overview' && <>
-        <div className={styles.kpis}>{[
-          ['Total spend', cash(analysis.totals.spend), `${num(analysis.budgetUtilisation, '%')} of entered budget`],
-          ['Revenue', analysis.available('revenue') ? cash(analysis.totals.revenue) : '—', 'Source-attributed revenue'],
-          ['Return on ad spend', analysis.available('revenue') ? num(analysis.totals.roas, 'x') : '—', `Target ${workspace.targetROAS}x`],
-          ['Conversions', num(analysis.totals.conversions), `Average CPA ${cash(analysis.totals.cpa)}`],
-        ].map(([label, value, note]) => <Panel key={label}><span className={styles.kpiLabel}>{label}</span><strong className={styles.kpiValue}>{workspace.rows.length ? value : '—'}</strong><small>{note}</small></Panel>)}</div>
-        <div className={styles.overviewGrid}>
-          <Panel><div className={styles.between}><div><h3>Performance over time</h3><p>Daily spend and attributed revenue</p></div><span className={styles.badge}>{analysis.trends.length} days</span></div>{analysis.trends.length > 1 ? <div className={styles.chart}><ResponsiveContainer width="100%" height="100%" minWidth={0} initialDimension={{ width: 600, height: 245 }}><AreaChart data={analysis.trends}><defs><linearGradient id="marketingSpend" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#6366f1" stopOpacity={.22} /><stop offset="100%" stopColor="#6366f1" stopOpacity={0} /></linearGradient></defs><CartesianGrid strokeDasharray="3 5" vertical={false} stroke="var(--line)" /><XAxis dataKey="date" tickFormatter={v => v.slice(5)} tick={{ fontSize: 11, fill: 'var(--muted)' }} axisLine={false} tickLine={false} /><YAxis tick={{ fontSize: 11, fill: 'var(--muted)' }} width={50} axisLine={false} tickLine={false} /><Tooltip formatter={value => cash(Number(value))} contentStyle={{ background: 'var(--card)', border: '1px solid var(--line)', borderRadius: 12 }} /><Area isAnimationActive={false} type="monotone" name="Spend" dataKey="spend" stroke="#6366f1" strokeWidth={2.5} fill="url(#marketingSpend)" />{analysis.available('revenue') && <Area isAnimationActive={false} type="monotone" name="Revenue" dataKey="revenue" stroke="#10b981" strokeWidth={2} fill="transparent" />}</AreaChart></ResponsiveContainer></div> : <div className={styles.empty}>Upload data with at least two dates to see a trend.</div>}<div className={styles.legend}><span>● Spend</span><span>● Revenue</span><small>{workspace.currency} · uploaded period</small></div></Panel>
-          <Panel className={styles.scorePanel}><div className={styles.between}><h3>Performance score</h3><CircleHelp size={16} /></div><div className={styles.scoreRing} style={{ background: `conic-gradient(#6366f1 ${(analysis.score ?? 0) * 3.6}deg, var(--line) 0deg)` }}><div><strong>{num(analysis.score)}</strong><span>OUT OF 100</span></div></div><h3>{analysis.score === null ? 'Waiting for data' : analysis.score >= 80 ? 'Strong foundations' : 'Room to improve'}</h3><p>Five categories · {analysis.coverage}% coverage. No score without recorded spend.</p><button className={styles.textButton} onClick={() => { setTab('Performance'); setShowScore(true); }}>See how it’s calculated <ArrowRight size={14} /></button></Panel>
+  const brandForm = (
+    <Panel>
+      <span className={styles.eyebrow}>BRAND ASSETS</span>
+      <h3>The facts Google Ads and campaign ideas should use.</h3>
+      <p>Fill this once. Campaigns and ads both read from it. You can also drop copy in from Writing Lab.</p>
+      <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
+        <div className={styles.twoColumns}>
+          <label>Brand name<input value={brand.name} onChange={(e) => patchBrand({ name: e.target.value })} maxLength={80} placeholder="Acme" /></label>
+          <label>Website<input value={brand.website} onChange={(e) => patchBrand({ website: e.target.value })} maxLength={200} placeholder="https://example.com" /></label>
         </div>
-        <div className={styles.insightStrip}><span className={styles.brandIcon}><Target size={22} /></span><div><strong>{cash(analysis.atRiskSpend)} in spend to investigate</strong><p>Campaigns above target CPA or without conversions. Review before making changes.</p></div><button className={styles.secondary} onClick={() => setTab('Recommendations')}>Review {analysis.recommendations.length} actions <ArrowRight size={15} /></button></div>
-        <Panel><div className={styles.between}><div><h3>Campaign snapshot</h3><p>Your biggest investments, with the numbers that matter.</p></div><button className={styles.textButton} onClick={() => setTab('Performance')}>View analysis <ArrowRight size={14} /></button></div>{campaignTable}</Panel>
-        <div className={styles.twoColumns}><Panel><h3>Data quality</h3>{workspace.warnings.length ? workspace.warnings.map(w => <p key={w} className={styles.warningText}>{w}</p>) : <p>{workspace.rows.length ? 'No import warnings. Tracking and attribution still need independent verification.' : 'Upload data to run validation.'}</p>}</Panel><Panel><h3>Recent reports</h3>{ownReports.length ? ownReports.slice(0, 3).map(r => <button key={r.id} className={styles.reportRow} onClick={() => void exportPDF(r)}><FileBarChart2 size={16} /><span>{r.name}<small>{new Date(r.created).toLocaleDateString('en-GB')}</small></span><ArrowDownToLine size={16} /></button>) : <p>Your exported reports will appear here.</p>}</Panel></div>
-      </>}
+        <label>Offer / product<textarea value={brand.offer} onChange={(e) => patchBrand({ offer: e.target.value })} maxLength={500} rows={3} placeholder="What you sell, who it is for, and the result." /></label>
+        <div className={styles.twoColumns}>
+          <label>Audience<textarea value={brand.audience} onChange={(e) => patchBrand({ audience: e.target.value })} maxLength={400} rows={2} placeholder="Who should see the ads." /></label>
+          <label>Proof / differentiators<textarea value={brand.proof} onChange={(e) => patchBrand({ proof: e.target.value })} maxLength={400} rows={2} placeholder="Reviews, results, guarantees — only facts you can stand behind." /></label>
+        </div>
+        <label>Tone<input value={brand.tone} onChange={(e) => patchBrand({ tone: e.target.value })} maxLength={80} placeholder="clear and confident" /></label>
+      </form>
+    </Panel>
+  );
+  const adPack = ad ?? blankAd(brand);
 
-      {tab === 'Workspaces' && <><div className={styles.twoColumns}><Panel><h3>Create a client workspace</h3><p>Each workspace keeps its own targets, dataset and report history.</p><form className={styles.form} onSubmit={e => { e.preventDefault(); const data = new FormData(e.currentTarget); const id = crypto.randomUUID(); setWorkspaces(prev => [...prev, { id, name: String(data.get('name')).trim(), currency: String(data.get('currency')), targetCPA: Number(data.get('cpa')), targetROAS: Number(data.get('roas')), budget: Number(data.get('budget')), colour: '#6366f1', contact: '', rows: [], warnings: [], source: 'No data uploaded' }]); switchWorkspace(id); setNotice('Workspace created. Upload your campaign data next.'); e.currentTarget.reset(); }}><label>Client or brand name<input name="name" required maxLength={80} pattern=".*\S.*" placeholder="e.g. Acme Agency" /></label><label>Reporting currency<select name="currency"><option>GBP</option><option>USD</option><option>EUR</option></select></label><div className={styles.twoColumns}><label>Target CPA<input name="cpa" type="number" required min="0.01" step="0.01" defaultValue="40" /></label><label>Target ROAS<input name="roas" type="number" required min="0.01" step="0.01" defaultValue="3" /></label></div><label>Budget for uploaded period<input name="budget" type="number" required min="1" step="0.01" defaultValue="10000" /></label><button className={styles.primary}><Plus size={16} />Create workspace</button></form></Panel><Panel><h3>{workspace.name} settings</h3><form key={workspace.id} className={styles.form} onSubmit={e => { e.preventDefault(); const data = new FormData(e.currentTarget); updateWorkspace({ name: String(data.get('name')).trim(), targetCPA: Number(data.get('cpa')), targetROAS: Number(data.get('roas')), budget: Number(data.get('budget')), colour: String(data.get('colour')), contact: String(data.get('contact')) }); setNotice('Workspace settings saved. Metrics and recommendations updated.'); }}><label>Workspace name<input name="name" required maxLength={80} pattern=".*\S.*" defaultValue={workspace.name} /></label><div className={styles.twoColumns}><label>Target CPA ({workspace.currency})<input name="cpa" type="number" min="0.01" step="0.01" required defaultValue={workspace.targetCPA} /></label><label>Target ROAS<input name="roas" type="number" min="0.01" step="0.01" required defaultValue={workspace.targetROAS} /></label></div><label>Budget for uploaded period<input name="budget" type="number" min="1" step="0.01" required defaultValue={workspace.budget} /></label><label>Report accent colour<input name="colour" type="color" defaultValue={workspace.colour} /></label><label>Report contact information<input name="contact" maxLength={160} defaultValue={workspace.contact} placeholder="reports@youragency.com" /></label><button className={styles.primary}>Save settings</button><button type="button" className={styles.secondary} disabled={savingFile} onClick={() => void saveToFiles(new File([workspaceFile(workspace)], `${workspace.name}-workspace.json`, { type: 'application/json' }), 'workspaces')}><FolderOpen size={16} />{savingFile ? 'Saving…' : 'Save workspace to Files'}</button><small>Currency is fixed per workspace. Create another workspace for a different currency; imports do not perform currency conversion.</small></form></Panel></div><Panel><h3>Your clients</h3>{workspaces.map(w => <button key={w.id} className={styles.reportRow} onClick={() => switchWorkspace(w.id)}><FolderKanban size={18} /><span>{w.name}<small>{w.rows.length} rows · {w.currency}{w.demo ? ' · Sample data' : ''}</small></span>{w.id === workspace.id ? <Check size={18} /> : <ChevronRight size={18} />}</button>)}</Panel></>}
+  return (
+        <div className={`${styles.app} ${themeMode === 'dark' ? styles.dark : ''}`}>
+          <main className={styles.main}>
+            <div className={styles.topline}>
+              <span>Marketing</span>
+              <span className={styles.badge}>{workspace.demo ? 'Sample performance data' : workspace.name}</span>
+            </div>
+            <header className={styles.pageHeader}>
+              <div>
+                <span className={styles.eyebrow}>MARKETING</span>
+                <h1>
+                  {view === 'campaigns' && 'Brainstorm the campaign'}
+                  {view === 'ads' && 'Fill the Google Ads form'}
+                  {view === 'performance' && 'Read the numbers'}
+                </h1>
+                <p>
+                  {view === 'campaigns' && 'Start from brand assets, then get campaign ideas you can rewrite in Writing Lab or save in Data Hub.'}
+                  {view === 'ads' && 'Auto-create headlines, descriptions and paths in the lengths Google Ads actually accepts.'}
+                  {view === 'performance' && 'Upload an export, see what happened, then write the follow-up in Writing Lab.'}
+                </p>
+              </div>
+              {view !== 'performance' ? (
+                <button className={styles.primary} disabled={genBusy || !brand.offer.trim()} onClick={() => void generate(view === 'ads' ? 'ads' : 'campaigns')}>
+                  <Sparkles size={16} />{genBusy ? 'Working…' : view === 'ads' ? 'Create Google Ads copy' : 'Brainstorm campaigns'}
+                </button>
+              ) : (
+                <button className={styles.primary} onClick={() => document.getElementById('marketing-upload')?.click()}>
+                  <UploadCloud size={16} />Upload export
+                </button>
+              )}
+            </header>
+            {notice && <div className={styles.notice} role="status">{notice}<button onClick={() => setNotice('')} aria-label="Dismiss notification">×</button></div>}
 
-      {tab === 'Data upload' && <><Panel><div className={styles.steps}><span>01 · Select source</span><span>02 · Match columns</span><span>03 · Analyse</span></div><div className={styles.form}><label>Source platform<select value={platform} onChange={e => setPlatform(e.target.value)}>{['Meta Ads', 'Google Ads', 'LinkedIn Ads', 'HubSpot', 'Shopify', 'Other / Combined export'].map(p => <option key={p}>{p}</option>)}</select></label></div><label className={styles.dropzone}><UploadCloud size={36} /><strong>{busy ? 'Reading your file…' : 'Choose your campaign export'}</strong><span>CSV, TSV or Excel .xlsx · up to 5 MB / 20,000 rows</span><input type="file" accept=".csv,.tsv,.xlsx" disabled={busy} onChange={e => { void upload(e.target.files?.[0]); e.target.value = ''; }} /></label><p>Use campaign-level exports in {workspace.currency}, with campaign, spend and conversions. Excel imports use the first worksheet; export dates as YYYY-MM-DD text. Uploading replaces the active dataset; existing reports keep their snapshots.</p><button className={styles.textButton} onClick={() => download('standex-campaign-template.csv', 'campaign,date,spend,revenue,conversions,clicks,impressions\nExample campaign,2026-09-01,100,450,5,80,4000\n', 'text/csv')}>Download CSV template <ArrowDownToLine size={14} /></button></Panel>{table && <Panel><div className={styles.between}><div><h3>Match your columns</h3><p>{fileName} · {table.length - 1} source rows · {platform}</p></div><span className={styles.badge}>Review before analysing</span></div><div className={styles.mapping}>{fields.map(field => <label key={field}>{field}{['campaign', 'spend', 'conversions'].includes(field) ? ' *' : ''}<select value={mapping[field]} onChange={e => setMapping(prev => ({ ...prev, [field]: e.target.value }))}><option value="">Not supplied</option>{table[0].map((h, i) => <option key={i} value={h}>{h}</option>)}</select></label>)}</div><div className={styles.tableWrap}><table><thead><tr>{table[0].map((h, i) => <th key={i}>{h}</th>)}</tr></thead><tbody>{table.slice(1, 6).map((r, i) => <tr key={i}>{r.map((v, j) => <td key={j}>{v}</td>)}</tr>)}</tbody></table></div><div className={styles.fileActions}>{sourceFile && <button className={styles.secondary} disabled={savingFile} onClick={() => void saveToFiles(sourceFile, 'campaigns')}><FolderOpen size={16} />{savingFile ? 'Saving…' : 'Save original to Files'}</button>}<button className={styles.primary} onClick={runAnalysis}><Activity size={16} />Validate & analyse data</button></div></Panel>}</>}
+            {view === 'campaigns' && <>
+              {brandForm}
+              <div className={styles.stack}>
+                {ideas.length ? ideas.map((idea) => (
+                  <Panel key={idea.name}>
+                    <span className={styles.eyebrow}>{idea.channel}</span>
+                    <h3>{idea.name}</h3>
+                    <p>{idea.angle}</p>
+                    <p>{idea.message}</p>
+                    <p><strong>{idea.cta}</strong></p>
+                    <div className={styles.fileActions}>
+                      <button className={styles.secondary} onClick={() => openInWriting(`${idea.name}\n${idea.angle}\n\n${idea.message}\n\nCTA: ${idea.cta}`, idea.name)}>
+                        <PenLine size={15} />Polish in Writing Lab
+                      </button>
+                      <button className={styles.textButton} disabled={savingFile} onClick={() => void saveText(`${idea.name}.txt`, `${idea.name}\nChannel: ${idea.channel}\n${idea.angle}\n\n${idea.message}\n\nCTA: ${idea.cta}`, 'campaigns')}>
+                        <FolderOpen size={15} />Save to Data Hub
+                      </button>
+                    </div>
+                  </Panel>
+                )) : (
+                  <Panel>
+                    <Sparkles size={24} />
+                    <h3>No campaign ideas yet</h3>
+                    <p>Fill the brand brief above, then brainstorm. Ideas can be rewritten in Writing Lab or stored in Data Hub.</p>
+                  </Panel>
+                )}
+              </div>
+            </>}
 
-      {tab === 'Performance' && <><Panel><div className={styles.between}><div><h3>Target versus actual</h3><p>{workspace.source}</p></div><span className={styles.badge}>{analysis.trends[0]?.date || 'No start date'} → {analysis.trends.at(-1)?.date || 'No end date'}</span></div><div className={styles.kpis}>{[['CPA', cash(analysis.totals.cpa), `Target ${cash(workspace.targetCPA)}`], ['ROAS', analysis.available('revenue') ? num(analysis.totals.roas, 'x') : '—', `Target ${workspace.targetROAS}x`], ['CTR', analysis.available('clicks') && analysis.available('impressions') ? num(analysis.totals.ctr, '%') : '—', 'Clicks ÷ impressions'], ['Conversion rate', analysis.available('clicks') ? num(analysis.totals.conversionRate, '%') : '—', 'Conversions ÷ clicks']].map(([label, value, hint]) => <div key={label}><span>{label}</span><strong className={styles.kpiValue}>{value}</strong><small>{hint}</small></div>)}</div>{campaignTable}</Panel><Panel><div className={styles.between}><h3>Score breakdown · {num(analysis.score)}/100</h3><button className={styles.textButton} onClick={() => setShowScore(!showScore)}>{showScore ? 'Hide formulas' : 'Show formulas'}</button></div><p>Available category weight: {analysis.coverage}%. Missing categories are excluded and the remaining weights are renormalised. This score is a transparent heuristic, not a forecast.</p>{analysis.categories.map(c => <div key={c.name} className={styles.scoreRow}><div className={styles.between}><strong>{c.name} <small>· {c.weight}% weight</small></strong><span>{num(c.value)} / 100</span></div><div className={styles.progress}><span style={{ width: `${c.value ?? 0}%` }} /></div>{showScore && <p>{c.formula}</p>}</div>)}</Panel><Panel><h3>Validation observations</h3>{workspace.warnings.length ? workspace.warnings.map(w => <p key={w}>{w}</p>) : <p>No import warnings. Change and possible-fatigue rules require at least six dated observations and sufficient conversions. Tracking causes still need independent verification.</p>}</Panel></>}
-      {tab === 'Recommendations' && <><div className={styles.insightStrip}><Sparkles size={24} /><div><strong>{analysis.recommendations.length} actions grounded in your campaign figures</strong><p>Recommendations use deterministic rules. Confidence describes the evidence, not a promise of results.</p></div></div><Panel><div className={styles.between}><div><h3>Ask the AI analyst</h3><p>Generate a narrative briefing from the calculated evidence. Summary figures are sent to the configured AI provider.</p></div><button className={styles.primary} disabled={analystBusy || !workspace.rows.length} onClick={async () => {
-        const version = contextVersion.current; setAnalystBusy(true); setBriefing(''); setNotice('');
-        try { const response = await fetch('/api/studio/marketing/analyst', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(workspace) }); const data = await response.json(); if (!response.ok) throw new Error(data.error || 'Briefing failed.'); if (version === contextVersion.current) setBriefing(data.briefing); }
-        catch (error) { setNotice(error instanceof Error ? error.message : 'Briefing failed.'); } finally { setAnalystBusy(false); }
-      }}><Sparkles size={16} />{analystBusy ? 'Preparing briefing…' : 'Generate AI briefing'}</button></div>{briefing && <><div className={styles.review}>{briefing}</div><small>AI-generated draft. Verify against the evidence below before sharing.</small><br /><button className={styles.textButton} onClick={() => download('marketing-briefing.txt', briefing, 'text/plain')}>Download briefing <ArrowDownToLine size={14} /></button></>}</Panel>{recommendations}</>}
+            {view === 'ads' && <>
+              <Panel>
+                <div className={styles.between}>
+                  <div>
+                    <span className={styles.eyebrow}>USING BRAND ASSETS</span>
+                    <h3>{brand.name || 'No brand name yet'}</h3>
+                    <p>{brand.offer || 'Add an offer on Campaigns first — Google Ads copy is generated from that brief, not from this form.'}</p>
+                  </div>
+                  <Link href="/studio/marketing" className={styles.secondary}>Edit brand on Campaigns</Link>
+                </div>
+              </Panel>
+              <div className={styles.twoColumns}>
+                <Panel>
+                  <span className={styles.eyebrow}>GOOGLE ADS · RSA</span>
+                  <h3>The fields you paste into Google Ads.</h3>
+                  <p>Headlines max 30 characters. Descriptions max 90. Display paths max 15.</p>
+                  <div className={styles.form}>
+                    <label>Final URL<input value={adPack.finalUrl} onChange={(e) => setAd({ ...adPack, finalUrl: e.target.value })} placeholder="https://example.com/offer" /></label>
+                    <div className={styles.twoColumns}>
+                      <label>Path 1<input value={adPack.path1} maxLength={15} onChange={(e) => setAd({ ...adPack, path1: e.target.value })} placeholder="pricing" /></label>
+                      <label>Path 2<input value={adPack.path2} maxLength={15} onChange={(e) => setAd({ ...adPack, path2: e.target.value })} placeholder="demo" /></label>
+                    </div>
+                  </div>
+                  <h3>Keywords</h3>
+                  <p>{adPack.keywords.length ? adPack.keywords.join(', ') : 'Keywords appear here after you generate copy.'}</p>
+                  <div className={styles.fileActions}>
+                    <button className={styles.secondary} disabled={!adPack.headlines.some(Boolean)} onClick={() => openInWriting(formatAd(adPack), `${brand.name || 'Brand'} Google Ads`)}>
+                      <PenLine size={15} />Edit in Writing Lab
+                    </button>
+                    <button className={styles.primary} disabled={savingFile || !adPack.headlines.some(Boolean)} onClick={() => void saveText(`${brand.name || 'ads'}-google-ads.txt`, formatAd(adPack), 'campaigns')}>
+                      <FolderOpen size={15} />Save to Data Hub
+                    </button>
+                  </div>
+                </Panel>
+                <Panel>
+                  <h3>Headlines · 15 × 30 characters</h3>
+                  {adPack.headlines.map((headline, i) => (
+                    <label key={i} className={styles.form} style={{ marginTop: 10 }}>
+                      Headline {i + 1} · {headline.length}/30
+                      <input value={headline} maxLength={30} placeholder={`Headline ${i + 1}`} onChange={(e) => setAd({ ...adPack, headlines: adPack.headlines.map((h, idx) => idx === i ? e.target.value : h) })} />
+                    </label>
+                  ))}
+                  <h3>Descriptions · 4 × 90 characters</h3>
+                  {adPack.descriptions.map((description, i) => (
+                    <label key={i} className={styles.form} style={{ marginTop: 10 }}>
+                      Description {i + 1} · {description.length}/90
+                      <textarea value={description} maxLength={90} rows={2} placeholder={`Description ${i + 1}`} onChange={(e) => setAd({ ...adPack, descriptions: adPack.descriptions.map((d, idx) => idx === i ? e.target.value : d) })} />
+                    </label>
+                  ))}
+                </Panel>
+              </div>
+            </>}
 
-      {tab === 'Creative vision' && <div className={styles.twoColumns}><Panel><span className={styles.badge}>COMPUTER VISION</span><h3>A second pair of eyes on your creative.</h3><p>Review visible messaging, CTA, readability and composition. A single image cannot establish audience fatigue or predict ROAS.</p><div className={styles.form}><label>Ad creative · PNG, JPEG or WebP, up to 4 MB<input type="file" accept="image/png,image/jpeg,image/webp" disabled={visionBusy} onChange={async e => { const file = e.target.files?.[0]; if (!file) return; setReview(''); setImage(''); setCreativeFile(null); if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type) || file.size > 4 * 1024 * 1024) { setNotice('Choose a PNG, JPEG or WebP image under 4 MB.'); return; } setCreativeFile(file); const reader = new FileReader(); reader.onload = () => setImage(String(reader.result)); reader.onerror = () => setNotice('Image could not be read.'); reader.readAsDataURL(file); }} /></label>{creativeFile && <button className={styles.secondary} disabled={savingFile} onClick={() => void saveToFiles(creativeFile, 'creatives')}><FolderOpen size={15} />Save creative to Files</button>}{image && <div className={styles.imagePreview}><Image src={image} alt="Selected ad creative for review" width={600} height={400} unoptimized /></div>}<label>Campaign brief<textarea maxLength={1500} value={brief} onChange={e => setBrief(e.target.value)} placeholder="Product, audience, objective and the action you want people to take…" rows={4} /></label><small>When you run a review, the image and brief are sent to the Studio’s configured AI provider. Images and reviews are not saved to browser storage. Use Save creative to Files to keep the image in Neon.</small><button className={styles.primary} disabled={!image || visionBusy} onClick={async () => { const version = contextVersion.current; setVisionBusy(true); setNotice(''); setReview(''); try { const response = await fetch('/api/studio/marketing/creative', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ image, brief }) }); const data = await response.json(); if (!response.ok) throw new Error(data.error || 'Creative review failed.'); if (version === contextVersion.current) setReview(data.review); } catch (error) { setNotice(error instanceof Error ? error.message : 'Creative review failed.'); } finally { setVisionBusy(false); } }}><Sparkles size={16} />{visionBusy ? 'Reviewing creative…' : 'Analyse creative'}</button><button className={styles.secondary} disabled={!image || visionBusy} onClick={async () => {
-      const version = contextVersion.current; setVisionBusy(true); setNotice(''); setReview('');
-      try { const response = await fetch('/api/studio/marketing/vision-features', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ image }) }); const data = await response.json(); if (!response.ok) throw new Error(data.error || 'Computer vision failed.'); if (version === contextVersion.current) setReview(`EXTRACTED TEXT\n${data.text || 'No readable text detected.'}\n\nVISUAL TAGS\n${data.tags.map((tag: { name: string; confidence: number }) => `${tag.name} (${Math.round(tag.confidence * 100)}% confidence)`).join(', ') || 'No tags detected.'}\n\nOBJECTS\n${data.objects.map((object: { name: string; box: { x: number; y: number; w: number; h: number } }) => `${object.name}: x=${object.box.x}, y=${object.box.y}, width=${object.box.w}, height=${object.box.h}`).join('\n') || 'No objects detected.'}\n\nComputer vision observations; verify text and detections against the image.`); }
-      catch (error) { setNotice(error instanceof Error ? error.message : 'Computer vision failed.'); } finally { setVisionBusy(false); }
-    }}><ImagePlus size={16} />Extract text & objects</button><small>OCR and object detection use the optional Azure AI Vision resource. Creative reviews use the configured image-capable chat model.</small></div></Panel><Panel><h3>Creative review</h3>{review ? <><div className={styles.review}>{review}</div><button className={styles.textButton} onClick={() => download('creative-review.txt', review, 'text/plain')}>Download review <ArrowDownToLine size={14} /></button></> : <div className={styles.empty}><ImagePlus size={36} /><h3>From observation to experiment</h3><p>Your review will cite visible details and suggest changes you can test. Requires a configured model that supports images.</p></div>}</Panel></div>}
+            {view === 'performance' && <>
+              {workspace.demo && (
+                <div className={styles.demo}>
+                  <Sparkles size={16} />
+                  <span>Sample data is showing. Upload a Google Ads or campaign export to analyse your own numbers.</span>
+                </div>
+              )}
+              <Panel>
+                <div className={styles.between}>
+                  <div>
+                    <h3>Upload campaign data</h3>
+                    <p>CSV, TSV or Excel. Map campaign, spend and conversions, then we calculate the rest.</p>
+                  </div>
+                  <select value={workspace.id} onChange={(e) => { setActive(e.target.value); setTable(null); setBriefing(''); }}>
+                    {workspaces.map((w) => <option key={w.id} value={w.id}>{w.name}{w.demo ? ' · Demo' : ''}</option>)}
+                  </select>
+                </div>
+                <label className={styles.dropzone}>
+                  <UploadCloud size={36} />
+                  <strong>{busy ? 'Reading your file…' : 'Choose a campaign export'}</strong>
+                  <span>CSV, TSV or .xlsx · up to 5 MB / 20,000 rows</span>
+                  <input id="marketing-upload" type="file" accept=".csv,.tsv,.xlsx" disabled={busy} onChange={(e) => { void upload(e.target.files?.[0]); e.target.value = ''; }} />
+                </label>
+                <button className={styles.textButton} onClick={() => download('standex-campaign-template.csv', 'campaign,date,spend,revenue,conversions,clicks,impressions\nBrand search,2026-09-01,100,450,5,80,4000\n', 'text/csv')}>
+                  Download CSV template <ArrowDownToLine size={14} />
+                </button>
+                {sourceFile && (
+                  <button className={styles.secondary} disabled={savingFile} onClick={() => void saveStudioFile(sourceFile, 'campaigns').then(() => setNotice(`${sourceFile.name} saved to Data Hub.`)).catch((error) => setNotice(error instanceof Error ? error.message : 'Not saved.'))}>
+                    <FolderOpen size={15} />Save original to Data Hub
+                  </button>
+                )}
+              </Panel>
+              {table && (
+                <Panel>
+                  <div className={styles.between}>
+                    <div><h3>Match columns</h3><p>{fileName} · {table.length - 1} rows</p></div>
+                    <button className={styles.primary} onClick={runAnalysis}><Activity size={16} />Analyse</button>
+                  </div>
+                  <div className={styles.mapping}>
+                    {fields.map((field) => (
+                      <label key={field}>{field}{['campaign', 'spend', 'conversions'].includes(field) ? ' *' : ''}
+                        <select value={mapping[field]} onChange={(e) => setMapping((prev) => ({ ...prev, [field]: e.target.value }))}>
+                          <option value="">Not supplied</option>
+                          {table[0].map((h, i) => <option key={i} value={h}>{h}</option>)}
+                        </select>
+                      </label>
+                    ))}
+                  </div>
+                </Panel>
+              )}
+              <div className={styles.kpis}>
+                {[
+                  ['Spend', cash(analysis.totals.spend), workspace.source],
+                  ['Conversions', num(analysis.totals.conversions), `CPA ${cash(analysis.totals.cpa)}`],
+                  ['ROAS', analysis.available('revenue') ? num(analysis.totals.roas, 'x') : '—', `Target ${workspace.targetROAS}x`],
+                  ['Score', num(analysis.score), `${analysis.coverage}% coverage`],
+                ].map(([label, value, note]) => (
+                  <Panel key={label}><span className={styles.kpiLabel}>{label}</span><strong className={styles.kpiValue}>{workspace.rows.length ? value : '—'}</strong><small>{note}</small></Panel>
+                ))}
+              </div>
+              <Panel>
+                <div className={styles.between}><div><h3>Performance over time</h3><p>Daily spend</p></div><span className={styles.badge}>{analysis.trends.length} days</span></div>
+                {analysis.trends.length > 1 ? (
+                  <div className={styles.chart}>
+                    <ResponsiveContainer width="100%" height="100%" minWidth={0} initialDimension={{ width: 600, height: 245 }}>
+                      <AreaChart data={analysis.trends}>
+                        <CartesianGrid strokeDasharray="3 5" vertical={false} stroke="var(--line)" />
+                        <XAxis dataKey="date" tickFormatter={(v) => String(v).slice(5)} tick={{ fontSize: 11, fill: 'var(--muted)' }} axisLine={false} tickLine={false} />
+                        <YAxis tick={{ fontSize: 11, fill: 'var(--muted)' }} width={50} axisLine={false} tickLine={false} />
+                        <Tooltip formatter={(value) => cash(Number(value))} contentStyle={{ background: 'var(--card)', border: '1px solid var(--line)', borderRadius: 12 }} />
+                        <Area isAnimationActive={false} type="monotone" name="Spend" dataKey="spend" stroke="#6366f1" strokeWidth={2.5} fill="transparent" />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                ) : <div className={styles.empty}>Upload dated rows to see a trend.</div>}
+              </Panel>
+              <Panel>
+                <h3>Optional observations</h3>
+                <p>Calculated actions first. The AI briefing is optional and must stay inside these numbers.</p>
+                <button className={styles.primary} disabled={analystBusy || !workspace.rows.length} onClick={async () => {
+                  const version = contextVersion.current; setAnalystBusy(true); setBriefing(''); setNotice('');
+                  try {
+                    const response = await fetch('/api/studio/marketing/analyst', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(workspace) });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.error || 'Briefing failed.');
+                    if (version === contextVersion.current) setBriefing(data.briefing);
+                  } catch (error) { setNotice(error instanceof Error ? error.message : 'Briefing failed.'); }
+                  finally { setAnalystBusy(false); }
+                }}><Sparkles size={16} />{analystBusy ? 'Preparing…' : 'Write observations'}</button>
+                {briefing && (
+                  <>
+                    <div className={styles.review}>{briefing}</div>
+                    <div className={styles.fileActions}>
+                      <button className={styles.secondary} onClick={() => openInWriting(briefing, `${workspace.name} briefing`)}><PenLine size={15} />Rewrite in Writing Lab</button>
+                      <button className={styles.textButton} disabled={savingFile} onClick={() => void saveText(`${workspace.name}-observations.txt`, briefing, 'reports')}><FolderOpen size={15} />Save to Data Hub</button>
+                    </div>
+                  </>
+                )}
+              </Panel>
+              <div className={styles.stack}>
+                {analysis.recommendations.length ? analysis.recommendations.map((r, i) => (
+                  <Panel key={r.title}>
+                    <div className={styles.between}><span className={styles.eyebrow}>ACTION {String(i + 1).padStart(2, '0')}</span><span className={r.priority === 'High' ? styles.warning : styles.badge}>{r.priority}</span></div>
+                    <h3>{r.title}</h3>
+                    <p>{r.finding}</p>
+                    <p>{r.action}</p>
+                    <button className={styles.textButton} onClick={() => openInWriting(`${r.title}\n\n${r.finding}\n\n${r.action}`, r.title)}>Turn into copy <ArrowRight size={14} /></button>
+                  </Panel>
+                )) : (
+                  <Panel><Check size={24} /><h3>{workspace.rows.length ? 'No campaign rules triggered' : 'Upload data to see actions'}</h3><p>Quiet alerts are not proof of perfect performance.</p></Panel>
+                )}
+              </div>
+            </>}
 
-      {tab === 'Report builder' && <div className={styles.twoColumns}><Panel><h3>Make the story yours.</h3><p>Select sections for {workspace.name}. Client name, accent colour and contact details come from workspace settings.</p><div className={styles.sectionChecks}>{reportSections.map(s => <label key={s}><input type="checkbox" checked={sections.includes(s)} onChange={e => setSections(prev => e.target.checked ? reportSections.filter(x => x === s || prev.includes(x)) : prev.filter(x => x !== s))} />{s}</label>)}</div><button className={styles.primary} disabled={!sections.length || !workspace.rows.length} onClick={() => buildReport()}><ArrowDownToLine size={16} />Generate & download PDF</button><button className={styles.secondary} disabled={!sections.length || !workspace.rows.length || savingFile} onClick={() => buildReport(true)}><FolderOpen size={16} />{savingFile ? 'Saving…' : 'Save PDF to Files'}</button><p>Includes calculated metrics and evidence. Review before sending. Standex attribution remains on early-access reports.</p></Panel><Panel><div className={styles.reportPreview} style={{ borderTopColor: workspace.colour }}><span className={styles.eyebrow}>PERFORMANCE REPORT</span><h2>{workspace.name}</h2><p>{workspace.demo ? 'Sample data · ' : ''}{analysis.trends[0]?.date || 'Uploaded period'} — {analysis.trends.at(-1)?.date || ''}</p><div className={styles.previewNumbers}><div><small>Spend</small><strong>{cash(analysis.totals.spend)}</strong></div><div><small>Conversions</small><strong>{num(analysis.totals.conversions)}</strong></div><div><small>Score</small><strong>{num(analysis.score)}<small>/100</small></strong></div></div>{sections.map((s, i) => <div className={styles.previewSection} key={s}><span>{String(i + 1).padStart(2, '0')}</span>{s}</div>)}<small>Prepared with Standex Studio · {workspace.contact}</small></div><h3>Report history</h3>{ownReports.map(r => <button key={r.id} className={styles.reportRow} onClick={() => void exportPDF(r)}><FileBarChart2 size={16} /><span>{r.name}<small>{new Date(r.created).toLocaleString('en-GB')}</small></span><ArrowDownToLine size={16} /></button>)}{!ownReports.length && <p>No reports generated yet.</p>}</Panel></div>}
+            <footer className={styles.footer}>
+              <span>Standex Studio · Marketing</span>
+              <Link href="/studio/data" className={styles.textButton}>Open Data Hub <ArrowRight size={14} /></Link>
+              <Link href="/studio/writing" className={styles.textButton}>Open Writing Lab <ArrowRight size={14} /></Link>
+            </footer>
+          </main>
+        </div>
+  );
+}
 
-      {tab === 'Saved files' && <StudioFileLibrary theme={theme} isDark={themeMode === 'dark'} onUseFile={async (file, category) => {
-        if (category === 'workspaces') { const restored = restoreWorkspace(await file.text()); setWorkspaces(prev => [...prev, restored]); switchWorkspace(restored.id); setTab('Overview'); setNotice('Workspace restored as a new copy. Your existing workspace is unchanged.'); }
-        else { await upload(file); setTab('Data upload'); }
-      }} />}
-      {tab === 'Integrations' && <><div className={styles.insightStrip}><Plug size={24} /><div><strong>Your data, with a clear connection status.</strong><p>File import works today. Direct account sync needs provider OAuth, credentials and scheduled ingestion.</p></div></div><div className={styles.integrationGrid}>{[
-        ['Meta Ads', 'Campaign spend, conversions and creative performance.', 'CSV / Excel import'], ['Google Ads', 'Search, shopping and campaign efficiency in one view.', 'CSV / Excel import'], ['LinkedIn Ads', 'Understand the cost and quality of your B2B campaigns.', 'CSV / Excel import'], ['HubSpot', 'Connect paid acquisition to qualified leads and pipeline.', 'Mapped file import'], ['Shopify', 'Bring revenue into a campaign-level combined export.', 'Mapped file import'], ['Google Analytics 4', 'Landing-page engagement and conversion paths.', 'Planned'], ['Slack / Teams', 'Send reviewed alerts to the people taking action.', 'Planned'], ['Google Drive', 'Schedule client-report delivery and archive exports.', 'Planned'], ['Creative library', 'Review ad images using your configured AI provider.', 'Available'],
-      ].map(([name, description, status]) => <Panel key={name}><div className={styles.between}><span className={styles.integrationIcon}>{name.slice(0, 2)}</span><span className={status === 'Planned' ? styles.badge : styles.good}>{status}</span></div><h3>{name}</h3><p>{description}</p>{status !== 'Planned' && <button className={styles.textButton} onClick={() => { if (name === 'Creative library') setTab('Creative vision'); else { setPlatform(name); setTab('Data upload'); } }}>{name === 'Creative library' ? 'Review a creative' : 'Import an export'} <ArrowRight size={14} /></button>}</Panel>)}</div><Panel><span className={styles.eyebrow}>COMMERCIAL ROADMAP</span><h3>A foundation for a paid Studio.</h3><p>Suggested packaging for launch. These are proposed tiers, not active subscriptions or enforced limits.</p><div className={styles.twoColumns}><div><h3>Professional</h3><p>Campaign analysis, creative reviews and client reports. Meter analysis and AI usage when account billing is connected.</p></div><div><h3>Agency</h3><p>Client workspaces, team roles, cloud history, white-label reports and scheduled integrations. Requires server-side account entitlements before launch.</p></div></div><Link className={styles.textButton} href="/studio/writing">Create follow-up copy in Writing Lab <ArrowRight size={14} /></Link></Panel></>}
-      <footer className={styles.footer}><span>Standex Studio · Marketing Intelligence</span><span>Deterministic metrics. Evidence-backed actions.</span></footer>
-    </main>
-  </div>}</StudioShell>;
+function formatAd(ad: GoogleAd) {
+  return [
+    `Final URL: ${ad.finalUrl}`,
+    `Path: ${ad.path1} / ${ad.path2}`,
+    '',
+    'HEADLINES',
+    ...ad.headlines.map((h, i) => `${i + 1}. ${h}`),
+    '',
+    'DESCRIPTIONS',
+    ...ad.descriptions.map((d, i) => `${i + 1}. ${d}`),
+    '',
+    `Keywords: ${(ad.keywords || []).join(', ')}`,
+  ].join('\n');
 }

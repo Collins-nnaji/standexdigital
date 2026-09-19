@@ -29,12 +29,41 @@ export async function GET() {
  * name is the password. The first person to sign in with a given first name
  * registers it; everyone after must match the last name on file.
  */
+async function issueSession(accountId: string, firstName: string) {
+  const response = NextResponse.json({ signedIn: true, firstName });
+  response.cookies.set({
+    name: STUDIO_ACCOUNT_COOKIE,
+    value: await createStudioAccountSessionValue(accountId),
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge: STUDIO_ACCOUNT_SESSION_MAX_AGE,
+  });
+  return response;
+}
+
 export async function POST(request: Request) {
-  let body: { firstName?: string; lastName?: string };
+  let body: { firstName?: string; lastName?: string; guest?: boolean };
   try {
-    body = (await request.json()) as { firstName?: string; lastName?: string };
+    body = (await request.json()) as { firstName?: string; lastName?: string; guest?: boolean };
   } catch {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
+  }
+
+  if (body.guest === true) {
+    const firstNameKey = "guest";
+    let account = await prisma.studioAccount.findUnique({ where: { firstNameKey } });
+    if (!account) {
+      account = await prisma.studioAccount.create({
+        data: {
+          firstName: "Guest",
+          firstNameKey,
+          lastNameHash: await bcrypt.hash("Standex", 10),
+        },
+      });
+    }
+    return issueSession(account.id, account.firstName);
   }
 
   const firstName = (body.firstName ?? "").trim().slice(0, NAME_MAX_LENGTH);
@@ -66,17 +95,7 @@ export async function POST(request: Request) {
     }
   }
 
-  const response = NextResponse.json({ signedIn: true, firstName: account.firstName });
-  response.cookies.set({
-    name: STUDIO_ACCOUNT_COOKIE,
-    value: await createStudioAccountSessionValue(account.id),
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-    maxAge: STUDIO_ACCOUNT_SESSION_MAX_AGE,
-  });
-  return response;
+  return issueSession(account.id, account.firstName);
 }
 
 export async function DELETE() {

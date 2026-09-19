@@ -1,11 +1,10 @@
-import { StudioCodeLab } from "@/components/studio/StudioCodeLab";
+import { redirect } from "next/navigation";
 
-// Access is enforced in middleware.ts via a signed HttpOnly session cookie.
 export const metadata = {
   title: "Code Lab | Standex Studio",
-  description: "Write and run Python and SQL in the browser, with built-in code review.",
+  robots: { index: false, follow: false },
 };
 
 export default function StudioCodePage() {
-  return <StudioCodeLab />;
+  redirect("/studio/writing");
 }

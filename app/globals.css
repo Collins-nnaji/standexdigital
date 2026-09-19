@@ -849,6 +849,15 @@ section#how:not(.landing-how-revealed) .landing-how-flow-connector {
   color: #3f3f46 !important;
 }
 
+/* Studio uses its own theme tokens. Global heading ink must not hide copy. */
+[data-studio] :is(h1, h2, h3, h4, h5, h6) {
+  color: inherit !important;
+  font-family: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+}
+
 a:is([class*="bg-zinc-9"], [class*="bg-black"], [class*="bg-emerald-"], [class*="bg-violet-"]),
 button:is([class*="bg-zinc-9"], [class*="bg-black"], [class*="bg-emerald-"], [class*="bg-violet-"]) {
   color: #ffffff !important;

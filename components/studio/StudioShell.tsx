@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
-import { useEffect, useState, type ReactNode } from "react";
+import { Suspense, useEffect, useState, type ReactNode } from "react";
 import { Moon, Sun } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -11,27 +10,76 @@ import {
   type ConsoleTheme,
   type ConsoleThemeMode,
 } from "@/components/console/console-theme";
-import { StudioSectionNav } from "@/components/studio/StudioSectionNav";
-import type { StudioSectionId } from "@/components/studio/studio-sections";
+import { StudioWordmark } from "@/components/studio/StudioWordmark";
 import { Button } from "@/components/ui/button";
 
 type StudioShellProps = {
-  active: StudioSectionId;
-  /** Receives the resolved theme so sections style themselves consistently. */
   children: (ctx: { theme: ConsoleTheme; themeMode: ConsoleThemeMode }) => ReactNode;
 };
 
 /**
- * Chrome shared by every Studio section: theme toggle, brand mark and section nav.
- * Theme choice is persisted under the existing console key so the two stay in sync.
+ * Studio chrome for Writing Lab: wordmark, theme, and the workspace.
  */
-export function StudioShell({ active, children }: StudioShellProps) {
+export function StudioShell({ children }: StudioShellProps) {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex h-[100dvh] items-center justify-center bg-white text-sm text-zinc-500">
+          Loading Studio…
+        </div>
+      }
+    >
+      <StudioShellInner>{children}</StudioShellInner>
+    </Suspense>
+  );
+}
+
+let studioGuestReady = false;
+
+function StudioShellInner({ children }: StudioShellProps) {
   const [themeMode, setThemeMode] = useState<ConsoleThemeMode>("light");
+  const [ready, setReady] = useState(studioGuestReady);
   const t = CONSOLE_THEMES[themeMode];
+  const isDark = themeMode === "dark";
 
   useEffect(() => {
     const s = localStorage.getItem(THEME_STORAGE_KEY) as ConsoleThemeMode | null;
     if (s === "light" || s === "dark") setThemeMode(s);
+  }, []);
+
+  useEffect(() => {
+    if (studioGuestReady) {
+      setReady(true);
+      return;
+    }
+    let cancelled = false;
+    const timer = window.setTimeout(() => {
+      if (cancelled) return;
+      studioGuestReady = true;
+      setReady(true);
+    }, 2000);
+    (async () => {
+      try {
+        const me = await fetch("/api/studio/account").then((r) => r.json());
+        if (!cancelled && !me?.signedIn) {
+          await fetch("/api/studio/account", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ guest: true }),
+          });
+        }
+      } catch {
+        // Tools still work locally until real auth is added.
+      }
+      if (!cancelled) {
+        studioGuestReady = true;
+        setReady(true);
+      }
+    })();
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
   }, []);
 
   const persistTheme = (m: ConsoleThemeMode) => {
@@ -41,65 +89,43 @@ export function StudioShell({ active, children }: StudioShellProps) {
 
   return (
     <div
+      data-studio
       className={cn(
         "relative flex h-[100dvh] flex-col overflow-hidden [font-family:var(--font-inter),ui-sans-serif,sans-serif] text-[14px] leading-snug antialiased",
         t.shell,
         t.scrollbar,
       )}
     >
-      <div
-        aria-hidden
-        className={cn(
-          "pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(237,235,228,0.04),transparent_55%)]",
-          themeMode === "light" &&
-            "bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(17,17,16,0.03),transparent_55%)]",
-        )}
-      />
-
       <header
         className={cn(
-          "relative z-10 flex h-12 min-h-12 shrink-0 items-center gap-2 px-3 backdrop-blur-md sm:gap-3 sm:px-4 lg:gap-4 lg:px-6",
+          "relative z-20 flex h-12 min-h-12 shrink-0 items-center gap-2 border-b px-3 sm:px-4",
+          t.borderSub,
           t.workspaceSurface,
         )}
       >
-        <Link
-          href="/studio"
-          className="flex shrink-0 items-center transition-opacity hover:opacity-90"
-          aria-label="Studio home"
-        >
-          <Image
-            src="/standexailogo.png"
-            alt="Standex Digital"
-            width={130}
-            height={36}
-            className={cn(
-              "h-7 w-auto max-w-[96px] object-contain transition-all duration-300 sm:h-8 sm:max-w-[130px]",
-              themeMode === "dark" ? "brightness-0 invert opacity-90" : "",
-            )}
-            priority
-            unoptimized
-          />
+        <Link href="/studio/writing" className="flex min-w-0 shrink-0 items-center" aria-label="Standex Studio">
+          <StudioWordmark compact className={t.text} />
         </Link>
 
-        <StudioSectionNav active={active} theme={t} themeMode={themeMode} className="min-w-0 flex-1" />
-
-        <div className="ml-auto flex shrink-0 items-center gap-1 sm:gap-1.5">
+        <div className="ml-auto flex shrink-0 items-center">
           <Button
             type="button"
             variant="outline"
             size="icon"
-            onClick={() => persistTheme(themeMode === "dark" ? "light" : "dark")}
+            onClick={() => persistTheme(isDark ? "light" : "dark")}
             className={cn("h-8 w-8 shadow-none", t.borderSub, t.text)}
-            title={themeMode === "dark" ? "Light background" : "Dark background"}
+            title={isDark ? "Light background" : "Dark background"}
           >
-            {themeMode === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </Button>
         </div>
       </header>
 
-      <div className="relative z-[1] flex min-h-0 min-w-0 flex-1">
-        <div className={cn("relative min-h-0 min-w-0 flex-1", t.workspaceSurface)}>
-          <div className="flex h-full min-h-0 flex-col">{children({ theme: t, themeMode })}</div>
+      <div className={cn("relative z-[1] flex min-h-0 min-w-0 flex-1", t.workspaceSurface)}>
+        <div className="flex h-full min-h-0 min-w-0 flex-1 flex-col">
+          {ready ? children({ theme: t, themeMode }) : (
+            <div className={cn("flex flex-1 items-center justify-center text-sm", t.muted)}>Opening Studio…</div>
+          )}
         </div>
       </div>
     </div>

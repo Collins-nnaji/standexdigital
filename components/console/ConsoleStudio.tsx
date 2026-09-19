@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
   Sparkles, Loader2, PenTool, Smile, Zap, CheckCircle2, Minus, Minimize2,
@@ -16,7 +16,7 @@ import { stripHtmlToText } from "@/lib/strip-html";
 import type { RewriteMode } from "@/lib/communication-llm";
 import { TTSTool } from "@/components/workspace/TTSTool";
 import { WritingChallenges } from "@/components/console/WritingChallenges";
-import { StudioAccountBadge } from "@/components/studio/StudioAccountGate";
+import { useStudioView } from "@/components/studio/useStudioView";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -41,10 +41,13 @@ const REWRITE_MODES: { id: RewriteMode; label: string; icon: LucideIcon }[] = [
   { id: "empathetic", label: "Empathetic", icon: HeartHandshake },
 ];
 
-type Props = { themeMode?: ConsoleThemeMode; firstName?: string; onSignOut?: () => void };
+const WRITING_VIEWS = ["draft", "generate", "speech", "copilot"] as const;
 
-export function ConsoleStudio({ themeMode = "light", firstName, onSignOut }: Props) {
+type Props = { themeMode?: ConsoleThemeMode };
+
+export function ConsoleStudio({ themeMode = "light" }: Props) {
   const t = CONSOLE_THEMES[themeMode];
+  const [view, setView] = useStudioView(WRITING_VIEWS, "draft");
 
   const [text, setText] = useState("");
   const [rewriteMode, setRewriteMode] = useState<RewriteMode>("professional");
@@ -73,6 +76,12 @@ export function ConsoleStudio({ themeMode = "light", firstName, onSignOut }: Pro
   const [refined, setRefined] = useState<{ refined: string; notes: string } | null>(null);
 
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    setGenOpen(view === "generate");
+    setTtsOpen(view === "speech");
+    setCopilotOpen(view === "copilot");
+  }, [view]);
 
   const draftText = useCallback(
     () => rewriteResult?.rewritten?.trim() || text.trim(),
@@ -161,7 +170,7 @@ export function ConsoleStudio({ themeMode = "light", firstName, onSignOut }: Pro
     setRewriteResult(null);
     setGenPreview(null);
     setGenPrompt("");
-    setGenOpen(false);
+    setView("draft");
   };
 
   const runRefine = async () => {
@@ -279,23 +288,21 @@ export function ConsoleStudio({ themeMode = "light", firstName, onSignOut }: Pro
           <div className="flex flex-wrap items-start justify-between gap-2">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <p className={cn("text-xs font-medium tracking-wide", t.muted2)}>Console</p>
+                <p className={cn("text-xs font-medium tracking-wide", t.muted2)}>Writing Lab</p>
                 <Badge variant="outline" className={cn("h-5 border px-2 text-[10px] font-semibold uppercase tracking-wider", t.borderSub, t.muted2)}>
                   Draft
                 </Badge>
               </div>
               <p className={cn("max-w-xl text-sm leading-relaxed", t.muted)}>
-                Generate a draft, rewrite the tone, then listen with speech.
+                Generate a draft, rewrite the tone, copy it out, or download it.
               </p>
             </div>
             <div className="flex shrink-0 items-center gap-2">
-              {firstName && onSignOut && <StudioAccountBadge firstName={firstName} onSignOut={onSignOut} theme={t} />}
-              {/* Copilot toggle — desktop */}
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
-                onClick={() => setCopilotOpen((v) => !v)}
+                onClick={() => setView(view === "copilot" ? "draft" : "copilot")}
                 className={cn("hidden gap-1.5 shadow-none lg:inline-flex", t.borderSub, t.text)}
               >
                 {copilotOpen ? <PanelRightClose className="h-4 w-4" /> : <PanelRightOpen className="h-4 w-4" />}
@@ -334,7 +341,7 @@ export function ConsoleStudio({ themeMode = "light", firstName, onSignOut }: Pro
             <Button
               type="button"
               size="sm"
-              onClick={() => { setGenError(""); setGenPreview(null); if (!text.trim()) setGenPrompt(""); setGenOpen(true); }}
+              onClick={() => { setGenError(""); setGenPreview(null); if (!text.trim()) setGenPrompt(""); setView("generate"); }}
               className={cn("gap-1.5 shadow-none", t.btnPrimary)}
             >
               <Sparkles className="h-4 w-4 opacity-90" />
@@ -355,7 +362,7 @@ export function ConsoleStudio({ themeMode = "light", firstName, onSignOut }: Pro
               type="button"
               variant="outline"
               size="sm"
-              onClick={() => setTtsOpen(true)}
+              onClick={() => setView("speech")}
               disabled={!hasText}
               title={!hasText ? "Add text to enable speech" : undefined}
               className={cn("gap-1.5 shadow-none", t.borderSub, t.text)}
@@ -426,7 +433,7 @@ export function ConsoleStudio({ themeMode = "light", firstName, onSignOut }: Pro
         <div className={cn("flex items-center justify-between px-4 py-2 sm:px-5", t.workspaceSurface)}>
           <span className={cn(t.mono, "text-[11px] tabular-nums", t.muted2)}>{wordCount ? `${wordCount} words` : "No text"}</span>
           {/* Copilot toggle — mobile */}
-          <Button type="button" variant="outline" size="sm" onClick={() => setCopilotOpen(true)} className={cn("gap-1.5 shadow-none lg:hidden", t.borderSub, t.text)}>
+          <Button type="button" variant="outline" size="sm" onClick={() => setView("copilot")} className={cn("gap-1.5 shadow-none lg:hidden", t.borderSub, t.text)}>
             <PanelRightOpen className="h-4 w-4" />
             Copilot
           </Button>
@@ -441,7 +448,7 @@ export function ConsoleStudio({ themeMode = "light", firstName, onSignOut }: Pro
               <p className={cn("text-xs font-medium", t.muted2)}>Workspace</p>
               <h2 className={cn("text-sm font-semibold tracking-tight", t.text)}>Copilot</h2>
             </div>
-            <Button type="button" variant="ghost" size="icon" onClick={() => setCopilotOpen(false)} className={cn("h-8 w-8", t.muted)} title="Collapse">
+            <Button type="button" variant="ghost" size="icon" onClick={() => setView("draft")} className={cn("h-8 w-8", t.muted)} title="Collapse">
               <PanelRightClose className="h-4 w-4" />
             </Button>
           </div>
@@ -452,11 +459,11 @@ export function ConsoleStudio({ themeMode = "light", firstName, onSignOut }: Pro
       {/* ---------- Copilot drawer (mobile) ---------- */}
       {copilotOpen && (
         <div className="fixed inset-0 z-[180] flex flex-col justify-end lg:hidden" role="dialog" aria-modal="true">
-          <button type="button" className="absolute inset-0 bg-black/50" aria-label="Close" onClick={() => setCopilotOpen(false)} />
+          <button type="button" className="absolute inset-0 bg-black/50" aria-label="Close" onClick={() => setView("draft")} />
           <div className={cn("relative z-10 max-h-[80vh] overflow-y-auto rounded-t-2xl border-t px-4 pb-6 pt-4", t.workspaceSurface, t.borderSub)}>
             <div className="mb-3 flex items-center justify-between">
               <h2 className={cn("text-sm font-semibold", t.text)}>Copilot</h2>
-              <Button type="button" variant="ghost" size="icon" onClick={() => setCopilotOpen(false)} className={cn("h-8 w-8", t.muted)}>
+              <Button type="button" variant="ghost" size="icon" onClick={() => setView("draft")} className={cn("h-8 w-8", t.muted)}>
                 <X className="h-4 w-4" />
               </Button>
             </div>
@@ -468,9 +475,9 @@ export function ConsoleStudio({ themeMode = "light", firstName, onSignOut }: Pro
       {/* ---------- Speech modal ---------- */}
       {ttsOpen && (
         <div className="fixed inset-0 z-[190] flex items-end justify-center p-4 sm:items-center" role="dialog" aria-modal="true">
-          <button type="button" className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" aria-label="Close" onClick={() => setTtsOpen(false)} />
+          <button type="button" className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" aria-label="Close" onClick={() => setView("draft")} />
           <div className="relative z-10 w-full max-w-md">
-            <TTSTool text={draftText()} themeMode={themeMode} onClose={() => setTtsOpen(false)} />
+            <TTSTool text={draftText()} themeMode={themeMode} onClose={() => setView("draft")} />
           </div>
         </div>
       )}
@@ -478,7 +485,7 @@ export function ConsoleStudio({ themeMode = "light", firstName, onSignOut }: Pro
       {/* ---------- Generate modal ---------- */}
       {genOpen && (
         <div className="fixed inset-0 z-[190] flex items-end justify-center p-4 sm:items-center" role="dialog" aria-modal="true">
-          <button type="button" className="absolute inset-0 bg-black/55 backdrop-blur-[2px]" aria-label="Close" onClick={() => setGenOpen(false)} />
+          <button type="button" className="absolute inset-0 bg-black/55 backdrop-blur-[2px]" aria-label="Close" onClick={() => setView("draft")} />
           <div className={cn("relative z-10 flex max-h-[min(92vh,720px)] w-full max-w-xl flex-col overflow-hidden rounded-2xl border shadow-2xl", t.s1, t.border)}>
             <div className={cn("flex shrink-0 items-start justify-between gap-3 border-b px-5 py-4", t.border)}>
               <div className="flex items-start gap-3">
@@ -490,7 +497,7 @@ export function ConsoleStudio({ themeMode = "light", firstName, onSignOut }: Pro
                   <p className={cn("mt-1 max-w-md text-[12px] leading-relaxed", t.muted)}>Describe what you need — we&apos;ll draft text you can insert and refine.</p>
                 </div>
               </div>
-              <button type="button" onClick={() => setGenOpen(false)} className={cn("rounded-lg p-1.5", t.muted, t.navHover)} aria-label="Close">
+              <button type="button" onClick={() => setView("draft")} className={cn("rounded-lg p-1.5", t.muted, t.navHover)} aria-label="Close">
                 <X className="h-4 w-4" />
               </button>
             </div>
@@ -512,11 +519,11 @@ export function ConsoleStudio({ themeMode = "light", firstName, onSignOut }: Pro
               ) : null}
             </div>
             <div className={cn("flex shrink-0 flex-wrap items-center justify-end gap-2 border-t px-5 py-3.5", t.border, t.s1)}>
-              <button type="button" onClick={() => setGenOpen(false)} className={cn("rounded-xl border px-4 py-2.5 text-[12px] font-semibold", t.borderSub, t.muted, t.navHover)}>Cancel</button>
+              <button type="button" onClick={() => setView("draft")} className={cn("rounded-xl border px-4 py-2.5 text-[12px] font-semibold", t.borderSub, t.muted, t.navHover)}>Cancel</button>
               {genPreview?.html ? (
                 <button type="button" onClick={insertGenerated} className={cn("inline-flex items-center gap-1.5 rounded-xl border px-4 py-2.5 text-[12px] font-semibold", t.borderSub, t.text, t.navHover)}>
                   <Wand2 className="h-3.5 w-3.5" />
-                  Insert into console
+                  Insert into draft
                 </button>
               ) : null}
               <button type="button" onClick={() => void runGenerate()} disabled={!genPrompt.trim() || genLoading} className={cn("inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-[12px] font-semibold shadow-sm disabled:opacity-45", t.btnPrimary)}>

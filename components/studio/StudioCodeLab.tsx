@@ -1,13 +1,13 @@
 "use client";
 
-import { CodeLab } from "@/components/studio/CodeLab";
-import { StudioShell } from "@/components/studio/StudioShell";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
-/** Code Lab — write and run Python and SQL in the browser, with built-in review. */
+/** Code Lab was removed from Studio. Keep this module type-safe if anything still imports it. */
 export function StudioCodeLab() {
-  return (
-    <StudioShell active="code">
-      {({ theme, themeMode }) => <CodeLab theme={theme} themeMode={themeMode} />}
-    </StudioShell>
-  );
+  const router = useRouter();
+  useEffect(() => {
+    router.replace("/studio/writing");
+  }, [router]);
+  return null;
 }

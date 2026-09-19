@@ -125,6 +125,7 @@ const Footer = () => {
             <a href="mailto:hr@standexdigital.com" className="text-[11px] font-bold text-emerald-500 hover:text-white transition-colors">hr@standexdigital.com</a>
           </div>
           <div className="flex items-center gap-4 sm:ml-auto">
+            <Link href="/studio" className="text-[11px] font-bold text-zinc-400 hover:text-emerald-500 transition-colors">Studio</Link>
             <Link href="/terms" className="text-[11px] font-bold text-zinc-400 hover:text-emerald-500 transition-colors">Terms of Service</Link>
             <Link href="/privacy" className="text-[11px] font-bold text-zinc-400 hover:text-emerald-500 transition-colors">Privacy Policy</Link>
           </div>

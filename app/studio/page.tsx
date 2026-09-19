@@ -1,11 +1,10 @@
-import { StudioLanding } from "@/components/studio/StudioLanding";
+import { redirect } from "next/navigation";
 
-// Access is enforced in middleware.ts via a signed HttpOnly session cookie.
 export const metadata = {
   title: "Studio | Standex Digital",
-  description: "Marketing intelligence, creative reviews, writing tools, coding and data — one workspace.",
+  description: "Writing Lab — draft, rewrite and polish copy.",
 };
 
 export default function StudioPage() {
-  return <StudioLanding />;
+  redirect("/studio/writing");
 }

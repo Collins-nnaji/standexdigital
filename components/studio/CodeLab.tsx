@@ -7,25 +7,18 @@ import { sql } from "@codemirror/lang-sql";
 import { githubDark, githubLight } from "@uiw/codemirror-theme-github";
 import {
   AlertTriangle,
-  BarChart3,
-  BookMarked,
-  BookOpen,
   CheckCircle2,
-  Code2,
   Database,
-  Dumbbell,
   Loader2,
   Menu,
-  MessageCircle,
   MessageCircleQuestion,
   Play,
   RotateCcw,
-  Sparkles,
   Terminal,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ConsoleTheme, ConsoleThemeMode } from "@/components/console/console-theme";
-import { StudioAccountBadge, StudioAccountGate } from "@/components/studio/StudioAccountGate";
+import { useStudioView } from "@/components/studio/useStudioView";
 import { CodeLabChat } from "@/components/studio/CodeLabChat";
 import { CodeLabLibrary } from "@/components/studio/CodeLabLibrary";
 import { CodeLabLesson, type Lesson } from "@/components/studio/CodeLabLesson";
@@ -53,49 +46,31 @@ const CodeMirror = dynamic(() => import("@uiw/react-codemirror"), {
   ),
 });
 
-type CodeLabTab = "editor" | "lesson" | "chat" | "plans" | "practice" | "review" | "progress";
-
 type CodeLabProps = {
   theme: ConsoleTheme;
   themeMode: ConsoleThemeMode;
 };
+
+const CODE_VIEWS = ["editor", "lesson", "chat", "plans", "practice", "review", "progress"] as const;
 
 const LANGUAGES: { id: CodeLanguage; label: string }[] = [
   { id: "python", label: "Python" },
   { id: "sql", label: "SQL" },
 ];
 
-const TABS: { id: CodeLabTab; label: string; icon: typeof Code2 }[] = [
-  { id: "editor", label: "Editor", icon: Code2 },
-  { id: "lesson", label: "Lesson", icon: BookOpen },
-  { id: "chat", label: "Chat", icon: MessageCircle },
-  { id: "plans", label: "Plans", icon: BookMarked },
-  { id: "practice", label: "Practice", icon: Dumbbell },
-  { id: "review", label: "Review", icon: Sparkles },
-  { id: "progress", label: "Progress", icon: BarChart3 },
-];
-
 export function CodeLab({ theme, themeMode }: CodeLabProps) {
-  return (
-    <StudioAccountGate theme={theme} isDark={themeMode === "dark"} toolName="Code Lab">
-      {({ firstName, onSignOut }) => (
-        <CodeLabWorkspace theme={theme} themeMode={themeMode} firstName={firstName} onSignOut={onSignOut} />
-      )}
-    </StudioAccountGate>
-  );
+  return <CodeLabWorkspace theme={theme} themeMode={themeMode} />;
 }
 
 function CodeLabWorkspace({
   theme,
   themeMode,
-  firstName,
-  onSignOut,
-}: CodeLabProps & { firstName: string; onSignOut: () => void }) {
+}: CodeLabProps) {
   const isDark = themeMode === "dark";
 
   const [language, setLanguage] = useState<CodeLanguage>("python");
   const [code, setCode] = useState<Record<CodeLanguage, string>>({ ...STARTER_CODE });
-  const [tab, setTab] = useState<CodeLabTab>("editor");
+  const [tab, setTab] = useStudioView(CODE_VIEWS, "editor");
   const [libraryOpen, setLibraryOpen] = useState(false);
 
   const [running, setRunning] = useState(false);
@@ -246,8 +221,9 @@ function CodeLabWorkspace({
 
   return (
     <div className="flex min-h-0 flex-1">
-      {/* Library rail — inline on desktop, drawer on mobile */}
-      <aside className={cn("hidden w-64 shrink-0 border-r lg:block", theme.borderSub)}>{library}</aside>
+      {tab === "lesson" && (
+        <aside className={cn("hidden w-64 shrink-0 border-r lg:block", theme.borderSub)}>{library}</aside>
+      )}
 
       {libraryOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
@@ -264,21 +240,22 @@ function CodeLabWorkspace({
       )}
 
       <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-        {/* Toolbar */}
         <div
           className={cn(
             "flex shrink-0 flex-wrap items-center gap-2 border-b px-3 py-2 sm:px-4",
             theme.borderSub,
           )}
         >
-          <button
-            type="button"
-            onClick={() => setLibraryOpen(true)}
-            className={cn("rounded-lg p-1.5 lg:hidden", theme.muted, theme.navHover)}
-            aria-label="Open library"
-          >
-            <Menu className="h-4 w-4" />
-          </button>
+          {tab === "lesson" && (
+            <button
+              type="button"
+              onClick={() => setLibraryOpen(true)}
+              className={cn("rounded-lg p-1.5 lg:hidden", theme.muted, theme.navHover)}
+              aria-label="Open library"
+            >
+              <Menu className="h-4 w-4" />
+            </button>
+          )}
 
           <div
             className={cn(
@@ -307,33 +284,8 @@ function CodeLabWorkspace({
             ))}
           </div>
 
-          <div
-            className={cn(
-              "flex items-center gap-0.5 rounded-lg p-0.5",
-              isDark ? "bg-black/25 ring-1 ring-white/[0.1]" : "bg-black/[0.04] ring-1 ring-black/[0.08]",
-            )}
-          >
-            {TABS.map((t) => {
-              const Icon = t.icon;
-              return (
-                <button
-                  key={t.id}
-                  type="button"
-                  onClick={() => setTab(t.id)}
-                  className={cn(
-                    "inline-flex items-center gap-1.5 rounded-[7px] px-2.5 py-1.5 text-[12.5px] font-semibold transition-colors",
-                    tab === t.id ? theme.navActive : cn(theme.muted, theme.navHover),
-                  )}
-                >
-                  <Icon className="h-3.5 w-3.5" />
-                  <span className="hidden sm:inline">{t.label}</span>
-                </button>
-              );
-            })}
-          </div>
-
           {tab === "editor" && (
-            <div className="flex items-center gap-1.5">
+            <div className="ml-auto flex items-center gap-1.5">
               <button
                 type="button"
                 onClick={handleReset}
@@ -359,8 +311,6 @@ function CodeLabWorkspace({
               </button>
             </div>
           )}
-
-          <StudioAccountBadge firstName={firstName} onSignOut={onSignOut} theme={theme} />
         </div>
 
         {/* Panels */}
