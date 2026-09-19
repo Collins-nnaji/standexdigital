@@ -1,7 +1,7 @@
 import type { LucideIcon } from "lucide-react";
-import { Code2, Database, PenLine } from "lucide-react";
+import { Code2, Database, PenLine, Megaphone, FolderOpen } from "lucide-react";
 
-export type StudioSectionId = "writing-lab" | "code" | "data";
+export type StudioSectionId = "writing-lab" | "code" | "data" | "marketing" | "files";
 
 export type StudioSection = {
   id: StudioSectionId;
@@ -16,6 +16,15 @@ export type StudioSection = {
 };
 
 export const STUDIO_SECTIONS: StudioSection[] = [
+  {
+    id: "marketing",
+    href: "/studio/marketing",
+    shortLabel: "Marketing",
+    label: "Marketing",
+    description: "Analyse campaign data, uncover opportunities, review ad creative and produce client-ready reports.",
+    icon: Megaphone,
+    available: true,
+  },
   {
     id: "writing-lab",
     href: "/studio/writing",
@@ -45,6 +54,15 @@ export const STUDIO_SECTIONS: StudioSection[] = [
       "Explore datasets, run queries and build charts alongside the rest of your workspace.",
     icon: Database,
     available: false,
+  },
+  {
+    id: "files",
+    href: "/studio/files",
+    shortLabel: "Files",
+    label: "Files",
+    description: "Save documents, reports, campaign exports and creative assets in private Neon storage.",
+    icon: FolderOpen,
+    available: true,
   },
 ];
 

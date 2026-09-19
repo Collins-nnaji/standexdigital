@@ -19,10 +19,10 @@ export function StudioSectionNav({ active, theme, themeMode, className }: Studio
       role="navigation"
       aria-label="Studio sections"
       className={cn(
-        "flex min-w-0 max-w-full items-center gap-0.5 overflow-x-auto rounded-lg p-0.5 [-ms-overflow-style:none] [scrollbar-width:none] sm:overflow-visible [&::-webkit-scrollbar]:hidden",
+        "flex min-w-0 max-w-full items-center gap-0.5 overflow-x-auto rounded-lg p-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
         themeMode === "dark"
-          ? "bg-black/25 ring-1 ring-white/[0.1]"
-          : "bg-black/[0.04] ring-1 ring-black/[0.08]",
+          ? "bg-[rgba(0,0,0,0.25)] ring-1 ring-white/[0.1]"
+          : "bg-[rgba(0,0,0,0.04)] ring-1 ring-black/[0.08]",
         className,
       )}
     >

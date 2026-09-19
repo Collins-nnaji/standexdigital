@@ -81,8 +81,8 @@ export function StudioLanding() {
         <div className="max-w-2xl">
           <h1 className={cn("text-3xl font-black tracking-tight sm:text-4xl", t.text)}>Studio</h1>
           <p className={cn("mt-3 text-[15px] leading-relaxed", t.muted)}>
-            Your coding and data hub — writing tools, coding environments, code review and data
-            exploration in one workspace.
+            Marketing intelligence, writing tools, coding environments and data
+            exploration in one connected Studio.
           </p>
         </div>
 

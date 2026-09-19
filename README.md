@@ -274,3 +274,7 @@ This is a private project. For questions or support, contact the development tea
 ---
 
 **Built with ❤️ for teams creating compliant, high-performing content at scale.**
+
+### Marketing Intelligence
+
+Studio includes a marketing module at `/studio/marketing`, alongside Writing Lab and Code Lab. It supports campaign CSV/Excel imports, client targets, deterministic performance analysis, evidence-backed recommendations, optional AI briefings and creative image reviews, and PDF report exports. Working datasets remain browser-local; the shared Files area saves uploads, PDFs, creative assets and restorable workspace snapshots to private, account-scoped Neon Object Storage. Dedicated Azure OpenAI vision and optional Azure AI Vision OCR/object detection are supported. Copy the blank settings from `config/studio-services.env.example`; see [Marketing Studio setup and launch requirements](docs/marketing-studio.md) for resource configuration and remaining billing, collaboration and integration work before a paid launch.
