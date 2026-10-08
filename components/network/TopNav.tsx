@@ -18,6 +18,7 @@ const navigation = [
   { href: "/", label: "Home" },
   { href: "/digital-growth", label: "Digital Growth" },
   { href: "/data-solutions", label: "BI Solutions" },
+  { href: "/Training", label: "Training" },
 ];
 
 function Logo() {

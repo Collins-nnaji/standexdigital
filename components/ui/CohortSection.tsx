@@ -127,7 +127,7 @@ export function CohortSection() {
             transition={{ delay: 0.25 }}
           >
             <Link
-              href="/learn"
+              href="/Training"
               className="shrink-0 inline-flex items-center gap-2 rounded-2xl border-2 border-zinc-900 px-5 py-2.5 text-[10px] font-black uppercase tracking-widest text-zinc-900 hover:bg-zinc-900 hover:text-white transition-all active:scale-95"
             >
               View Curriculum <ArrowRight className="h-3.5 w-3.5" />
@@ -174,7 +174,7 @@ export function CohortSection() {
               </div>
 
               <Link
-                href="/learn"
+                href="/Training"
                 className="relative z-10 flex items-center justify-center gap-2 h-12 w-full rounded-2xl bg-[#7C5CFC] text-[10px] font-black uppercase tracking-widest text-white hover:bg-[#6042db] transition-colors shadow-lg shadow-[#7C5CFC]/20 overflow-hidden"
               >
                 Learn <ArrowRight className="h-3.5 w-3.5" />

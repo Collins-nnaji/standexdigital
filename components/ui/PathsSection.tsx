@@ -73,7 +73,7 @@ export function PathsSection() {
                   ))}
                </div>
 
-               <Link href="/learn" className="block pt-8">
+               <Link href="/Training" className="block pt-8">
                   <Button className="h-16 rounded-2xl bg-[#7C5CFC] px-10 text-xs font-black uppercase tracking-widest text-white shadow-xl hover:bg-[#6042db] active:scale-95">
                     VIEW COMPLETE CURRICULUM <ArrowRight className="ml-3 h-4 w-4" />
                   </Button>

@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/academy',
-        destination: '/learn',
+        destination: '/Training',
         permanent: true,       // Returns 308
       },
       {

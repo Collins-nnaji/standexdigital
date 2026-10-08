@@ -13,370 +13,386 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-/* ── AI ENGINEERING TRACK DATA ── */
+/* ── AI AT WORK TRACK DATA ── */
 
 const T = {
-  nextjs: { name: "Next.js", src: "/images/nextjslogo.png" },
-  openai: { name: "OpenAI", src: "/images/openai logo.svg" },
-  claude: { name: "Claude", src: "/images/claude logo.svg" },
-  google: { name: "Google", src: "/images/google logo.png" },
-  vercel: { name: "Vercel", src: "/images/vercel logo.svg" },
-  react: { name: "React", src: "/images/react logo.png" },
-  github: { name: "GitHub", src: "/images/github logo.png" },
-  azure: { name: "Azure", src: "/images/azure logo.png" },
-  stripe: { name: "Stripe", src: "/images/stripe logo.png" },
-  neon: { name: "Neon", src: "/images/neon logo.webp" },
-  cursor: { name: "Cursor", src: "/images/cursor logo.png" },
+  chatgpt: { name: "ChatGPT", src: "/images/tools/chatgpt.svg" },
+  claude: { name: "Claude", src: "/images/tools/claude.svg" },
+  gemini: { name: "Gemini", src: "/images/tools/gemini.svg" },
+  copilot: { name: "Copilot", src: "/images/tools/copilot.svg" },
+  perplexity: { name: "Perplexity", src: "/images/tools/perplexity.svg" },
+  notion: { name: "Notion", src: "/images/tools/notion.svg" },
+  outlook: { name: "Outlook", src: "/images/tools/outlook.svg" },
+  gmail: { name: "Gmail", src: "/images/tools/gmail.svg" },
+  word: { name: "Word", src: "/images/tools/word.svg" },
+  powerpoint: { name: "PowerPoint", src: "/images/tools/powerpoint.svg" },
+  excel: { name: "Excel", src: "/images/tools/excel.svg" },
+  sheets: { name: "Google Sheets", src: "/images/tools/googlesheets.svg" },
+  canva: { name: "Canva", src: "/images/tools/canva.svg" },
+  zapier: { name: "Zapier", src: "/images/tools/zapier.svg" },
+  make: { name: "Make", src: "/images/tools/make.svg" },
+  n8n: { name: "n8n", src: "/images/tools/n8n.svg" },
+  slack: { name: "Slack", src: "/images/tools/slack.svg" },
+  teams: { name: "Teams", src: "/images/tools/teams.svg" },
+  drive: { name: "Google Drive", src: "/images/tools/googledrive.svg" },
+  sharepoint: { name: "SharePoint", src: "/images/tools/sharepoint.svg" },
+  powerautomate: { name: "Power Automate", src: "/PowerAutomate.svg" },
+  copilotstudio: { name: "Copilot Studio", src: "/CopilotStudio.svg" },
 };
 
 const aiWeeks = [
   {
-    week: 1, title: "Foundations & Modern LLMs",
-    subtitle: "Evolution, Architecture & Prompting",
-    description: "Master the internals of modern LLMs. Understand how GPT-4o, Claude, and Gemini actually process tokens and how to architect systems around them using advanced prompting and structured outputs.",
-    tools: [T.nextjs, T.openai, T.vercel, T.github],
+    week: 1, title: "AI Foundations for Real Work",
+    subtitle: "Tools, Prompting & Safe Use",
+    description: "Get confident with the AI tools your colleagues are already using. Learn what ChatGPT, Claude, Gemini and Copilot are each best at, how to prompt them for reliable results, and how to use them without leaking company data.",
+    tools: [T.chatgpt, T.claude, T.gemini, T.copilot],
     fullCurriculum: [
       {
-        session: "Session 1 — Modern AI System Internals",
+        session: "Session 1 — Choosing the Right AI Tool",
         topics: [
-          "Evolution of LLMs: From transformers to GPT-4o, Claude 3.5, and Gemini 1.5 Pro",
-          "How LLMs actually work: tokenisation, temperature, sampling, top-p, stop sequences",
-          "Context windows explained: what goes in, what gets lost (lost-in-the-middle phenomena)",
-          "Comparing model capabilities: benchmarks vs real-world production performance",
-          "AI system design patterns: direct API, wrapper service, and gateway proxies",
-          "Latency budgets and cost modelling: calculating TCO per token across providers",
-          "Theoretical Audit: Reading AI vendor documentation like a senior engineer",
+          "What today's AI assistants can and can't do — and why they sometimes make things up",
+          "ChatGPT vs Claude vs Gemini vs Microsoft Copilot: strengths, pricing and when to use each",
+          "Free vs paid plans, and what your company licence (M365 / Google Workspace) already includes",
+          "Uploading files, images and spreadsheets — getting answers from your own documents",
+          "Data privacy at work: what never to paste into a public AI tool",
+          "Hands-on: audit your week and list 10 tasks AI could speed up",
         ],
       },
       {
-        session: "Session 2 — Advanced Prompting & Structured Logic",
+        session: "Session 2 — Prompting That Actually Works",
         topics: [
-          "Prompt engineering fundamentals: role prompting, few-shot examples, and chain-of-thought",
-          "System prompts vs User prompts: defining 'unbreakable' personality and constraints",
-          "Structured JSON outputs: response_format, strict mode, and Zod schema validation",
-          "Prompt chaining: breaking complex tasks into reliable, sequential AI steps",
-          "Common failure modes: hallucination, context stuffing, and prompt injection security",
-          "Hands-on: building a reliable schema generator for unstructured data",
+          "A simple prompt framework: role, task, context, format, and examples",
+          "Getting consistent output: templates, tone of voice and reusable instructions",
+          "Iterating instead of starting over — refining drafts in conversation",
+          "Checking AI answers: spotting errors, asking for sources and verifying facts",
+          "Building your personal prompt library for repeat tasks",
+          "Hands-on: turn three of your real tasks into reusable prompts",
         ],
       },
     ],
   },
   {
-    week: 2, title: "Shipping AI-Powered Interfaces",
-    subtitle: "Next.js, UX & Token Streaming",
-    description: "Build production-grade AI interfaces that feel instant. Master token streaming, server-side AI orchestration, and the unique UX challenges of conversational software.",
-    tools: [T.nextjs, T.openai, T.react, T.vercel, T.cursor],
+    week: 2, title: "Writing, Email & Documents",
+    subtitle: "Inbox, Reports, Proposals & Slides",
+    description: "Cut the hours spent writing. Use AI to clear your inbox, draft reports and proposals, summarise long documents and meetings, and turn rough notes into polished slide decks.",
+    tools: [T.outlook, T.gmail, T.word, T.powerpoint, T.notion, T.canva],
     fullCurriculum: [
       {
-        session: "Session 1 — Next.js: The AI Application Framework",
+        session: "Session 1 — Inbox & Everyday Writing",
         topics: [
-          "Next.js App Router: Server Components vs Client Components for AI rendering",
-          "Server Actions: triggering AI completions without complex API state management",
-          "Architecture: Building streaming API routes with Vercel AI SDK",
-          "Token streaming: implementing SSE (Server-Sent Events) for real-time output",
-          "ReadableStreams: how to handle and pipe AI chunks from the LLM to the client",
+          "Drafting and replying to emails in Outlook and Gmail with Copilot and Gemini",
+          "Summarising long email threads and pulling out action items",
+          "Writing in your organisation's tone: style guides as AI instructions",
+          "Meeting notes: turning Teams / Meet transcripts into summaries and follow-ups",
+          "Rewriting for different audiences — executives, clients and non-experts",
         ],
       },
       {
-        session: "Session 2 — Interactive AI UX & State",
+        session: "Session 2 — Reports, Proposals & Presentations",
         topics: [
-          "Designing world-class chat interfaces: message history, auto-scrolling, and loading states",
-          "Managing conversation state: client-side optimistic updates and persistent history",
-          "Streaming UI patterns: rendering markdown, code blocks, and adaptive UI components",
-          "Cursor AI workflow: writing production AI code with AI assistance and prompt-to-code",
-          "UX Best Practices: handling 'AI thinking' states and graceful error recovery",
+          "From outline to first draft: reports, policies and SOPs in Word and Notion",
+          "Summarising 50-page documents and comparing contracts or tenders",
+          "Building slide decks from a brief with Copilot in PowerPoint and Canva",
+          "Creating visuals, social posts and simple graphics with AI image tools",
+          "Hands-on: produce a real proposal or report from your own job, start to finish",
         ],
       },
     ],
   },
   {
-    week: 3, title: "Data, Memory & Retrieval (RAG)",
-    subtitle: "Postgres, Vector Stores & pgvector",
-    description: "Give your AI product long-term memory. Implement a complete RAG (Retrieval-Augmented Generation) pipeline using Neon Postgres and advanced vector search.",
-    tools: [T.neon, T.openai, T.nextjs, T.github, T.react],
+    week: 3, title: "Research, Data & Spreadsheets",
+    subtitle: "Excel, Sheets & AI Analysis",
+    description: "Make faster, better-informed decisions. Use AI for desk research with sources, clean and analyse spreadsheets, write formulas you'd never remember, and turn numbers into clear charts and insights.",
+    tools: [T.perplexity, T.excel, T.sheets, T.chatgpt, T.copilot],
     fullCurriculum: [
       {
-        session: "Session 1 — Postgres & the Vector Pipeline",
+        session: "Session 1 — AI-Powered Research",
         topics: [
-          "Introduction to Neon: serverless Postgres for high-velocity AI apps",
-          "Schema design for AI: storing conversation logs, user metadata, and vector IDs",
-          "Vector Embeddings: text-embedding-3-small vs large — quality vs cost tradeoffs",
-          "pgvector on Neon: implementing IVFFLAT vs HNSW indexes for sub-100ms search",
-          "Vector distance metrics: choosing between Cosine Similarity, Dot Product, and L2",
+          "Research with citations: Perplexity, ChatGPT search and Gemini Deep Research",
+          "Competitor, market and supplier research in a fraction of the time",
+          "Summarising industry reports, regulations and long PDFs",
+          "Fact-checking and judging source quality before you share findings",
+          "Hands-on: produce a one-page research brief for a real decision at work",
         ],
       },
       {
-        session: "Session 2 — The RAG Pipeline From Scratch",
+        session: "Session 2 — Spreadsheets & Data Analysis",
         topics: [
-          "Chunking strategies: fixed-size, recursive character, and semantic chunking explained",
-          "The full RAG loop: ingestion → embedding → storage → retrieval → generation",
-          "Hybrid search: combining BM25 keyword search with vector semantic search",
-          "Handling hallucinations: confidence scoring and 'Grounding' with source citations",
-          "Building a production RAG route in Next.js with multi-document support",
+          "Copilot in Excel and Gemini in Sheets: asking questions of your data in plain English",
+          "Writing and explaining formulas — XLOOKUP, IFs, SUMIFS and text cleanup",
+          "Cleaning messy exports: duplicates, dates, inconsistent names",
+          "Uploading data to ChatGPT for analysis, charts and trend spotting",
+          "Turning analysis into a short summary your manager will actually read",
         ],
       },
     ],
   },
   {
-    week: 4, title: "Advanced Agents & Multi-Model",
-    subtitle: "Orchestration, Automation & Tool Use",
-    description: "Build autonomous agents that can take actions. Orchestrate multiple models (GPT + Claude + Gemini) to handle complex engineering tasks without human intervention.",
-    tools: [T.claude, T.openai, T.google, T.neon, T.vercel],
+    week: 4, title: "Automate Repetitive Workflows",
+    subtitle: "Zapier, Make, n8n & Power Automate",
+    description: "Stop doing the same task twice. Connect your apps and add AI steps to build automations that sort email, capture leads, update spreadsheets and send reports while you work on what matters.",
+    tools: [T.zapier, T.make, T.n8n, T.powerautomate, T.slack, T.teams],
     fullCurriculum: [
       {
-        session: "Session 1 — Multi-Model Orchestration",
+        session: "Session 1 — Automation Basics",
         topics: [
-          "Routing strategies: when to use Claude 3.5 for reasoning vs GPT-4o for speed",
-          "Using Gemini 1.5 Pro for mass long-context summarisation and analysis",
-          "Model fallbacks: building resilient systems that switch providers on failure",
-          "ROI Optimization: choosing models based on cost, speed, and intelligence requirements",
+          "How automations work: triggers, actions, filters and schedules",
+          "Choosing a platform: Zapier, Make, n8n or Power Automate for your company's stack",
+          "Your first automation: form submission → spreadsheet → Slack / Teams alert",
+          "Adding AI steps: classify, summarise or draft replies inside a workflow",
+          "Hands-on: automate one recurring task from your own week",
         ],
       },
       {
-        session: "Session 2 — Autonomous AI Agents",
+        session: "Session 2 — Real Business Workflows",
         topics: [
-          "Agent action loops: ReAct (Reason + Act) and reflection patterns explained",
-          "Tool Use / Function Calling: defining schemas that allow AI to call external APIs",
-          "Multi-agent orchestration: supervisor/worker patterns vs autonomous swarms",
-          "Scheduling with Cron: using Vercel Cron to launch autonomous agent tasks",
-          "Webhooks: triggering agent runs from external events (GitHub, Slack, etc.)",
+          "Email triage: auto-label, summarise and route incoming requests",
+          "Lead and customer flows: capture, enrich, and update your CRM",
+          "Scheduled reports: weekly numbers pulled, summarised and emailed automatically",
+          "Approvals and handoffs across Outlook, Teams and SharePoint",
+          "Error handling, testing, and keeping automations maintainable",
         ],
       },
     ],
   },
   {
-    week: 5, title: "Production, Scaling & Observability",
-    subtitle: "Infrastructure, CI/CD & Analytics",
-    description: "Scale your AI app to thousands of users. Master production deployment, automated pipelines, and deep observability across your model interactions.",
-    tools: [T.nextjs, T.azure, T.vercel, T.github],
+    week: 5, title: "AI Assistants for Your Team",
+    subtitle: "Custom GPTs, Projects & Copilot Studio",
+    description: "Build assistants that know your business. Create custom GPTs, Claude Projects and Gemini Gems trained on your documents, and deploy a team assistant in Teams or Slack that answers questions from your knowledge base.",
+    tools: [T.chatgpt, T.claude, T.gemini, T.copilotstudio, T.sharepoint, T.drive],
     fullCurriculum: [
       {
-        session: "Session 1 — Scaling & Containerisation",
+        session: "Session 1 — Personal & Team Assistants",
         topics: [
-          "Vercel Edge performance: deploying AI logic to 100+ global regions",
-          "Dockerising AI apps: building efficient multi-stage containers for Azure",
-          "Azure Container Apps: scaling to zero and handling high-concurrency inference",
-          "Infrastructure-as-Code: managing AI environment variables and secrets safely",
+          "Custom GPTs, Claude Projects and Gemini Gems: what they are and when to use them",
+          "Writing assistant instructions that keep answers on-brand and accurate",
+          "Grounding assistants in your files — policies, product docs, FAQs",
+          "Sharing assistants with your team and managing access",
+          "Hands-on: build an onboarding or HR-policy assistant",
         ],
       },
       {
-        session: "Session 2 — Observability & Analytics",
+        session: "Session 2 — Agents & Knowledge Bases",
         topics: [
-          "CI/CD with GitHub Actions: automated testing and deployment for AI pipelines",
-          "Model Observability: implementing trace IDs and step-level telemetry with OpenTelemetry",
-          "Production Monitoring: tracking token spend per user and model latency in real-time",
-          "**Google Analytics integration**: tracking AI UX success and user journey metrics",
-          "Error boundaries: catching and logging model failures in production",
+          "AI agents explained: assistants that take actions, not just answer questions",
+          "Copilot Studio: a company Q&A bot over SharePoint, published to Teams",
+          "Connecting Google Drive and SharePoint as knowledge sources",
+          "Customer-facing assistants: support FAQs and website chat, with human handoff",
+          "Testing, feedback loops and measuring whether the assistant helps",
         ],
       },
     ],
   },
   {
-    week: 6, title: "Monetization & Capstone Launch",
-    subtitle: "Stripe, Business Models & Final Ship",
-    description: "Turn your engineering skills into revenue. Master complex Stripe integrations and finalize your capstone AI product for live launch.",
-    tools: [T.stripe, T.nextjs, T.neon, T.vercel],
+    week: 6, title: "Responsible AI & Capstone",
+    subtitle: "Policy, ROI & Your Workflow Project",
+    description: "Lead AI adoption with confidence. Learn the governance, risk and ROI basics employers expect, then deliver a capstone: a real workflow from your job, rebuilt with AI and measured in hours saved.",
+    tools: [T.copilot, T.chatgpt, T.zapier, T.notion],
     fullCurriculum: [
       {
-        session: "Session 1 — Payments & Revenue Strategy",
+        session: "Session 1 — Using AI Responsibly at Work",
         topics: [
-          "Integrating Stripe: from checkout sessions to subscription lifecycle management",
-          "**Usage-based billing**: metering AI API calls and charging per-token in real-time",
-          "Subscription logic: tiering features and model access (GPT-3.5 vs GPT-4o tiers)",
-          "Webhook security: handling Stripe events (payment_succeeded, subscription_deleted)",
+          "Company AI policies: acceptable use, approved tools and data classification",
+          "Bias, accuracy and accountability — keeping a human in the loop",
+          "Copyright, confidentiality and regulation basics (GDPR, EU AI Act)",
+          "Measuring ROI: time saved, quality gained, and the cost of tools",
+          "Rolling AI out to a team: training, champions and change management",
         ],
       },
       {
-        session: "Session 2 — Capstone Sprint & Portfolio",
+        session: "Session 2 — Capstone & Certification",
         topics: [
-          "Capstone Build: final refinement of your core AI feature (chat, agent, or automation)",
-          "Deployment Strategy: final go-live on production domain",
-          "Growth & Iteration: collecting user feedback and planning v2 development",
-          "Portfolio Day: documenting your technical build for LinkedIn and GitHub",
-          "Graduation: peer review and verified certificate issuance for Cohort 04",
+          "Capstone: redesign a real workflow from your job using AI and automation",
+          "Before/after metrics: documenting hours saved and output quality",
+          "Presenting your project to the cohort and getting peer feedback",
+          "Portfolio and LinkedIn: showing employers your AI skills",
+          "Graduation: verified Standex certificate issued",
         ],
       },
     ],
   },
 ];
 
-/* ── POWER PLATFORM TRACK DATA ── */
+/* ── POWER BI & AUTOMATION TRACK DATA ── */
 
 const PP = {
-  powerapps: { name: "Power Apps", src: "/PowerApps.svg" },
-  powerautomate: { name: "Power Automate", src: "/PowerAutomate.svg" },
+  excel: { name: "Excel", src: "/images/tools/excel.svg" },
+  sql: { name: "SQL", src: "/images/tools/sql.svg" },
   powerbi: { name: "Power BI", src: "/PowerBi.svg" },
-  powerpages: { name: "Power Pages", src: "/PowerPages.svg" },
-  powerplatform: { name: "Power Platform", src: "/PowerPlatform.svg" },
-  azure: { name: "Azure", src: "/images/azure logo.png" },
+  powerautomate: { name: "Power Automate", src: "/PowerAutomate.svg" },
+  powerapps: { name: "Power Apps", src: "/PowerApps.svg" },
+  copilot: { name: "Copilot", src: "/images/tools/copilot.svg" },
+  fabric: { name: "Fabric", src: "/images/tools/fabric.svg" },
+  teams: { name: "Teams", src: "/images/tools/teams.svg" },
+  sharepoint: { name: "SharePoint", src: "/images/tools/sharepoint.svg" },
+  outlook: { name: "Outlook", src: "/images/tools/outlook.svg" },
 };
 
 const ppWeeks = [
   {
-    week: 1, title: "Power Platform & Data Foundations",
-    subtitle: "Ecosystem, Architecture & SQL",
-    description: "Master the Microsoft Power Platform ecosystem and build a rock-solid data foundation. Understand environments, licensing, Dataverse architecture, and write production-grade SQL from day one.",
-    tools: [PP.powerplatform, PP.powerapps, PP.powerbi, PP.azure],
+    week: 1, title: "Excel to Analyst Foundations",
+    subtitle: "Cleaning Data, Pivots & KPIs",
+    description: "Start where most business data lives. Level up from basic spreadsheets to analyst-grade Excel: clean messy exports with Power Query, summarise with PivotTables, and define the KPIs that matter to the business.",
+    tools: [PP.excel, PP.copilot, PP.sharepoint, PP.powerbi],
     fullCurriculum: [
       {
-        session: "Session 1 — Power Platform Ecosystem & Architecture",
+        session: "Session 1 — How Analysts Think",
         topics: [
-          "Power Platform ecosystem: M365, Azure, and Power Platform integration landscape",
-          "Roles of Power Apps, Power Automate, Power BI, and Copilot Studio in enterprise solutions",
-          "Architecture patterns: environments, solutions, licensing, and governance",
-          "General data concepts: transactional vs analytical, OLTP vs OLAP",
-          "Data quality, integrity, governance, and normalisation vs denormalisation",
+          "What a data analyst actually does day to day — and what employers hire for",
+          "Defining good KPIs: revenue, margin, churn, conversion and operational metrics",
+          "Where business data comes from: ERP, CRM, finance exports and SharePoint lists",
+          "Data quality: duplicates, blanks, inconsistent dates and naming",
+          "Hands-on: scope a reporting problem from a real business brief",
         ],
       },
       {
-        session: "Session 2 — SQL Fundamentals & Dataverse",
+        session: "Session 2 — Analyst-Grade Excel",
         topics: [
-          "SQL fundamentals: relational schemas, primary/foreign keys, constraints",
-          "Core SQL: SELECT, WHERE, JOIN, GROUP BY, subqueries, and CTEs",
-          "Window functions, indexing, and performance optimisation basics",
-          "Dataverse fundamentals: table design, relationships, and business rules",
-          "When to use Dataverse vs SQL vs SharePoint — choosing the right data layer",
-          "Connecting SQL to Power Apps and Power BI: security and compliance basics",
+          "Power Query in Excel: repeatable cleaning instead of manual fixes",
+          "XLOOKUP, SUMIFS, dynamic arrays and tables",
+          "PivotTables and PivotCharts for fast summaries",
+          "Copilot in Excel: asking questions and generating formulas in plain English",
+          "Hands-on: clean and summarise a real sales dataset",
         ],
       },
     ],
   },
   {
-    week: 2, title: "Power Apps — Canvas & Model-Driven",
-    subtitle: "Design, Architecture & Power Fx",
-    description: "Build data-driven business applications from scratch. Master canvas app design, model-driven app architecture, and the Power Fx formula language for production-grade enterprise apps.",
-    tools: [PP.powerapps, PP.powerplatform, PP.powerbi, PP.powerpages],
+    week: 2, title: "SQL for Business Analysts",
+    subtitle: "Querying Real Company Data",
+    description: "Pull your own data instead of waiting for IT. Learn the SQL analysts use every day to filter, join and summarise data from company databases — the skill that appears in almost every analyst job ad.",
+    tools: [PP.sql, PP.fabric, PP.excel, PP.copilot],
     fullCurriculum: [
       {
-        session: "Session 1 — Canvas App Mastery",
+        session: "Session 1 — SQL Essentials",
         topics: [
-          "Canvas app architecture: screens, forms, galleries, components, and containers",
-          "Power Fx deep dive: Patch, Collect, LookUp, Filter, ForAll, and delegation patterns",
-          "Handling delegation limits and large dataset performance optimisation",
-          "Responsive design: building apps that work across mobile, tablet, and desktop",
-          "Security roles and data-level access control in canvas apps",
+          "Databases explained: tables, keys and how business systems store data",
+          "SELECT, WHERE, ORDER BY — answering everyday business questions",
+          "GROUP BY and aggregates: totals, averages and counts by region, product, month",
+          "JOINs: combining customers, orders and products",
+          "Hands-on: answer 15 real questions from a sample sales database",
         ],
       },
       {
-        session: "Session 2 — Model-Driven Apps & Custom Components",
+        session: "Session 2 — Analyst SQL Patterns",
         topics: [
-          "Model-driven app configuration: forms, views, dashboards, and business process flows",
-          "Custom business logic: JavaScript web resources and plug-in architecture",
-          "Component framework (PCF): building custom controls for advanced scenarios",
-          "Offline capabilities and publishing strategies",
-          "ALM and solution management for enterprise-grade deployments",
+          "CTEs and subqueries for readable, multi-step analysis",
+          "Window functions: running totals, rankings and month-over-month change",
+          "Building clean views to feed Power BI reports",
+          "Using AI to write, explain and debug SQL — and checking its work",
+          "Hands-on: build the dataset behind a monthly performance report",
         ],
       },
     ],
   },
   {
-    week: 3, title: "Power Automate — Workflows & RPA",
-    subtitle: "Cloud Flows, Desktop Flows & Integration",
-    description: "Automate every business process. Build automated, instant, and scheduled cloud flows, integrate with hundreds of connectors, and deploy robotic process automation for legacy systems.",
-    tools: [PP.powerautomate, PP.powerapps, PP.powerplatform, PP.azure],
+    week: 3, title: "Power BI — Data Modelling",
+    subtitle: "Power Query, Star Schema & Relationships",
+    description: "Build the foundation every reliable dashboard needs. Connect to Excel, SQL and SharePoint, shape data in Power Query, and design star-schema models that keep reports fast and numbers correct.",
+    tools: [PP.powerbi, PP.excel, PP.sql, PP.sharepoint],
     fullCurriculum: [
       {
-        session: "Session 1 — Cloud Automation Mastery",
+        session: "Session 1 — Getting Data In",
         topics: [
-          "Flow types: automated, instant, scheduled, and business process flows",
-          "Using SQL and Dataverse as triggers and actions within flows",
-          "Approval patterns: multi-stage, parallel, and conditional approval workflows",
-          "Error handling: scopes, retries, exception patterns, and dead-letter strategies",
-          "App-to-flow integration: triggering automations from Power Apps",
+          "Power BI Desktop tour: data, model and report views",
+          "Connecting to Excel, SQL databases, SharePoint and web sources",
+          "Power Query transformations: merging, appending, unpivoting and data types",
+          "Import vs DirectQuery: choosing the right approach",
+          "Hands-on: load and clean a multi-source sales dataset",
         ],
       },
       {
-        session: "Session 2 — RPA & Advanced Integration",
+        session: "Session 2 — Modelling That Scales",
         topics: [
-          "Power Automate Desktop: automating legacy desktop applications and web scraping",
-          "Data validation, transaction handling, and concurrency control",
-          "Performance tuning with large datasets and premium connectors",
-          "Governance: DLP policies, environment strategies, and ALM for automations",
-          "Building end-to-end automated business processes across the platform",
+          "Star schema: fact and dimension tables explained simply",
+          "Relationships, cardinality and filter direction",
+          "Building a date table for time-based reporting",
+          "Common modelling mistakes that produce wrong totals — and how to fix them",
+          "Hands-on: model a company's sales, products and customers",
         ],
       },
     ],
   },
   {
-    week: 4, title: "Power BI — Data Modelling & DAX",
-    subtitle: "Star Schema, Visualisation & Analytics",
-    description: "Transform raw data into executive-level intelligence. Master star schema modelling, DAX calculations, and Power BI report design to deliver insights that drive business decisions.",
-    tools: [PP.powerbi, PP.powerplatform, PP.azure, PP.powerapps],
+    week: 4, title: "DAX & Dashboard Design",
+    subtitle: "Measures, Time Intelligence & Storytelling",
+    description: "Turn models into dashboards leaders use. Write the DAX measures every business asks for, design clean executive reports, and use Copilot in Power BI to speed up building and explaining insights.",
+    tools: [PP.powerbi, PP.copilot, PP.excel, PP.teams],
     fullCurriculum: [
       {
-        session: "Session 1 — Data Modelling & Architecture",
+        session: "Session 1 — DAX for Real Reports",
         topics: [
-          "BI fundamentals: KPIs, metrics, dimensions, measures, and reporting strategy",
-          "Star schema and dimensional modelling: fact tables, dimension tables, and relationships",
-          "Import vs DirectQuery vs Composite models — choosing the right strategy",
-          "Using SQL views for analytics and model performance optimisation",
-          "Power Query ETL: advanced data transformation and M language patterns",
+          "Measures vs calculated columns — when to use each",
+          "CALCULATE and filter context, explained with business examples",
+          "Time intelligence: YTD, MTD, last year comparisons and growth %",
+          "Ranking, targets vs actuals and variance measures",
+          "Copilot in Power BI: generating and explaining DAX",
         ],
       },
       {
-        session: "Session 2 — DAX & Visualisation Mastery",
+        session: "Session 2 — Dashboards People Use",
         topics: [
-          "DAX fundamentals: calculated columns, measures, and evaluation context",
-          "Time intelligence patterns: YTD, MTD, same-period comparisons, and moving averages",
-          "Advanced DAX: CALCULATE, iterators, and context transition",
-          "Report design: best practices for executive dashboards and drill-through reports",
-          "Performance optimisation: DAX Studio, Performance Analyzer, and best practices",
+          "Designing for the audience: executive summary vs operational detail",
+          "Choosing the right visual — and avoiding chart clutter",
+          "Drill-through, tooltips, bookmarks and slicers",
+          "Data storytelling: turning a dashboard into a decision",
+          "Hands-on: build an executive sales dashboard end to end",
         ],
       },
     ],
   },
   {
-    week: 5, title: "Copilot Studio & Integration",
-    subtitle: "AI Assistants, Pages & Enterprise Security",
-    description: "Build intelligent AI-powered copilots and publish secure external portals. Master Copilot Studio for custom AI assistants and Power Pages for client-facing business solutions.",
-    tools: [PP.powerplatform, PP.powerpages, PP.powerapps, PP.powerbi],
+    week: 5, title: "Automate Reporting & Workflows",
+    subtitle: "Power Automate, Alerts & Simple Apps",
+    description: "Stop rebuilding the same report every Monday. Automate refreshes, alerts and report distribution with Power Automate, and build a simple Power App so teams can capture clean data at the source.",
+    tools: [PP.powerautomate, PP.powerapps, PP.outlook, PP.teams, PP.sharepoint],
     fullCurriculum: [
       {
-        session: "Session 1 — Copilot Studio & AI Assistants",
+        session: "Session 1 — Automated Reporting",
         topics: [
-          "Copilot Studio fundamentals: topics, entities, and conversational AI design",
-          "Integrating Copilot with Dataverse, SharePoint, and custom APIs",
-          "Generative AI in Copilot: grounding responses with enterprise knowledge bases",
-          "Publishing copilots across Teams, websites, and mobile applications",
-          "Testing, analytics, and continuous improvement for AI assistants",
+          "Publishing to the Power BI service and scheduled refresh",
+          "Data alerts: get notified when a KPI crosses a threshold",
+          "Power Automate: emailing report snapshots and posting to Teams",
+          "Approval flows for requests, expenses and sign-offs",
+          "Hands-on: automate a weekly performance email",
         ],
       },
       {
-        session: "Session 2 — Power Pages & Enterprise Integration",
+        session: "Session 2 — Clean Data at the Source",
         topics: [
-          "Power Pages architecture: site design, templates, and content management",
-          "Dataverse integration: forms, lists, and data display for external users",
-          "Row-Level Security (RLS) in Power BI: implementing data access governance",
-          "Embedding Power BI in Power Apps and Microsoft Teams",
-          "Cross-platform integration: connecting Power Platform with Azure services",
+          "Why bad reports start with bad data entry",
+          "Building a simple Power App on a SharePoint list",
+          "Forms, validation and dropdowns that keep data consistent",
+          "Connecting the app to Power BI for live reporting",
+          "Hands-on: replace a shared spreadsheet with an app and dashboard",
         ],
       },
     ],
   },
   {
-    week: 6, title: "Capstone & Certification",
-    subtitle: "Enterprise Solution & Portfolio Delivery",
-    description: "Deliver a production-grade enterprise solution that demonstrates mastery across the full Power Platform stack. Graduate with a verified Standex certification and a portfolio-ready case study.",
-    tools: [PP.powerapps, PP.powerautomate, PP.powerbi, PP.powerpages],
+    week: 6, title: "Sharing, Security & Capstone",
+    subtitle: "Workspaces, Fabric & PL-300 Prep",
+    description: "Ship your work like a professional. Share securely with workspaces and row-level security, see where Microsoft Fabric fits, prepare for the PL-300 Power BI Data Analyst exam, and present a portfolio-ready capstone.",
+    tools: [PP.powerbi, PP.fabric, PP.powerautomate, PP.teams],
     fullCurriculum: [
       {
-        session: "Session 1 — Capstone Architecture & Build",
+        session: "Session 1 — Sharing & Governance",
         topics: [
-          "Capstone project design: SQL + Dataverse backend architecture",
-          "Building the Power App front-end with enterprise UX patterns",
-          "Implementing Power Automate workflows for business process automation",
-          "Power BI analytics dashboard: real-time KPIs and executive reporting",
-          "End-to-end governance: security, ALM, and deployment strategy",
+          "Workspaces, apps and sharing reports with the right people",
+          "Row-level security: each manager sees only their region",
+          "Microsoft Fabric overview: where it fits for growing data teams",
+          "PL-300 exam: what's covered and a study plan",
+          "Embedding reports in Teams and SharePoint",
         ],
       },
       {
-        session: "Session 2 — Presentation & Graduation",
+        session: "Session 2 — Capstone & Career",
         topics: [
-          "Capstone documentation: technical architecture and business case study",
-          "Live demonstration and peer review of completed solutions",
-          "Growth and iteration: collecting stakeholder feedback for v2 planning",
-          "Portfolio Day: documenting your build for LinkedIn and professional profiles",
-          "Graduation: verified certificate issuance — Standex Certified Power Platform Developer",
+          "Capstone: an end-to-end reporting solution on a real business dataset",
+          "Presenting insights and recommendations to a stakeholder panel",
+          "Portfolio: publishing your dashboard and case study",
+          "CV, LinkedIn and interview prep for analyst roles",
+          "Graduation: verified Standex certificate issued",
         ],
       },
     ],
@@ -389,53 +405,53 @@ type Track = "ai" | "pp";
 
 const trackConfig = {
   ai: {
-    label: "AI Engineering",
-    tag: "Engineering Curriculum 2026",
+    label: "AI at Work",
+    tag: "Applied AI Curriculum 2026",
     weeks: aiWeeks,
     price: "$1800",
     oldPrice: "$3500",
-    cohort: "Cohort 04 — Active Enrollment",
+    cohort: "Cohort 05 — Now Enrolling",
     cohortDate: "May 5",
     duration: "6 Weeks",
     sessions: "2h 30m / session",
     enrollLink: "https://buy.stripe.com/28E4gB0JK6Z8dDi697fnO0j",
-    certTitle: "Applied AI Engineer",
-    certTag: "SXAI-V26-04",
+    certTitle: "Certified AI Workplace Practitioner",
+    certTag: "SXAI-W26-05",
     deckLink: "/ai-deck",
-    cohortLabel: "Applied Cohort 04",
+    cohortLabel: "AI at Work Cohort 05",
     color: "#049DCB",
     mastery: [
-      "Multi-Agent Orchestration",
-      "Vector-driven Memory (RAG)",
-      "Stripe Token-Billing",
-      "Azure/Vercel Auto-Scaling",
-      "Observability & Analytics",
-      "Production README & Case Study"
+      "Prompting & Tool Selection",
+      "AI Writing & Documents",
+      "Research & Data Analysis",
+      "Workflow Automation",
+      "Custom Team Assistants",
+      "Responsible AI & ROI"
     ],
   },
   pp: {
-    label: "Power Platform Developer",
-    tag: "Developer Curriculum 2026",
+    label: "Power BI & Automation",
+    tag: "Data Analyst Curriculum 2026",
     weeks: ppWeeks,
     price: "$1500",
     oldPrice: "$3000",
-    cohort: "Cohort 04 — Now Enrolling",
+    cohort: "Cohort 05 — Now Enrolling",
     cohortDate: "Jun 2",
     duration: "6 Weeks",
     sessions: "2h 30m / session",
     enrollLink: "https://buy.stripe.com/dRmeVfdwwcjsdDigNLfnO0k",
-    certTitle: "Certified Power Platform Developer",
-    certTag: "SXPP-V26-04",
+    certTitle: "Certified Power BI & Automation Analyst",
+    certTag: "SXPB-V26-05",
     deckLink: "/pp-deck",
-    cohortLabel: "Power Platform Cohort 04",
+    cohortLabel: "Power BI Cohort 05",
     color: "#049DCB",
     mastery: [
-      "Canvas & Model-Driven Apps",
-      "Cloud & Desktop Automation",
-      "Star Schema BI Modelling",
-      "DAX & Power Query Mastery",
-      "Copilot Studio Integration",
-      "Enterprise ALM & Governance"
+      "Excel & Power Query",
+      "SQL for Analysts",
+      "Star Schema Modelling",
+      "DAX & Dashboard Design",
+      "Automated Reporting",
+      "PL-300 Exam Readiness"
     ],
   },
 };
@@ -543,7 +559,9 @@ export default function TrainingPage() {
   return (
     <div className="min-h-screen bg-[#FDFDFF] selection:bg-[#7C5CFC]/15 font-sans pb-24 overflow-x-hidden">
       <Script id="training-page-conversion" strategy="afterInteractive">
-        {`gtag('event', 'conversion', {'send_to': 'AW-17962581203/ZfLnCM-w_vobENP5nPVC'});`}
+        {`window.dataLayer = window.dataLayer || [];
+          window.gtag = window.gtag || function(){window.dataLayer.push(arguments);};
+          window.gtag('event', 'conversion', {'send_to': 'AW-17962581203/ZfLnCM-w_vobENP5nPVC'});`}
       </Script>
       <TopNav forceDark />
 
@@ -787,7 +805,7 @@ export default function TrainingPage() {
               {/* Graduate Trust Segment */}
               <div className="px-10 py-6 bg-zinc-50/50 rounded-[32px] border border-zinc-100 flex flex-col gap-4">
                  <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">
-                   {activeTrack === "ai" ? "Trusted by Engineering Teams" : "Microsoft Learning Partner"}
+                   {activeTrack === "ai" ? "Trusted by Working Professionals" : "Microsoft Learning Partner"}
                  </p>
                  <div className="flex gap-4 opacity-30 grayscale saturate-0">
                     {activeTrack === "ai" ? (
@@ -819,7 +837,7 @@ export default function TrainingPage() {
                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-violet-600">Verification Phase</span>
                 </div>
                 <h2 className="text-4xl md:text-5xl font-bold tracking-[-0.03em] text-zinc-950 mb-4 italic uppercase">Capstone Graduation Mastery</h2>
-                <p className="text-zinc-500 font-medium max-w-2xl px-4">Demonstrate your engineering expertise to the world.</p>
+                <p className="text-zinc-500 font-medium max-w-2xl px-4">Prove your skills on a real project from your own work.</p>
              </div>
 
              <div className="max-w-4xl mx-auto">
@@ -834,8 +852,8 @@ export default function TrainingPage() {
                             <h3 className="text-3xl font-bold text-zinc-950 uppercase italic tracking-tight mb-6">Mastery Requirements</h3>
                             <p className="text-lg font-semibold text-zinc-600 leading-relaxed mb-10">
                                {activeTrack === "ai" 
-                                 ? "The capstone requirement is a **full AI product** with all the features taught in the course—autonomous agents, RAG, usage-based billing, and deep observability. Every project is **personally tested by our team** for production-grade reliability and architectural integrity."
-                                 : "The capstone requirement is a **full enterprise Power Platform solution** spanning Power Apps, Power Automate, Power BI analytics, and Copilot integration. Every solution is **personally assessed** for governance, data architecture, and real-world business impact."
+                                 ? "The capstone is a real workflow from your own job, rebuilt with AI: prompts, documents, automations and a team assistant working together. Every project is personally reviewed by our team and measured on hours saved and quality of output."
+                                 : "The capstone is an end-to-end reporting solution on a real business dataset: cleaned data, a star-schema model, an executive Power BI dashboard and automated report delivery. Every solution is personally assessed for accuracy, design and business impact."
                                }
                             </p>
                             
@@ -943,7 +961,7 @@ export default function TrainingPage() {
                     </div>
                     <div className="flex flex-col items-center gap-1">
                        <span className="text-[11px] font-bold uppercase tracking-[0.4em]" style={{ color: cfg.color }}>
-                        {activeTrack === "ai" ? "Applied AI Engineering Hub" : "Power Platform Development Hub"}
+                        {activeTrack === "ai" ? "Applied AI at Work" : "Power BI & Automation Analytics"}
                        </span>
                        <div className="h-[1px] w-32 bg-zinc-200 mt-1" />
                     </div>
@@ -961,8 +979,8 @@ export default function TrainingPage() {
                        <p className="text-[14px] font-bold text-zinc-900 uppercase tracking-[0.4em]">{cfg.certTitle}</p>
                        <p className="text-zinc-500 font-medium text-base leading-relaxed">
                          {activeTrack === "ai"
-                           ? "Awarded for mastering Multi-Agent Orchestration, production-grade RAG architectures, and the deployment of scalable AI systems."
-                           : "Awarded for mastering the Microsoft Power Platform stack, enterprise data modelling, and the delivery of production-grade business solutions."
+                           ? "Awarded for applying AI tools, workflow automation and custom assistants to deliver measurable productivity gains in a real business workflow."
+                           : "Awarded for mastering Excel, SQL, Power BI data modelling, DAX and automated reporting to deliver decision-ready business insights."
                          }
                        </p>
                     </div>
@@ -979,7 +997,7 @@ export default function TrainingPage() {
                        <div className="h-20 w-20 rounded-full border-4 border-double border-violet-100 flex items-center justify-center bg-violet-50/30 transform rotate-12 transition-transform group-hover:rotate-0">
                           <ShieldCheck className="h-8 w-8 text-violet-600/30" />
                           <div className="absolute inset-0 flex items-center justify-center">
-                             <span className="text-[5px] font-bold text-violet-600/20 uppercase tracking-tighter leading-none transform -rotate-45">Certified SXAI Engineer</span>
+                             <span className="text-[5px] font-bold text-violet-600/20 uppercase tracking-tighter leading-none transform -rotate-45">Standex Certified</span>
                           </div>
                        </div>
                     </div>
