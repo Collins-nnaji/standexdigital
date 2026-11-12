@@ -15,7 +15,7 @@ const channels = [
         <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
       </svg>
     ),
-    accent: "#7C5CFC",
+    accent: "#059669",
   },
   {
     label: "Careers & HR",
@@ -75,20 +75,20 @@ const channels = [
         <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
       </svg>
     ),
-    accent: "#ffffff",
+    accent: "#18181b",
   },
 ];
 
 const ContactLocation = () => {
   return (
-    <section className="bg-zinc-950 py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-12 border-t border-white/5" id="reach-us">
+    <section className="bg-zinc-50 py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 border-t border-zinc-100" id="reach-us">
       <div className="max-w-7xl mx-auto">
 
         <div className="mb-12 sm:mb-16">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white leading-tight mb-4">
-            Reach Us Directly.
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-zinc-950 leading-tight mb-4">
+            Reach us directly
           </h2>
-          <p className="text-sm sm:text-base font-medium text-zinc-400 max-w-2xl leading-relaxed">
+          <p className="text-base text-zinc-600 max-w-2xl leading-relaxed">
             Prefer a direct channel? Pick the option that works for you — we respond within one business day.
           </p>
         </div>
@@ -103,7 +103,7 @@ const ContactLocation = () => {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: i * 0.07 }}
-              className="group flex flex-col gap-4 p-6 rounded-[28px] bg-zinc-900 border border-white/5 hover:border-white/10 hover:bg-zinc-800/80 transition-all"
+              className="group flex flex-col gap-4 p-6 rounded-2xl bg-white border border-zinc-200 hover:border-emerald-300 hover:shadow-lg transition-all"
             >
               <div
                 className="h-12 w-12 flex items-center justify-center rounded-2xl transition-colors"
@@ -112,8 +112,8 @@ const ContactLocation = () => {
                 {ch.icon}
               </div>
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-500 mb-1">{ch.label}</p>
-                <p className="text-base font-bold text-white leading-snug">{ch.detail}</p>
+                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-500 mb-1">{ch.label}</p>
+                <p className="text-base font-bold text-zinc-950 leading-snug">{ch.detail}</p>
                 <p className="text-[12px] font-medium text-zinc-500 mt-1">{ch.sub}</p>
               </div>
               <div
@@ -130,14 +130,14 @@ const ContactLocation = () => {
         </div>
 
         {/* London base */}
-        <div className="p-8 rounded-[32px] bg-zinc-900 border border-white/5 flex items-center gap-6">
-          <div className="h-12 w-12 flex items-center justify-center rounded-2xl bg-[#7C5CFC]/10 shrink-0">
-            <Globe className="h-5 w-5 text-[#7C5CFC]" />
+        <div className="p-8 rounded-2xl bg-white border border-zinc-200 flex items-center gap-6">
+          <div className="h-12 w-12 flex items-center justify-center rounded-2xl bg-emerald-50 shrink-0">
+            <Globe className="h-5 w-5 text-emerald-600" />
           </div>
           <div>
             <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-500 mb-1">Global Operations</p>
-            <p className="text-base font-bold text-white">London, United Kingdom</p>
-            <p className="text-[12px] font-medium text-zinc-500 mt-0.5">Serving enterprise clients worldwide from the heart of tech innovation.</p>
+            <p className="text-base font-bold text-zinc-950">London, United Kingdom</p>
+            <p className="text-[12px] font-medium text-zinc-500 mt-0.5">Working with clients across the UK and internationally.</p>
           </div>
         </div>
 

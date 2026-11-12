@@ -4,7 +4,7 @@ import Footer from "@/components/standex-ai/Footer";
 
 export default function Page() {
   return (
-    <div className="flex min-h-[100dvh] flex-col overflow-hidden bg-white">
+    <div data-site className="flex min-h-[100dvh] flex-col overflow-hidden bg-white">
       <TopNav />
       <main className="relative flex-1 flex flex-col z-10">
         <Contact />

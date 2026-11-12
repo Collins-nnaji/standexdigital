@@ -72,9 +72,11 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-a {
-  color: inherit;
-  transition: color 0.2s;
+@layer base {
+  a {
+    color: inherit;
+    transition: color 0.2s;
+  }
 }
 
 /* Must live in @layer base — unlayered rules override Tailwind utilities (e.g. text-white on dark landing). */
@@ -817,13 +819,13 @@ section#how:not(.landing-how-revealed) .landing-how-flow-connector {
     .text-zinc-600, .text-zinc-700, .text-gray-300, .text-gray-400,
     .text-gray-500, .text-gray-600, .text-slate-200, .text-slate-300,
     .text-slate-400, .text-slate-500, .text-slate-600
-  ),
+  ):not([data-site] *),
   :is([class*="bg-zinc-9"], [class*="bg-black"]):is(
     .text-zinc-200, .text-zinc-300, .text-zinc-400, .text-zinc-500,
     .text-zinc-600, .text-zinc-700, .text-gray-300, .text-gray-400,
     .text-gray-500, .text-gray-600, .text-slate-200, .text-slate-300,
     .text-slate-400, .text-slate-500, .text-slate-600
-  ) {
+  ):not([data-site] *) {
     color: #ffffff !important;
   }
 
@@ -845,7 +847,7 @@ section#how:not(.landing-how-revealed) .landing-how-flow-connector {
   color: #18181b !important;
 }
 
-:is(.bg-white, [class*="bg-zinc-50"]) :is(.text-zinc-300, .text-zinc-400, .text-zinc-500, .text-zinc-600, .text-zinc-700) {
+:is(.bg-white, [class*="bg-zinc-50"]) :is(.text-zinc-300, .text-zinc-400, .text-zinc-500, .text-zinc-600, .text-zinc-700):not([data-site] *) {
   color: #3f3f46 !important;
 }
 
@@ -858,8 +860,8 @@ section#how:not(.landing-how-revealed) .landing-how-flow-connector {
   line-height: inherit;
 }
 
-a:is([class*="bg-zinc-9"], [class*="bg-black"], [class*="bg-emerald-"], [class*="bg-violet-"]),
-button:is([class*="bg-zinc-9"], [class*="bg-black"], [class*="bg-emerald-"], [class*="bg-violet-"]) {
+/* Solid dark/brand buttons keep white text. Prefix-anchored so `hover:bg-*` variants don't match. */
+:is(a, button):is([class^="bg-zinc-9"], [class*=" bg-zinc-9"], [class^="bg-black"], [class*=" bg-black"], [class^="bg-emerald-5"]:not([class*="bg-emerald-50"]), [class*=" bg-emerald-6"], [class*=" bg-emerald-7"], [class^="bg-emerald-6"], [class^="bg-violet-"], [class*=" bg-violet-"]):not([data-site] *) {
   color: #ffffff !important;
 }
 

@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, Check, ChevronRight } from "lucide-react";
+import { AlertTriangle, ArrowRight } from "lucide-react";
 import { TopNav } from "@/components/network/TopNav";
 import Footer from "@/components/standex-ai/Footer";
 import { DigitalServiceIcon } from "@/components/digital-growth/DigitalServiceIcon";
 import { GrowthProof } from "@/components/digital-growth/GrowthProof";
-import { digitalGrowthServices } from "@/lib/digital-growth-services";
+import { Breadcrumbs, ButtonLink, CTABand, CheckList, Container, Eyebrow, FAQSection, HeroBackdrop, ProcessSteps, Section, SectionHeading } from "@/components/site/ui";
+import { digitalGrowthServices, getDigitalGrowthService } from "@/lib/digital-growth-services";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -17,30 +18,155 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const service = digitalGrowthServices.find((item) => item.slug === slug);
+  const service = getDigitalGrowthService(slug);
   if (!service) return {};
   return { title: `${service.title} | Standex Digital`, description: service.description };
 }
 
 export default async function DigitalServicePage({ params }: PageProps) {
   const { slug } = await params;
-  const service = digitalGrowthServices.find((item) => item.slug === slug);
+  const service = getDigitalGrowthService(slug);
   if (!service) notFound();
-  const related = digitalGrowthServices.filter((item) => item.slug !== slug).slice(0, 3);
+  const related = digitalGrowthServices.filter((item) => item.slug !== slug);
 
-  return <div className="min-h-screen bg-white text-zinc-950"><TopNav /><main>
-    <section className="relative overflow-hidden bg-zinc-950 px-4 pb-24 pt-36 text-white sm:px-6 sm:pt-40 lg:px-12">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_25%,rgba(16,185,129,.2),transparent_32%),radial-gradient(circle_at_15%_80%,rgba(124,92,252,.16),transparent_34%)]" />
-      <div className="relative mx-auto max-w-7xl"><nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-xs font-bold text-zinc-400"><Link href="/digital-growth" className="hover:text-white">Digital Strategy & Growth</Link><ChevronRight className="h-3.5 w-3.5" /><span className="text-emerald-400">{service.title}</span></nav><div className="mt-12 grid items-end gap-12 lg:grid-cols-[1.15fr_.85fr]"><div><div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-400/15 text-emerald-400"><DigitalServiceIcon name={service.icon} className="h-7 w-7" /></div><p className="mt-8 text-xs font-bold uppercase tracking-[.25em] text-emerald-400">{service.eyebrow}</p><h1 className="mt-4 text-5xl font-bold leading-[.98] tracking-tight sm:text-6xl lg:text-7xl">{service.title}</h1><p className="mt-7 max-w-3xl text-xl font-medium leading-relaxed text-zinc-300">{service.promise}</p><Link href="/Contact" className="mt-9 inline-flex min-h-14 items-center gap-3 rounded-2xl bg-emerald-500 px-7 text-sm font-bold text-white hover:bg-emerald-600">Book a Growth Consultation <ArrowRight className="h-4 w-4" /></Link></div><div className="relative aspect-[4/3] overflow-hidden rounded-[30px] border border-white/10"><Image src="/Woman-consulting.webp" alt="Digital marketing performance and analytics" fill priority sizes="(max-width: 1024px) 100vw, 40vw" className="object-cover" /><div className="absolute inset-0 bg-zinc-950/20" /></div></div></div>
-    </section>
+  return (
+    <div data-site className="min-h-screen bg-white text-zinc-950">
+      <TopNav />
+      <main>
+        {/* Hero */}
+        <section className="relative overflow-hidden pb-20 pt-28 sm:pt-32">
+          <HeroBackdrop />
+          <Container className="relative">
+            <Breadcrumbs items={[{ href: "/", label: "Home" }, { href: "/digital-growth", label: "Digital Growth" }, { label: service.title }]} />
+            <div className="mt-10 grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+              <div>
+                <div className="flex items-center gap-3">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-sm">
+                    <DigitalServiceIcon name={service.icon} className="h-6 w-6" />
+                  </span>
+                  <Eyebrow>{service.eyebrow}</Eyebrow>
+                </div>
+                <h1 className="mt-6 text-4xl font-bold leading-[1.05] tracking-tight sm:text-6xl">{service.title}</h1>
+                <p className="mt-6 max-w-2xl text-xl leading-relaxed text-zinc-600">{service.promise}</p>
+                <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+                  <ButtonLink href="/Contact">Book a consultation</ButtonLink>
+                  <ButtonLink href="#included" variant="outline">What&apos;s included</ButtonLink>
+                </div>
+              </div>
+              <div className="relative">
+                <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-zinc-200 shadow-[0_40px_80px_-40px_rgba(16,24,40,0.45)]">
+                  <Image src={service.image} alt={`${service.title} services`} fill priority sizes="(max-width: 1024px) 100vw, 40vw" className="object-cover" />
+                </div>
+                <div className="absolute -bottom-6 left-4 right-4 grid grid-cols-2 gap-3 rounded-2xl border border-zinc-200 bg-white p-4 shadow-xl sm:left-8 sm:right-8">
+                  {service.metrics.slice(0, 2).map((m) => (
+                    <div key={m.label}>
+                      <p className="text-lg font-bold text-emerald-700">{m.value}</p>
+                      <p className="text-xs font-medium text-zinc-600">{m.label}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </Container>
+        </section>
 
-    <section className="px-4 py-20 sm:px-6 sm:py-28 lg:px-12"><div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[.9fr_1.1fr] lg:gap-20"><div><p className="text-xs font-bold uppercase tracking-[.25em] text-violet-700">The approach</p><h2 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">Commercially focused from the start.</h2><p className="mt-6 text-lg font-medium leading-relaxed text-zinc-600">{service.intro}</p></div><div className="rounded-[30px] border border-zinc-200 bg-zinc-50 p-7 sm:p-9"><h3 className="text-xl font-bold">What this creates</h3><div className="mt-7 grid gap-5 sm:grid-cols-2">{service.outcomes.map(item => <div key={item} className="flex gap-3"><span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700"><Check className="h-3.5 w-3.5" /></span><p className="text-sm font-semibold leading-relaxed text-zinc-700">{item}</p></div>)}</div></div></div></section>
+        {/* Challenges */}
+        <Section tone="muted">
+          <SectionHeading eyebrow="The challenge" title="Common problems we're brought in to fix." intro={service.description} />
+          <div className="mt-12 grid gap-4 md:grid-cols-2">
+            {service.challenges.map((c) => (
+              <article key={c.title} className="flex gap-4 rounded-2xl border border-zinc-200 bg-white p-6">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-600 ring-1 ring-amber-100">
+                  <AlertTriangle className="h-5 w-5" />
+                </span>
+                <div>
+                  <h3 className="font-semibold text-zinc-950">{c.title}</h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-zinc-600">{c.text}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </Section>
 
-    <section className="bg-zinc-950 px-4 py-20 text-white sm:px-6 sm:py-28 lg:px-12"><div className="mx-auto max-w-7xl"><div className="grid gap-10 lg:grid-cols-2"><div><p className="text-xs font-bold uppercase tracking-[.25em] text-emerald-400">What we manage</p><h2 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">The work behind the result.</h2></div><div className="grid gap-px overflow-hidden rounded-[28px] border border-zinc-800 bg-zinc-800 sm:grid-cols-2">{service.deliverables.map((item, index) => <div key={item} className="bg-zinc-950 p-6"><span className="text-xs font-bold text-emerald-500">0{index + 1}</span><p className="mt-4 font-bold text-white">{item}</p></div>)}</div></div></div></section>
+        {/* Approach + outcomes */}
+        <Section>
+          <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
+            <div>
+              <SectionHeading eyebrow="Our approach" title="Commercially focused from day one." intro={service.intro} />
+              <div className="mt-8 rounded-2xl border border-emerald-100 bg-emerald-50/60 p-6">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-emerald-800">Ideal for</p>
+                <CheckList items={service.idealFor} className="mt-4" />
+              </div>
+            </div>
+            <div className="rounded-2xl border border-zinc-200 bg-white p-7 sm:p-9">
+              <h3 className="text-xl font-semibold">What you can expect</h3>
+              <p className="mt-2 text-sm text-zinc-500">The outcomes we design every {service.shortTitle.toLowerCase()} engagement around.</p>
+              <CheckList items={service.outcomes} className="mt-7" />
+            </div>
+          </div>
+        </Section>
 
-    <section className="px-4 py-20 sm:px-6 sm:py-28 lg:px-12"><div className="mx-auto max-w-7xl"><p className="text-xs font-bold uppercase tracking-[.25em] text-zinc-500">Connected capabilities</p><h2 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">Build the wider growth system.</h2><div className="mt-10 grid gap-5 md:grid-cols-3">{related.map(item => <Link key={item.slug} href={`/digital-growth/${item.slug}`} className="group rounded-[26px] border border-zinc-200 p-6 hover:border-emerald-300 hover:shadow-lg"><DigitalServiceIcon name={item.icon} className="h-6 w-6 text-emerald-700" /><h3 className="mt-6 text-xl font-bold">{item.title}</h3><p className="mt-3 text-sm font-medium leading-relaxed text-zinc-600">{item.description}</p><span className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-emerald-700">View service <ArrowRight className="h-4 w-4 group-hover:translate-x-1" /></span></Link>)}</div></div></section>
+        {/* Deliverables */}
+        <Section id="included" tone="mint">
+          <SectionHeading eyebrow="What's included" title="The work behind the result." intro="A complete, senior-led service. We tailor the mix to your goals, but these are the building blocks." />
+          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {service.deliverables.map((d, i) => (
+              <article key={d.title} className="rounded-2xl border border-emerald-100 bg-white p-6">
+                <span className="text-xs font-bold text-emerald-600">{String(i + 1).padStart(2, "0")}</span>
+                <h3 className="mt-3 font-semibold text-zinc-950">{d.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-zinc-600">{d.text}</p>
+              </article>
+            ))}
+          </div>
+        </Section>
 
-    <section className="bg-emerald-500 px-4 py-16 sm:px-6 lg:px-12"><div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-8 lg:flex-row lg:items-center"><div><p className="text-xs font-bold uppercase tracking-[.25em] text-emerald-950/60">Start with the right question</p><h2 className="mt-3 text-3xl font-bold text-white sm:text-4xl">Where can digital make the biggest commercial difference?</h2></div><Link href="/Contact" className="inline-flex min-h-14 shrink-0 items-center gap-3 rounded-2xl bg-zinc-950 px-7 text-sm font-bold text-white">Discuss your growth plan <ArrowRight className="h-4 w-4" /></Link></div></section>
-    <GrowthProof serviceTitle={service.title} />
-  </main><Footer /></div>;
+        {/* Process */}
+        <Section>
+          <SectionHeading eyebrow="How it runs" title="A clear plan for the first 90 days and beyond." />
+          <div className="mt-12">
+            <ProcessSteps steps={service.process} />
+          </div>
+          <div className="mt-12 flex flex-col gap-4 rounded-2xl border border-zinc-200 bg-zinc-50 p-6 md:flex-row md:items-center">
+            <p className="shrink-0 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">Platforms & tools</p>
+            <div className="flex flex-wrap gap-2">
+              {service.tools.map((t) => (
+                <span key={t} className="rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-700">{t}</span>
+              ))}
+            </div>
+          </div>
+        </Section>
+
+        <GrowthProof serviceTitle={service.title} />
+
+        <FAQSection faqs={service.faqs} title={`${service.title}: your questions answered`} />
+
+        {/* Related */}
+        <Section>
+          <SectionHeading eyebrow="Connected capabilities" title="Build the wider growth system." intro="Each service is stronger alongside the others. Here's how the rest of the practice fits together." />
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {related.map((item) => (
+              <Link key={item.slug} href={`/digital-growth/${item.slug}`} className="group rounded-2xl border border-zinc-200 p-6 transition hover:border-emerald-300 hover:shadow-lg">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
+                  <DigitalServiceIcon name={item.icon} className="h-5 w-5" />
+                </span>
+                <h3 className="mt-5 font-semibold">{item.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-zinc-600">{item.description}</p>
+                <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-emerald-700">
+                  View service <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+                </span>
+              </Link>
+            ))}
+          </div>
+        </Section>
+
+        <CTABand
+          eyebrow={service.title}
+          title="Let's see where the biggest opportunity is."
+          text={`Book a free consultation and we'll review your current ${service.shortTitle.toLowerCase()} activity and tell you what we'd change first.`}
+          secondary={{ href: "/digital-growth", label: "All growth services" }}
+        />
+      </main>
+      <Footer />
+    </div>
+  );
 }

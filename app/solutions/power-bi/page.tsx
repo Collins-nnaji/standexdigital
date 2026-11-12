@@ -1,15 +1,14 @@
-import PowerBi from "@/components/standex-ai/PowerBi";
-import { TopNav } from "@/components/network/TopNav";
-import Footer from "@/components/standex-ai/Footer";
+import type { Metadata } from "next";
+import { BISolutionPage } from "@/components/bi/BISolutionPage";
+import { getBISolution } from "@/lib/bi-solutions";
 
-export default async function Page() {
-  return (
-    <div className="flex min-h-[100dvh] flex-col overflow-hidden bg-[#f6fbf8]">
-      <TopNav />
-      <main className="relative flex-1 flex flex-col z-10">
-        <PowerBi />
-      </main>
-      <Footer />
-    </div>
-  );
+const solution = getBISolution("power-bi")!;
+
+export const metadata: Metadata = {
+  title: `Microsoft ${solution.title} Consulting | Standex Digital`,
+  description: solution.description,
+};
+
+export default function Page() {
+  return <BISolutionPage solution={solution} />;
 }
