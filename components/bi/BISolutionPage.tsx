@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { AlertTriangle, ArrowRight, Lock } from "lucide-react";
+import { AlertTriangle, ArrowRight, Info, Lock } from "lucide-react";
 import { TopNav } from "@/components/network/TopNav";
 import Footer from "@/components/standex-ai/Footer";
 import { Breadcrumbs, ButtonLink, CTABand, CheckList, Container, Eyebrow, FAQSection, HeroBackdrop, ProcessSteps, Section, SectionHeading } from "@/components/site/ui";
@@ -9,6 +9,7 @@ import { biSolutions, type BISolution } from "@/lib/bi-solutions";
 export function BISolutionPage({ solution }: { solution: BISolution }) {
   const others = biSolutions.filter((s) => s.slug !== solution.slug);
   const a = solution.accent;
+  const name = solution.displayName ?? solution.title;
 
   return (
     <div data-site className="min-h-screen bg-white text-zinc-950">
@@ -18,7 +19,7 @@ export function BISolutionPage({ solution }: { solution: BISolution }) {
         <section className="relative overflow-hidden pb-20 pt-28 sm:pt-32">
           <HeroBackdrop />
           <Container className="relative">
-            <Breadcrumbs items={[{ href: "/", label: "Home" }, { href: "/data-solutions", label: "BI Solutions" }, { label: solution.title }]} />
+            <Breadcrumbs items={[{ href: "/", label: "Home" }, { href: "/data-solutions", label: "BI Solutions" }, { label: name }]} />
             <div className="mt-10 grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
               <div>
                 <div className="flex items-center gap-3">
@@ -28,7 +29,7 @@ export function BISolutionPage({ solution }: { solution: BISolution }) {
                   <Eyebrow>{solution.eyebrow}</Eyebrow>
                 </div>
                 <h1 className="mt-6 text-4xl font-bold leading-[1.05] tracking-tight sm:text-6xl">
-                  Microsoft {solution.title} <span className="text-emerald-600">consulting & delivery</span>
+                  Microsoft {name} <span className="text-emerald-600">consulting & delivery</span>
                 </h1>
                 <p className="mt-6 max-w-2xl text-xl leading-relaxed text-zinc-600">{solution.promise}</p>
                 <div className="mt-9 flex flex-col gap-3 sm:flex-row">
@@ -38,7 +39,7 @@ export function BISolutionPage({ solution }: { solution: BISolution }) {
               </div>
               <div className="relative">
                 <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-zinc-200 bg-zinc-50 shadow-[0_40px_80px_-40px_rgba(16,24,40,0.45)]">
-                  <Image src={solution.image} alt={`${solution.title} solution example`} fill priority sizes="(max-width: 1024px) 100vw, 40vw" className="object-cover" />
+                  <Image src={solution.image} alt={`${name} solution example`} fill priority sizes="(max-width: 1024px) 100vw, 40vw" className="object-cover" />
                 </div>
                 <div className="absolute -bottom-6 left-4 right-4 flex items-center gap-3 rounded-2xl border border-zinc-200 bg-white p-4 shadow-xl sm:left-8 sm:right-auto">
                   <span className={`h-2.5 w-2.5 rounded-full ${a.dot}`} />
@@ -52,7 +53,7 @@ export function BISolutionPage({ solution }: { solution: BISolution }) {
 
         {/* Challenges */}
         <Section tone="muted">
-          <SectionHeading eyebrow="The challenge" title="Problems we solve with Power Platform every week." intro={solution.description} />
+          <SectionHeading eyebrow="The challenge" title="Problems we solve every week." intro={solution.description} />
           <div className="mt-12 grid gap-4 md:grid-cols-2">
             {solution.challenges.map((c) => (
               <article key={c.title} className="flex gap-4 rounded-2xl border border-zinc-200 bg-white p-6">
@@ -71,7 +72,7 @@ export function BISolutionPage({ solution }: { solution: BISolution }) {
         {/* Approach */}
         <Section>
           <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
-            <SectionHeading eyebrow="Our approach" title={`${solution.title}, designed around how your business works.`} intro={solution.intro} />
+            <SectionHeading eyebrow="Our approach" title={`${name}, designed around how your business works.`} intro={solution.intro} />
             <div className="rounded-2xl border border-zinc-200 bg-white p-7 sm:p-9">
               <h3 className="text-xl font-semibold">What you can expect</h3>
               <CheckList items={solution.outcomes} className="mt-6" />
@@ -92,6 +93,35 @@ export function BISolutionPage({ solution }: { solution: BISolution }) {
             ))}
           </div>
         </Section>
+
+        {/* Spotlight (e.g. Microsoft Fabric & data agents) */}
+        {solution.spotlight && (
+          <Section id="spotlight">
+            <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+              <div>
+                <SectionHeading eyebrow={solution.spotlight.eyebrow} title={solution.spotlight.title} intro={solution.spotlight.intro} />
+                {solution.spotlight.note && (
+                  <div className="mt-8 flex gap-3 rounded-2xl border border-emerald-100 bg-emerald-50/60 p-5">
+                    <Info className="mt-0.5 h-5 w-5 shrink-0 text-emerald-700" />
+                    <p className="text-sm leading-relaxed text-zinc-700">{solution.spotlight.note}</p>
+                  </div>
+                )}
+                <ButtonLink href="/Contact" className="mt-8">Discuss your data platform</ButtonLink>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                {solution.spotlight.items.map((item) => (
+                  <article key={item.title} className="rounded-2xl border border-zinc-200 bg-white p-6 transition hover:border-emerald-200 hover:shadow-[0_12px_40px_-20px_rgba(16,24,40,0.25)]">
+                    {item.tag && (
+                      <span className={item.tag === "Data agents" ? "inline-flex rounded-full bg-zinc-950 px-2.5 py-1 text-[11px] font-semibold text-white" : "inline-flex rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-800 ring-1 ring-emerald-100"}>{item.tag}</span>
+                    )}
+                    <h3 className="mt-4 font-semibold text-zinc-950">{item.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-zinc-600">{item.text}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </Section>
+        )}
 
         {/* Use cases */}
         <Section id="use-cases">
@@ -158,10 +188,10 @@ export function BISolutionPage({ solution }: { solution: BISolution }) {
 
         {/* Connected system */}
         <Section>
-          <SectionHeading eyebrow="Better together" title="Part of one connected BI system." intro="Power Apps captures the data, Power Automate moves it, and Power BI turns it into decisions. Most clients combine two or all three." />
-          <div className="mt-10 grid gap-4 md:grid-cols-2">
+          <SectionHeading eyebrow="Better together" title="Part of one connected BI system." intro="Power Apps captures the data, Power Automate moves it, Power BI and Fabric turn it into decisions, and Copilot Studio lets people ask and act. Most clients combine several." />
+          <div className="mt-10 grid gap-4 md:grid-cols-3">
             {others.map((o) => (
-              <Link key={o.slug} href={o.href} className="group flex items-start gap-5 rounded-2xl border border-zinc-200 p-6 transition hover:border-emerald-300 hover:shadow-lg">
+              <Link key={o.slug} href={o.href} className="group flex flex-col items-start gap-5 rounded-2xl border border-zinc-200 p-6 transition hover:border-emerald-300 hover:shadow-lg">
                 <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-zinc-200 bg-white p-2">
                   <Image src={o.logo} alt="" width={32} height={32} className="h-8 w-8" />
                 </span>
@@ -178,10 +208,10 @@ export function BISolutionPage({ solution }: { solution: BISolution }) {
           </div>
         </Section>
 
-        <FAQSection faqs={solution.faqs} title={`${solution.title}: your questions answered`} />
+        <FAQSection faqs={solution.faqs} title={`${name}: your questions answered`} />
 
         <CTABand
-          eyebrow={`Microsoft ${solution.title}`}
+          eyebrow={`Microsoft ${name}`}
           title="Let's scope your solution."
           text="Tell us about the process or reporting challenge. We'll suggest an approach, an indicative timeline and the licensing you'll need."
           primary={{ href: "/Contact", label: "Discuss your project" }}

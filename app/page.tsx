@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   BarChart3,
+  Bot,
   Building2,
   ClipboardList,
   Compass,
@@ -55,12 +56,13 @@ const practices = [
     number: "02",
     label: "Build capability",
     title: "Business Intelligence Solutions",
-    text: "Power Apps, Power Automate and Power BI combined into connected systems that capture better data, remove manual work and power decisions.",
+    text: "Power Apps, Power Automate, Power BI with Microsoft Fabric, and Copilot Studio agents—connected systems that capture better data, remove manual work and power decisions.",
     image: "/DataIntelligenceLarge.webp",
     links: [
       { href: "/solutions/power-apps", label: "Power Apps", icon: Layers3 },
       { href: "/solutions/power-automate", label: "Power Automate", icon: Workflow },
-      { href: "/solutions/power-bi", label: "Power BI", icon: BarChart3 },
+      { href: "/solutions/power-bi", label: "Power BI & Fabric", icon: BarChart3 },
+      { href: "/solutions/copilot-studio", label: "Copilot Studio", icon: Bot },
     ],
     cta: "Explore BI Solutions",
   },
@@ -91,7 +93,7 @@ const industries = [
   { icon: Wrench, label: "Construction & trades" },
 ];
 
-const platforms = ["Google Ads", "Google Analytics 4", "Meta", "LinkedIn", "HubSpot", "Power Apps", "Power Automate", "Power BI", "Dataverse", "Microsoft Fabric"];
+const platforms = ["Google Ads", "Google Analytics 4", "Meta", "LinkedIn", "HubSpot", "Power Apps", "Power Automate", "Power BI", "Microsoft Fabric", "Fabric data agents", "Copilot Studio", "Dataverse"];
 
 const faqs = [
   { q: "Do we have to use both practices?", a: "No. Many clients start with one—often Google Ads, analytics or a Power BI dashboard. Because both practices share one team, it's easy to add the other when it makes sense, without onboarding a new supplier." },
@@ -128,7 +130,7 @@ export default function HomePage() {
                   <ButtonLink href="#practices" variant="outline">See what we do</ButtonLink>
                 </div>
                 <div className="mt-10 grid max-w-lg grid-cols-3 gap-6 border-t border-zinc-200 pt-6">
-                  {[["2", "specialist practices"], ["8", "core services"], ["1", "accountable team"]].map(([n, l]) => (
+                  {[["2", "specialist practices"], ["9", "core services"], ["1", "accountable team"]].map(([n, l]) => (
                     <div key={l}>
                       <p className="text-3xl font-bold text-zinc-950">{n}</p>
                       <p className="mt-1 text-xs font-medium text-zinc-500">{l}</p>
@@ -161,7 +163,7 @@ export default function HomePage() {
                 <div className="absolute -right-3 top-8 hidden w-56 rounded-2xl border border-zinc-200 bg-white p-4 shadow-xl sm:block lg:-right-8">
                   <p className="text-xs font-semibold text-zinc-500">Connected system</p>
                   <div className="mt-3 space-y-2">
-                    {[["Power Apps", "bg-fuchsia-500"], ["Power Automate", "bg-sky-500"], ["Power BI", "bg-amber-500"]].map(([l, c]) => (
+                    {[["Power Apps", "bg-fuchsia-500"], ["Power Automate", "bg-sky-500"], ["Power BI & Fabric", "bg-amber-500"], ["Copilot Studio", "bg-indigo-500"]].map(([l, c]) => (
                       <div key={l} className="flex items-center gap-2 rounded-lg bg-zinc-50 px-2.5 py-2 text-xs font-semibold text-zinc-800">
                         <span className={`h-2 w-2 rounded-full ${c}`} />
                         {l}

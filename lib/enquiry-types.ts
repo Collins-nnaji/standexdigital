@@ -4,6 +4,8 @@ export const ENQUIRY_TYPES = [
   "Google Ads & Paid Acquisition",
   "Analytics & Measurement",
   "Power Platform Solutions",
+  "Power BI & Microsoft Fabric",
+  "Copilot Studio & AI Agents",
   "AI & Agentic Systems",
   "Training & Academy",
   "Partnership & Collaboration",

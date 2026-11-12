@@ -9,7 +9,7 @@ import { biSolutions } from "@/lib/bi-solutions";
 
 export const metadata: Metadata = {
   title: "Business Intelligence Solutions | Standex Digital",
-  description: "Complete business intelligence systems built with Power Apps, Power Automate and Power BI—from data analysis and implementation to adoption.",
+  description: "Complete business intelligence systems built with Power Apps, Power Automate, Power BI, Microsoft Fabric and Copilot Studio—from data analysis and implementation to adoption.",
 };
 
 const problems = [
@@ -22,7 +22,8 @@ const problems = [
 const journey = [
   { step: "Capture", product: "Power Apps", text: "Frontline teams record jobs, inspections, requests and customers in structured apps—on any device." },
   { step: "Automate", product: "Power Automate", text: "Workflows validate, route and sync that data across Microsoft 365, your CRM, finance and ERP." },
-  { step: "Analyse", product: "Power BI", text: "Trusted models and dashboards give every team the same view of performance, refreshed automatically." },
+  { step: "Analyse", product: "Power BI & Fabric", text: "Trusted models and dashboards give every team the same view of performance, refreshed automatically." },
+  { step: "Ask", product: "Copilot Studio", text: "AI agents and Fabric data agents let people ask questions and get things done in plain English." },
 ];
 
 const delivery = [
@@ -39,7 +40,7 @@ const engagements = [
 ];
 
 const faqs = [
-  { q: "Do we need to use all three products?", a: "No. Many projects start with one—often a Power BI dashboard or an automation. We'll recommend the simplest solution that solves the problem, and design it so other components can be added later." },
+  { q: "Do we need to use every product?", a: "No. Many projects start with one—often a Power BI dashboard, an automation or a Copilot Studio agent. We'll recommend the simplest solution that solves the problem, and design it so other components can be added later." },
   { q: "We already have Microsoft 365. What extra licences will we need?", a: "Many scenarios work with what you already own. Premium connectors, Dataverse and Power BI Pro are the most common additions. We'll give clear licensing recommendations during discovery, so there are no surprises." },
   { q: "Can you work with our existing systems?", a: "Yes. We regularly integrate with Dynamics 365, Salesforce, Xero, Sage, SQL Server, SharePoint and bespoke systems via APIs or, where needed, desktop automation." },
   { q: "How do you make sure people actually use the solution?", a: "Users are involved from discovery onwards, see prototypes early and test before launch. We provide training and measure adoption after go-live." },
@@ -61,7 +62,7 @@ export default function BISolutionsPage() {
                 <Eyebrow>Business Intelligence Solutions</Eyebrow>
                 <h1 className="mt-5 text-4xl font-bold leading-[1.05] tracking-tight sm:text-6xl">Build a complete BI system around how your business works.</h1>
                 <p className="mt-6 max-w-xl text-lg leading-relaxed text-zinc-600">
-                  We combine Microsoft Power Apps, Power Automate and Power BI to capture better data, remove manual work and turn information into decisions your whole organisation trusts.
+                  We combine Microsoft Power Apps, Power Automate, Power BI with Microsoft Fabric, and Copilot Studio to capture better data, remove manual work, turn information into decisions—and let people simply ask.
                 </p>
                 <div className="mt-9 flex flex-col gap-3 sm:flex-row">
                   <ButtonLink href="/Contact">Discuss a BI solution</ButtonLink>
@@ -81,12 +82,12 @@ export default function BISolutionsPage() {
                   <Image src="/Power-BI-Help.webp" alt="Power BI dashboards and data analysis" fill priority sizes="(max-width: 1024px) 100vw, 45vw" className="object-cover object-left-top" />
                 </div>
                 <div className="absolute -bottom-6 left-4 right-4 rounded-2xl border border-zinc-200 bg-white p-4 shadow-xl sm:left-8 sm:right-8">
-                  <div className="grid grid-cols-3 gap-2 text-center">
+                  <div className="grid grid-cols-4 gap-2 text-center">
                     {journey.map((j, i) => (
                       <div key={j.step} className="relative">
                         <p className="text-sm font-semibold text-zinc-950">{j.step}</p>
                         <p className="text-[11px] text-zinc-500">{j.product}</p>
-                        {i < 2 && <ArrowRight className="absolute -right-2 top-2 h-3.5 w-3.5 text-zinc-300" />}
+                        {i < 3 && <ArrowRight className="absolute -right-2 top-2 h-3.5 w-3.5 text-zinc-300" />}
                       </div>
                     ))}
                   </div>
@@ -108,8 +109,8 @@ export default function BISolutionsPage() {
 
         {/* Products */}
         <Section id="products">
-          <SectionHeading eyebrow="One connected Microsoft system" title="Capture. Automate. Analyse." intro="Each product solves a distinct part of the information journey. Together, they create a practical BI system—from frontline input to leadership reporting." />
-          <div className="mt-12 grid gap-5 lg:grid-cols-3">
+          <SectionHeading eyebrow="One connected Microsoft system" title="Capture. Automate. Analyse. Ask." intro="Each product solves a distinct part of the information journey. Together, they create a practical BI system—from frontline input to leadership reporting and AI agents that answer questions." />
+          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
             {biSolutions.map((s) => (
               <Link key={s.slug} href={s.href} className="group flex flex-col rounded-2xl border border-zinc-200 bg-white p-7 transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-[0_24px_50px_-28px_rgba(16,24,40,0.35)]">
                 <div className="flex items-center justify-between">
@@ -136,8 +137,33 @@ export default function BISolutionsPage() {
           </div>
         </Section>
 
-        {/* Example scenario */}
+        {/* Fabric & AI agents band */}
         <Section tone="mint">
+          <div className="grid items-center gap-12 lg:grid-cols-2">
+            <SectionHeading
+              eyebrow="Microsoft Fabric & AI agents"
+              title="A modern data platform—and agents that answer in plain English."
+              intro="When reporting outgrows a few datasets, we build on Microsoft Fabric: OneLake, lakehouses, warehouses and pipelines in one governed platform. On top, Fabric data agents and Copilot Studio let people ask questions of that data and take action, inside Teams and Microsoft 365 Copilot."
+            />
+            <div className="grid gap-4 sm:grid-cols-2">
+              {[
+                { title: "Microsoft Fabric", text: "OneLake, lakehouse, warehouse, Data Factory pipelines and Real-Time Intelligence.", href: "/solutions/power-bi#spotlight" },
+                { title: "Fabric data agents", text: "Conversational Q&A over your governed lakehouse, warehouse and semantic models.", href: "/solutions/power-bi#spotlight" },
+                { title: "Copilot Studio agents", text: "Custom agents grounded in your knowledge that take action through your systems.", href: "/solutions/copilot-studio" },
+                { title: "Copilot in Power BI", text: "Generate report pages, summaries and DAX from a well-prepared semantic model.", href: "/solutions/power-bi" },
+              ].map((c) => (
+                <Link key={c.title} href={c.href} className="group rounded-2xl border border-emerald-100 bg-white p-6 transition hover:border-emerald-300 hover:shadow-lg">
+                  <h3 className="font-semibold text-zinc-950">{c.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-zinc-600">{c.text}</p>
+                  <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-700">Learn more <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" /></span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </Section>
+
+        {/* Example scenario */}
+        <Section>
           <div className="grid items-center gap-12 lg:grid-cols-2">
             <div>
               <SectionHeading eyebrow="How it fits together" title="Example: from site visit to board report—with no re-keying." intro="A typical connected solution for a field-service or operations team." />
@@ -146,7 +172,8 @@ export default function BISolutionsPage() {
                   ["Power Apps", "Engineers complete inspections on a tablet, with photos, signatures and offline support."],
                   ["Power Automate", "Failed checks trigger a remedial job, notify the manager in Teams and update the customer record."],
                   ["Power Automate", "Completed jobs generate a PDF report, email it to the customer and log it in SharePoint."],
-                  ["Power BI", "Leadership sees jobs, first-time-fix rate, compliance and revenue by region—refreshed automatically."],
+                  ["Power BI & Fabric", "Leadership sees jobs, first-time-fix rate, compliance and revenue by region—refreshed automatically."],
+                  ["Copilot Studio", "A manager asks in Teams, \u201cWhich sites failed inspection this week?\u201d—and a Fabric data agent answers instantly."],
                 ].map(([tag, text], i) => (
                   <li key={text} className="flex gap-4 rounded-2xl border border-emerald-100 bg-white p-5">
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zinc-950 text-xs font-bold text-white">{i + 1}</span>

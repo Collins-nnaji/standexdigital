@@ -20,7 +20,8 @@ const columns = [
       { href: "/data-solutions", label: "Overview" },
       { href: "/solutions/power-apps", label: "Power Apps" },
       { href: "/solutions/power-automate", label: "Power Automate" },
-      { href: "/solutions/power-bi", label: "Power BI" },
+      { href: "/solutions/power-bi", label: "Power BI & Fabric" },
+      { href: "/solutions/copilot-studio", label: "Copilot Studio" },
     ],
   },
   {
@@ -50,7 +51,7 @@ export default function Footer() {
           <div>
             <Image src="/StandexLogo.webp" alt="Standex Digital" width={160} height={68} loading="lazy" className="h-12 w-auto" />
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-zinc-400">
-              Two connected practices—digital growth and Microsoft business intelligence—helping established organisations win demand and run on better data.
+              Two connected practices—digital growth and Microsoft business intelligence and AI—helping established organisations win demand and run on better data.
             </p>
             <Link href="/Contact" className="mt-6 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-500">
               Book a consultation <ArrowRight className="h-4 w-4" />

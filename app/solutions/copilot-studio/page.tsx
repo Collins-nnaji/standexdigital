@@ -1,14 +1,14 @@
-import CopilotStudio from "@/components/standex-ai/CopilotStudio";
-import { TopNav } from "@/components/network/TopNav";
-import Footer from "@/components/standex-ai/Footer";
-export default async function Page() {
-  return (
-    <div className="flex min-h-[100dvh] flex-col overflow-hidden bg-[#f6fbf8]">
-      <TopNav />
-      <main className="relative flex-1 flex flex-col z-10">
-        <CopilotStudio />
-      </main>
-      <Footer />
-    </div>
-  );
+import type { Metadata } from "next";
+import { BISolutionPage } from "@/components/bi/BISolutionPage";
+import { getBISolution } from "@/lib/bi-solutions";
+
+const solution = getBISolution("copilot-studio")!;
+
+export const metadata: Metadata = {
+  title: "Microsoft Copilot Studio Consulting | Standex Digital",
+  description: solution.description,
+};
+
+export default function Page() {
+  return <BISolutionPage solution={solution} />;
 }

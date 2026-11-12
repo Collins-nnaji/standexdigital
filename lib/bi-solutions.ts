@@ -1,9 +1,11 @@
 import type { ServiceChallenge, ServiceFaq, ServiceStep } from "./digital-growth-services";
 
 export type BISolution = {
-  slug: "power-apps" | "power-automate" | "power-bi";
+  slug: "power-apps" | "power-automate" | "power-bi" | "copilot-studio";
   href: string;
   title: string;
+  /** Longer name used in the page heading and metadata. Defaults to title. */
+  displayName?: string;
   role: string;
   eyebrow: string;
   description: string;
@@ -20,6 +22,14 @@ export type BISolution = {
   process: ServiceStep[];
   integrations: string[];
   governance: string[];
+  /** Optional feature section highlighted on the product page. */
+  spotlight?: {
+    eyebrow: string;
+    title: string;
+    intro: string;
+    items: { title: string; text: string; tag?: string }[];
+    note?: string;
+  };
   faqs: ServiceFaq[];
 };
 
@@ -174,13 +184,14 @@ export const biSolutions: BISolution[] = [
   {
     slug: "power-bi",
     href: "/solutions/power-bi",
-    title: "Power BI",
+    title: "Power BI & Fabric",
+    displayName: "Power BI & Microsoft Fabric",
     role: "Analyse & decide",
-    eyebrow: "Business intelligence & reporting",
-    description: "Trusted data models, dashboards and reporting that give leaders and teams one shared view of performance.",
-    promise: "Turn scattered data into trusted dashboards that leaders and teams act on.",
+    eyebrow: "BI, Microsoft Fabric & data agents",
+    description: "Trusted data models and dashboards—scaled on Microsoft Fabric and made conversational with Fabric data agents.",
+    promise: "Turn scattered data into trusted dashboards—then let people ask questions of it in plain English with Fabric data agents.",
     intro:
-      "A good dashboard is the visible part of a lot of careful work underneath: connecting sources, cleaning data, agreeing definitions and modelling it properly. We do all of it—so your Power BI reports are fast, accurate and trusted, and the conversation in meetings moves from \"which number is right?\" to \"what should we do?\".",
+      "A good dashboard is the visible part of a lot of careful work underneath: connecting sources, cleaning data, agreeing definitions and modelling it properly. We do all of it—so your Power BI reports are fast, accurate and trusted, and the conversation in meetings moves from \"which number is right?\" to \"what should we do?\". As your data grows, we build on Microsoft Fabric—one platform for data engineering, warehousing, real-time data and Power BI—and add Fabric data agents so people can get answers without building a report.",
     logo: "/PowerBi.svg",
     image: "/Power-Bi.webp",
     accent: { text: "text-amber-700", bg: "bg-amber-50", ring: "ring-amber-100", dot: "bg-amber-500" },
@@ -191,15 +202,18 @@ export const biSolutions: BISolution[] = [
       { title: "Data locked in separate systems", text: "Finance, CRM, operations and marketing data never come together in one view." },
     ],
     capabilities: [
-      { title: "Data integration", text: "Connect ERP, CRM, finance, Excel, SQL and cloud sources into a single model." },
-      { title: "Semantic modelling", text: "Star-schema models and well-structured DAX measures that are fast, accurate and reusable." },
       { title: "Dashboard & report design", text: "Clear, role-specific reports designed around the decisions each audience makes." },
-      { title: "Microsoft Fabric", text: "Lakehouse, dataflows and pipelines for larger, more complex data estates." },
-      { title: "Row-level security", text: "Everyone sees exactly the data they're entitled to—from one report." },
+      { title: "Microsoft Fabric platform", text: "OneLake, lakehouses, warehouses and pipelines that bring all your data into one governed foundation." },
+      { title: "Fabric data agents", text: "Conversational agents that answer business questions in plain English over your lakehouse, warehouse and semantic models." },
+      { title: "Semantic modelling", text: "Star-schema models and well-structured DAX measures that are fast, accurate and reusable." },
+      { title: "Data integration", text: "Connect ERP, CRM, finance, Excel, SQL and cloud sources into a single model." },
+      { title: "Direct Lake models", text: "Semantic models that read straight from OneLake for import-level speed without heavy refresh schedules." },
+      { title: "Copilot in Power BI", text: "Generate report pages, summaries and DAX with Copilot—grounded in a well-prepared semantic model." },
+      { title: "Row-level security", text: "Everyone sees exactly the data they're entitled to—from one report or agent." },
       { title: "Embedded analytics", text: "Power BI reports embedded in Teams, SharePoint, portals or your own applications." },
     ],
     useCases: [
-      { team: "Leadership", examples: ["Executive KPI scorecards", "Board packs", "Strategic performance tracking"] },
+      { team: "Leadership", examples: ["Executive KPI scorecards", "Board packs", "Ask-your-data agents for executives"] },
       { team: "Finance", examples: ["Management accounts", "Budget vs actual", "Cash flow and profitability"] },
       { team: "Sales & Marketing", examples: ["Pipeline and forecast", "Campaign and channel ROI", "Customer segmentation"] },
       { team: "Operations", examples: ["Productivity and utilisation", "Inventory and supply chain", "Service levels and SLAs"] },
@@ -212,16 +226,18 @@ export const biSolutions: BISolution[] = [
       "Fast, intuitive dashboards built around real decisions",
       "Shared KPI definitions documented and governed",
       "Secure access with row-level security",
-      "A scalable data foundation ready for AI and advanced analytics",
+      "A scalable Microsoft Fabric foundation ready for AI and advanced analytics",
+      "Plain-English answers from your data through Fabric data agents",
     ],
     deliverables: [
       { title: "Reporting discovery", text: "Stakeholder interviews to define the decisions, KPIs and audiences." },
-      { title: "Data source assessment", text: "Profile source systems, data quality and refresh requirements." },
+      { title: "Data platform & Fabric assessment", text: "Profile source systems and data quality, and assess whether—and how—Microsoft Fabric fits." },
       { title: "KPI definitions", text: "Agreed, documented metric definitions everyone signs up to." },
-      { title: "Data model & DAX", text: "Optimised semantic models and measures built for performance and reuse." },
+      { title: "Fabric lakehouse & pipelines", text: "OneLake, lakehouse or warehouse design with Data Factory pipelines and Dataflows Gen2." },
+      { title: "Data model & DAX", text: "Optimised semantic models—including Direct Lake—built for performance and reuse." },
       { title: "Report & dashboard design", text: "Wireframes, then polished reports to a consistent design standard." },
-      { title: "Deployment & refresh", text: "Workspaces, gateways, scheduled refresh and deployment pipelines." },
-      { title: "Security & governance", text: "Row-level security, workspace roles and sensitivity labels configured." },
+      { title: "Fabric data agents & Copilot", text: "Configure data agents with the right sources, instructions and example questions, and prepare models for Copilot." },
+      { title: "Deployment, security & governance", text: "Workspaces, refresh, deployment pipelines, row-level security and sensitivity labels." },
       { title: "Training & adoption", text: "Training for report users and self-service authors, plus adoption tracking." },
     ],
     process: [
@@ -230,19 +246,115 @@ export const biSolutions: BISolution[] = [
       { title: "Visualise", text: "Design and build reports iteratively with stakeholder feedback.", duration: "2–4 weeks" },
       { title: "Adopt", text: "Deploy, secure, train and measure usage to embed the reports.", duration: "2 weeks+" },
     ],
-    integrations: ["Excel & SharePoint", "SQL Server & Azure SQL", "Dynamics 365", "Salesforce", "Xero & Sage", "Google Analytics 4", "Dataverse", "Microsoft Fabric", "REST APIs"],
+    integrations: ["Excel & SharePoint", "SQL Server & Azure SQL", "Dynamics 365", "Salesforce", "Xero & Sage", "Google Analytics 4", "Dataverse", "Microsoft Fabric & OneLake", "OneLake shortcuts (Azure, AWS S3, Google Cloud)", "Copilot Studio", "Microsoft Teams", "REST APIs"],
     governance: [
       "Certified, reusable semantic models",
       "Row-level and object-level security",
       "Dev, test and production deployment pipelines",
       "Documented KPI definitions and data lineage",
+      "Fabric capacity monitoring and cost control",
+      "Data agents limited to approved, governed data sources",
     ],
+    spotlight: {
+      eyebrow: "Microsoft Fabric & Fabric data agents",
+      title: "From dashboards to a complete data platform—and a data agent anyone can ask.",
+      intro: "Microsoft Fabric brings data engineering, warehousing, real-time analytics and Power BI together on one platform, with OneLake as a single copy of your data. Fabric data agents then let people ask questions of that data in plain English and get answers grounded in your governed models.",
+      items: [
+        { tag: "Fabric", title: "OneLake as one source of truth", text: "Land data once and use it everywhere. Shortcuts connect Azure, AWS S3 and Google Cloud data without copying it." },
+        { tag: "Fabric", title: "Lakehouse & warehouse", text: "Store and model data at scale using the lakehouse or SQL warehouse pattern that suits your team's skills." },
+        { tag: "Fabric", title: "Data Factory pipelines", text: "Orchestrated pipelines and Dataflows Gen2 replace fragile manual extracts and overnight spreadsheets." },
+        { tag: "Fabric", title: "Real-Time Intelligence", text: "Stream operational, IoT or event data into live dashboards and alerts when timing matters." },
+        { tag: "Data agents", title: "Ask your data in plain English", text: "\"What were sales by region last quarter versus target?\" Fabric data agents generate the query and return the answer." },
+        { tag: "Data agents", title: "Grounded in governed data", text: "Agents use your lakehouses, warehouses and semantic models, respect existing permissions, and follow instructions and example queries we configure." },
+        { tag: "Data agents", title: "Available where people work", text: "Publish data agents for use in Microsoft Teams and Microsoft 365 Copilot, or connect them to agents built in Copilot Studio." },
+        { tag: "Platform", title: "Capacity & cost governance", text: "Right-size Fabric capacity, monitor usage and keep spend predictable as adoption grows." },
+      ],
+      note: "Not every organisation needs Fabric on day one. We'll tell you honestly whether Power BI Pro is enough today and design a path that scales when you are ready.",
+    },
     faqs: [
       { q: "What licences do we need for Power BI?", a: "Report authors and viewers typically need Power BI Pro, or Premium Per User for advanced features. Larger organisations may benefit from Fabric capacity. We'll model the options so you only pay for what you need." },
       { q: "Can you improve our existing Power BI reports?", a: "Yes. We often take over existing reports to fix performance, rebuild data models, standardise design and consolidate duplicated datasets." },
       { q: "How long does a Power BI project take?", a: "A focused departmental dashboard is often delivered in four to six weeks. Organisation-wide reporting is delivered in phases, starting with the highest-value area." },
       { q: "Will reports update automatically?", a: "Yes. We set up scheduled refresh—through a data gateway for on-premises sources—so reports stay current without manual exports." },
+      { q: "What is Microsoft Fabric, and do we need it?", a: "Fabric is Microsoft's unified data platform, combining data engineering, data warehousing, real-time analytics and Power BI on a single copy of data in OneLake. It's a strong fit when you have many data sources, large volumes or a need for a proper data platform. Smaller reporting needs are often well served by Power BI alone—we'll recommend what fits." },
+      { q: "What are Fabric data agents?", a: "Fabric data agents are conversational AI agents you configure over your Fabric data—lakehouses, warehouses, semantic models and KQL databases. Users ask questions in plain English and the agent generates the query, returns the answer and respects existing data permissions. They require a paid Fabric capacity; we'll confirm current requirements for your tenant." },
+      { q: "Can data agents be used in Teams or with Copilot Studio?", a: "Yes. Fabric data agents can be published for use in Microsoft 365 Copilot and Teams, and connected to agents built in Microsoft Copilot Studio—so a single assistant can answer data questions and also take actions." },
       { q: "Can our team build their own reports afterwards?", a: "Absolutely. A well-designed, certified data model makes safe self-service possible, and we provide training to help your analysts build on it." },
+    ],
+  },
+  {
+    slug: "copilot-studio",
+    href: "/solutions/copilot-studio",
+    title: "Copilot Studio",
+    displayName: "Copilot Studio",
+    role: "Ask & act",
+    eyebrow: "AI agents for your business",
+    description: "Custom AI agents that answer questions from your knowledge and data, and take action through your systems and workflows.",
+    promise: "Build secure AI agents that answer questions, handle requests and take action—inside Teams, Microsoft 365 Copilot and your website.",
+    intro:
+      "Microsoft Copilot Studio lets organisations build their own AI agents—grounded in their policies, documents and data, and connected to the systems where work gets done. We design agents around specific, valuable jobs, connect them to trusted knowledge, Power Automate flows and Fabric data agents, and put the guardrails, testing and analytics in place so they can be used with confidence.",
+    logo: "/CopilotStudio.svg",
+    image: "/Copilot.webp",
+    accent: { text: "text-indigo-700", bg: "bg-indigo-50", ring: "ring-indigo-100", dot: "bg-indigo-500" },
+    challenges: [
+      { title: "The same questions, every day", text: "HR, IT and customer teams spend hours answering repeat questions that are already documented somewhere." },
+      { title: "Knowledge is hard to find", text: "Policies, procedures and product information are scattered across SharePoint, websites and inboxes." },
+      { title: "Generic AI isn't trusted", text: "Public chatbots don't know your business, can't access your systems and raise data-protection concerns." },
+      { title: "Requests still need manual handling", text: "Even simple tasks—booking, logging a ticket, checking an order—need someone to pick them up." },
+    ],
+    capabilities: [
+      { title: "Knowledge agents", text: "Answer questions from SharePoint, websites, files and Dataverse—with citations back to the source." },
+      { title: "Generative orchestration", text: "Agents that understand intent and choose the right knowledge, topic or action to respond." },
+      { title: "Actions & connectors", text: "Take action in Microsoft 365, Dynamics 365 and 1,000+ systems via connectors and Power Automate flows." },
+      { title: "Autonomous agents", text: "Agents triggered by events—a new email, form or record—that carry out multi-step work without being asked." },
+      { title: "Fabric data agent integration", text: "Connect a Fabric data agent so your Copilot can answer data questions from governed business data." },
+      { title: "Multi-channel deployment", text: "Publish to Microsoft Teams, Microsoft 365 Copilot, your website and other channels from one build." },
+    ],
+    useCases: [
+      { team: "HR & People", examples: ["Policy and benefits Q&A", "Onboarding assistant", "Leave and absence requests"] },
+      { team: "IT", examples: ["Service desk triage", "Password and access requests", "How-to guidance"] },
+      { team: "Customer Service", examples: ["Website customer assistant", "Order and case status", "Hand-off to a live agent"] },
+      { team: "Sales", examples: ["Product and pricing Q&A", "Proposal and RFP support", "CRM updates by chat"] },
+      { team: "Finance & Operations", examples: ["Expense and procurement queries", "Supplier questions", "Ask-your-data via Fabric agents"] },
+      { team: "Leadership", examples: ["Performance Q&A over Power BI and Fabric", "Meeting and report summaries", "Policy look-ups"] },
+    ],
+    outcomes: [
+      "Fast, accurate answers grounded in your own content",
+      "Repeat requests handled automatically, around the clock",
+      "Agents available inside Teams and Microsoft 365 Copilot",
+      "Actions completed through secure, approved connections",
+      "Clear guardrails, testing and human hand-off",
+      "Analytics showing usage, resolution and gaps in knowledge",
+    ],
+    deliverables: [
+      { title: "Use-case discovery", text: "Identify and prioritise the agent scenarios with the clearest value and lowest risk." },
+      { title: "Knowledge preparation", text: "Organise and tidy the SharePoint content, documents and sites the agent will rely on." },
+      { title: "Agent design", text: "Scope, instructions, tone, topics and escalation paths agreed before build." },
+      { title: "Agent build", text: "Copilot Studio agent with knowledge sources, topics and generative orchestration." },
+      { title: "Actions & integrations", text: "Power Automate flows, connectors and Fabric data agents so the agent can act and answer data questions." },
+      { title: "Testing & guardrails", text: "Structured test sets, content moderation, authentication and data-loss-prevention policies." },
+      { title: "Deployment", text: "Publish to Teams, Microsoft 365 Copilot or your website with the right access controls." },
+      { title: "Analytics & improvement", text: "Monitor conversations and resolution rates, and improve knowledge and topics over time." },
+    ],
+    process: [
+      { title: "Discover", text: "Choose the first use case, define success and review the knowledge available.", duration: "1–2 weeks" },
+      { title: "Prototype", text: "A working agent prototype tested with a small group of real users.", duration: "1–2 weeks" },
+      { title: "Build & secure", text: "Add actions, integrations, guardrails and authentication; test thoroughly.", duration: "2–6 weeks" },
+      { title: "Launch & improve", text: "Roll out, monitor analytics and expand to new scenarios.", duration: "Ongoing" },
+    ],
+    integrations: ["Microsoft Teams", "Microsoft 365 Copilot", "SharePoint", "Dataverse", "Power Automate", "Fabric data agents", "Dynamics 365", "ServiceNow", "Salesforce", "Websites & custom channels"],
+    governance: [
+      "Agents run inside your Microsoft tenant and Power Platform environments",
+      "Authentication through Microsoft Entra ID",
+      "Data loss prevention and connector policies enforced",
+      "Conversation analytics, audit and human hand-off",
+    ],
+    faqs: [
+      { q: "What's the difference between Microsoft 365 Copilot and Copilot Studio?", a: "Microsoft 365 Copilot is a general assistant across Word, Outlook, Teams and more. Copilot Studio is where you build your own agents for specific jobs, with your knowledge, data and actions—and those agents can be used inside Microsoft 365 Copilot and Teams." },
+      { q: "How is Copilot Studio licensed?", a: "Copilot Studio is licensed on capacity—Copilot Credits bought as prepaid packs or pay-as-you-go—and some agent usage is covered for Microsoft 365 Copilot users. We'll estimate expected usage and recommend the most cost-effective option." },
+      { q: "Will the agent make things up?", a: "We ground agents in your approved knowledge, require citations, configure instructions and content moderation, and test against real questions before launch. Agents can also hand off to a person when they're not confident." },
+      { q: "Can an agent answer questions from our Power BI or Fabric data?", a: "Yes. By connecting a Fabric data agent, your Copilot Studio agent can answer questions from governed lakehouse, warehouse and semantic-model data while respecting existing permissions." },
+      { q: "Is our data safe?", a: "Agents run within your Microsoft tenant, use Entra ID authentication and respect your data-loss-prevention policies. We design access so the agent only uses sources approved for its audience." },
     ],
   },
 ];

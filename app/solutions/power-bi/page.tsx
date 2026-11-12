@@ -5,7 +5,7 @@ import { getBISolution } from "@/lib/bi-solutions";
 const solution = getBISolution("power-bi")!;
 
 export const metadata: Metadata = {
-  title: `Microsoft ${solution.title} Consulting | Standex Digital`,
+  title: `Microsoft ${solution.displayName ?? solution.title} Consulting | Standex Digital`,
   description: solution.description,
 };
 
