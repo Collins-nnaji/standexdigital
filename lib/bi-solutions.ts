@@ -1,11 +1,21 @@
 import type { ServiceChallenge, ServiceFaq, ServiceStep } from "./digital-growth-services";
 
 export type BISolution = {
-  slug: "power-apps" | "power-automate" | "power-bi" | "copilot-studio";
+  slug: "power-apps" | "power-automate" | "power-bi" | "copilot-studio" | "salesforce";
   href: string;
   title: string;
   /** Longer name used in the page heading and metadata. Defaults to title. */
   displayName?: string;
+  /** Platform vendor shown before the name in headings. Defaults to "Microsoft". */
+  vendor?: string;
+  /** Intro for the integrations band. */
+  integrationsIntro?: string;
+  /** Optional product grid, e.g. the Salesforce clouds we work with. */
+  products?: { eyebrow: string; title: string; intro: string; items: { name: string; summary: string; points: string[] }[] };
+  /** Optional illustrated diagram section. */
+  diagram?: { eyebrow: string; title: string; intro: string; src: string; alt: string; points: string[] };
+  /** Optional engagement models. */
+  engagements?: { name: string; tag: string; text: string; items: string[]; featured?: boolean }[];
   role: string;
   eyebrow: string;
   description: string;
@@ -29,6 +39,7 @@ export type BISolution = {
     intro: string;
     items: { title: string; text: string; tag?: string }[];
     note?: string;
+    cta?: string;
   };
   faqs: ServiceFaq[];
 };
@@ -355,6 +366,135 @@ export const biSolutions: BISolution[] = [
       { q: "Will the agent make things up?", a: "We ground agents in your approved knowledge, require citations, configure instructions and content moderation, and test against real questions before launch. Agents can also hand off to a person when they're not confident." },
       { q: "Can an agent answer questions from our Power BI or Fabric data?", a: "Yes. By connecting a Fabric data agent, your Copilot Studio agent can answer questions from governed lakehouse, warehouse and semantic-model data while respecting existing permissions." },
       { q: "Is our data safe?", a: "Agents run within your Microsoft tenant, use Entra ID authentication and respect your data-loss-prevention policies. We design access so the agent only uses sources approved for its audience." },
+    ],
+  },
+  {
+    slug: "salesforce",
+    href: "/solutions/salesforce",
+    title: "Salesforce",
+    displayName: "Salesforce CRM & Analytics",
+    vendor: "",
+    role: "Sell & serve",
+    eyebrow: "CRM implementation, integration & analytics",
+    description: "Salesforce implementations, optimisation and integrations that give sales, service and marketing one trusted view of every customer—and feed reliable data into Power BI and Fabric.",
+    promise: "Make Salesforce the CRM your teams actually rely on—clean data, simple processes and reporting leadership trusts.",
+    intro:
+      "Salesforce is the world's most widely used CRM, but its value depends entirely on how it's set up. Many organisations pay for licences their teams barely use: records are incomplete, processes live outside the system and reports don't match finance. We implement, rescue and extend Salesforce around how you actually sell and serve customers—then connect it to the rest of your business, including Microsoft 365, ERP and Power BI, so CRM data drives real decisions.",
+    logo: "/salesforce/crm-icon.svg",
+    image: "/salesforce/crm-dashboard.svg",
+    accent: { text: "text-cyan-700", bg: "bg-cyan-50", ring: "ring-cyan-100", dot: "bg-cyan-500" },
+    challenges: [
+      { title: "Low user adoption", text: "Sales teams keep notes in spreadsheets and inboxes because Salesforce feels slow, cluttered or irrelevant to their day." },
+      { title: "Dirty, duplicated data", text: "Duplicate accounts, missing fields and inconsistent stages make pipeline reports unreliable." },
+      { title: "An org that grew without a plan", text: "Years of custom fields, overlapping automations and old Process Builder flows make every change risky." },
+      { title: "CRM disconnected from the business", text: "Orders, invoices and support data live in other systems, so nobody sees the full customer picture." },
+      { title: "Reporting nobody trusts", text: "Forecasts in Salesforce don't match finance, and leaders still ask for numbers in Excel." },
+      { title: "Unclear AI roadmap", text: "Agentforce and Einstein promise a lot, but without clean data and clear use cases it's hard to know where to start." },
+    ],
+    capabilities: [
+      { title: "Implementation & configuration", text: "Objects, page layouts, record types, validation rules and permission sets designed around your sales and service process." },
+      { title: "Org health check & rescue", text: "A structured review of an existing org with a prioritised plan to simplify, fix and modernise." },
+      { title: "Flow automation", text: "Lead routing, approvals, reminders and record updates built in Salesforce Flow—replacing legacy Workflow Rules and Process Builder." },
+      { title: "Data migration & quality", text: "Migration from spreadsheets, legacy CRMs or Dynamics, with de-duplication, matching rules and ongoing data-quality controls." },
+      { title: "Integration", text: "Connect Salesforce with ERP, finance, e-commerce, Microsoft 365 and Teams through APIs, MuleSoft or Power Automate." },
+      { title: "Reports & dashboards", text: "Native Salesforce reports and dashboards for day-to-day management, with consistent definitions across teams." },
+      { title: "Salesforce to Power BI & Fabric", text: "Bring Salesforce data into Power BI and Microsoft Fabric to combine CRM with finance, operations and marketing." },
+      { title: "Agentforce & Einstein AI", text: "Identify, configure and govern AI agents and predictive features once the data foundation is ready." },
+      { title: "Custom development", text: "Lightning Web Components and Apex where configuration isn't enough—built, tested and documented properly." },
+    ],
+    products: {
+      eyebrow: "Salesforce clouds",
+      title: "The Salesforce products we implement and support.",
+      intro: "We focus on the clouds most mid-sized organisations rely on, and design them to work together rather than as separate projects.",
+      items: [
+        { name: "Sales Cloud", summary: "Lead-to-cash for B2B and B2C sales teams.", points: ["Lead management & routing", "Opportunity stages & forecasting", "Quotes & products", "Territory and team selling"] },
+        { name: "Service Cloud", summary: "Case management and customer support at scale.", points: ["Omni-channel case routing", "Entitlements & SLAs", "Knowledge base", "Customer service console"] },
+        { name: "Marketing Cloud & Account Engagement", summary: "B2C journeys and B2B marketing automation.", points: ["Email & journey automation", "Lead scoring & grading", "Campaign attribution", "Sales & marketing alignment"] },
+        { name: "Experience Cloud", summary: "Branded portals for customers, partners and members.", points: ["Self-service help centres", "Partner deal registration", "Secure document sharing", "Single sign-on"] },
+        { name: "Data Cloud", summary: "Unified customer profiles across systems.", points: ["Identity resolution", "Real-time segments", "Calculated insights", "Foundation for AI"] },
+        { name: "Agentforce", summary: "AI agents that work alongside your teams.", points: ["Sales & service agents", "Grounded in CRM data", "Guardrails & trust layer", "Human hand-off"] },
+      ],
+    },
+    diagram: {
+      eyebrow: "How it connects",
+      title: "Salesforce at the centre of a connected customer data platform.",
+      intro: "CRM data is most valuable when it flows. We design the integration layer so Salesforce stays in sync with operations and finance, and so its history lands in Power BI and Fabric for analysis alongside everything else.",
+      src: "/salesforce/integration-architecture.svg",
+      alt: "Diagram showing Salesforce clouds connected through APIs, MuleSoft, Power Automate and Fabric pipelines to Power BI, Microsoft Fabric, Teams and ERP systems",
+      points: [
+        "Two-way sync with ERP and finance for orders, invoices and customers",
+        "Salesforce history in Fabric's OneLake for trend and cohort analysis",
+        "Power BI dashboards combining pipeline with revenue and margin",
+        "Teams and Outlook notifications and approvals for deals and cases",
+      ],
+    },
+    spotlight: {
+      eyebrow: "Salesforce + Microsoft",
+      title: "Use Salesforce for CRM and Microsoft for everything else—seamlessly.",
+      intro: "Most organisations running Salesforce also run Microsoft 365, Teams and Power BI. Because we work across both ecosystems, we can make them work as one instead of two islands.",
+      items: [
+        { tag: "Power BI", title: "CRM analytics in Power BI", text: "Pipeline, win rates and service KPIs modelled in Power BI using the Salesforce connectors—combined with finance and operations data." },
+        { tag: "Fabric", title: "Salesforce in Microsoft Fabric", text: "Land Salesforce objects in OneLake with Fabric pipelines or Dataflows Gen2 to keep full history and power Fabric data agents." },
+        { tag: "Automation", title: "Power Automate connectors", text: "Trigger flows from Salesforce records to update SharePoint, generate documents or sync with other Microsoft systems." },
+        { tag: "Collaboration", title: "Teams & Outlook integration", text: "Bring Salesforce records into Teams and Outlook so sellers can update CRM without leaving the tools they live in." },
+        { tag: "AI", title: "Copilot Studio & Agentforce", text: "Connect Copilot Studio agents to Salesforce data, or use Agentforce inside Salesforce—we'll help you choose the right fit." },
+        { tag: "Governance", title: "One identity, one set of rules", text: "Single sign-on with Microsoft Entra ID and consistent data-protection policies across both platforms." },
+      ],
+      note: "Already decided between Salesforce and Dynamics 365? We'll work with what you have. Still deciding? We'll give you an impartial view based on your processes and existing Microsoft investment.",
+      cta: "Discuss your Salesforce setup",
+    },
+    useCases: [
+      { team: "Sales", examples: ["Lead capture, scoring and routing", "Pipeline management & forecasting", "Quotes and approval workflows"] },
+      { team: "Customer Service", examples: ["Case management with SLAs", "Self-service help centre", "Customer satisfaction tracking"] },
+      { team: "Marketing", examples: ["Campaign attribution to revenue", "Nurture journeys for new leads", "Event and webinar management"] },
+      { team: "Account Management", examples: ["Renewals and upsell tracking", "Customer health scores", "Key account plans"] },
+      { team: "Partners & Channels", examples: ["Partner portal & deal registration", "Channel performance reporting", "Shared enablement content"] },
+      { team: "Leadership & Finance", examples: ["Revenue forecasting in Power BI", "Bookings vs billing reconciliation", "Board-ready customer KPIs"] },
+    ],
+    outcomes: [
+      "A Salesforce org your teams find quick and useful",
+      "Clean, de-duplicated customer and pipeline data",
+      "Automated lead routing, approvals and follow-up",
+      "Salesforce connected to ERP, finance and Microsoft 365",
+      "Forecasts and dashboards leadership trusts",
+      "A clear, governed roadmap for Agentforce and AI",
+    ],
+    deliverables: [
+      { title: "Discovery & process mapping", text: "Workshops with sales, service, marketing and finance to map how customers are won and served." },
+      { title: "Solution design", text: "Data model, security model, automation design and integration architecture documented before build." },
+      { title: "Configuration & build", text: "Objects, layouts, Lightning pages, Flows and permission sets configured to best practice." },
+      { title: "Data migration", text: "Cleansing, de-duplication and migration of accounts, contacts, opportunities and history." },
+      { title: "Integrations", text: "APIs, MuleSoft or Power Automate connections to ERP, finance, website and Microsoft 365." },
+      { title: "Reporting & Power BI", text: "Salesforce dashboards for daily use, plus Power BI models for cross-business analysis." },
+      { title: "Testing, training & go-live", text: "Structured UAT, role-based training and a managed cut-over plan." },
+      { title: "Post-launch optimisation", text: "Adoption tracking, release management and a backlog of improvements." },
+    ],
+    process: [
+      { title: "Discover & design", text: "Map processes, audit data and agree the target design and roadmap.", duration: "2–4 weeks" },
+      { title: "Build in sprints", text: "Configure, automate and integrate with fortnightly demos and feedback.", duration: "4–12 weeks" },
+      { title: "Migrate & test", text: "Clean and load data, run UAT and prepare users with training.", duration: "2–4 weeks" },
+      { title: "Launch & optimise", text: "Go live, support adoption and keep improving each release.", duration: "Ongoing" },
+    ],
+    engagements: [
+      { name: "Salesforce Health Check", tag: "Fixed scope · 2–3 weeks", text: "An independent review of your org's configuration, data quality, automation, security and adoption—with a prioritised improvement plan.", items: ["Org & technical-debt review", "Data quality assessment", "Security & sharing review", "User adoption interviews", "Prioritised roadmap"] },
+      { name: "Implementation & Rescue", tag: "Project · 8–20 weeks", featured: true, text: "A new Salesforce implementation, or a structured rebuild of an org that isn't working—designed around your processes.", items: ["Discovery & solution design", "Configuration & automation", "Data migration", "Integrations & Power BI", "Training & go-live support"] },
+      { name: "Managed Salesforce Support", tag: "Monthly retainer", text: "Ongoing admin, enhancements and release management from a team that knows your org and your business.", items: ["Admin & user support", "Enhancement backlog", "Seasonal release reviews", "Data-quality monitoring", "Quarterly roadmap reviews"] },
+    ],
+    integrations: ["Microsoft Teams & Outlook", "Power BI", "Microsoft Fabric", "Power Automate", "Copilot Studio", "MuleSoft", "SAP & NetSuite", "Xero & Sage", "Dynamics 365 Business Central", "Shopify & e-commerce", "DocuSign & Adobe Sign", "Google Workspace"],
+    integrationsIntro: "Salesforce connects to almost anything through its APIs. We design integrations that are reliable, monitored and documented—not point-to-point scripts that break quietly.",
+    governance: [
+      "Profiles, permission sets and sharing rules based on least privilege",
+      "Sandbox-based development with tested, versioned deployments",
+      "Data-quality rules, duplicate management and field history tracking",
+      "Single sign-on and MFA, with Agentforce guardrails configured",
+    ],
+    faqs: [
+      { q: "Do you only work with Microsoft, or with Salesforce too?", a: "Both. Many of our clients run Salesforce for CRM alongside Microsoft 365, Teams and Power BI. Working across both lets us connect them properly rather than treating them as separate worlds." },
+      { q: "Can you fix our existing Salesforce org rather than starting again?", a: "Usually, yes. A Health Check shows what to keep, what to simplify and what to rebuild. Most organisations get the biggest gains from tidying data, simplifying page layouts and replacing legacy automation—without a full re-implementation." },
+      { q: "How long does a Salesforce implementation take?", a: "A focused Sales Cloud implementation is often live in 8–12 weeks. Multi-cloud programmes with complex integrations are delivered in phases, with the first release typically within three months." },
+      { q: "Can Salesforce data go into Power BI?", a: "Yes. Power BI includes Salesforce connectors, and for larger volumes or longer history we land Salesforce data in Microsoft Fabric. Either way, CRM data can sit alongside finance and operations in one model." },
+      { q: "Should we use Agentforce?", a: "Agentforce can be powerful for sales and service, but it relies on clean, well-structured data and clear use cases. We help you get the foundation right first, then pilot agents where the value is clearest." },
+      { q: "Do you help with licensing?", a: "We'll review which Salesforce editions and add-ons you actually need and identify unused licences, so you only pay for what delivers value. Licences are purchased directly from Salesforce." },
     ],
   },
 ];

@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, BarChart3, Bot, ChevronDown, ChevronRight, Layers3, Mail, Megaphone, Menu, Search, Target, Workflow, X } from "lucide-react";
+import { ArrowRight, BarChart3, Bot, ChevronDown, ChevronRight, Cloud, Layers3, Mail, Megaphone, Menu, Search, Target, Workflow, X } from "lucide-react";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils";
@@ -37,12 +37,13 @@ const navigation: NavItem[] = [
     href: "/data-solutions",
     label: "BI Solutions",
     menu: {
-      overview: { href: "/data-solutions", label: "Business Intelligence Solutions", text: "Power Apps, Power Automate, Power BI with Microsoft Fabric, and Copilot Studio—one connected system for data, decisions and AI agents." },
+      overview: { href: "/data-solutions", label: "Business Intelligence Solutions", text: "Power Platform, Power BI & Fabric, Copilot Studio and Salesforce—one connected system for customers, data, decisions and AI agents." },
       items: [
         { href: "/solutions/power-apps", label: "Power Apps", text: "Custom business applications", icon: Layers3 },
         { href: "/solutions/power-automate", label: "Power Automate", text: "Workflow & process automation", icon: Workflow },
         { href: "/solutions/power-bi", label: "Power BI & Fabric", text: "Dashboards, Fabric & data agents", icon: BarChart3 },
         { href: "/solutions/copilot-studio", label: "Copilot Studio", text: "Custom AI agents", icon: Bot },
+        { href: "/solutions/salesforce", label: "Salesforce", text: "CRM implementation & integration", icon: Cloud },
       ],
     },
   },

@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" font-family="Inter, 'Segoe UI', Arial, sans-serif" role="img" aria-label="Illustrated CRM dashboard showing a sales pipeline, KPIs and an AI assistant">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e8f6fd"/>
+      <stop offset="1" stop-color="#ecfdf5"/>
+    </linearGradient>
+    <linearGradient id="area" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#10b981" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#10b981" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="sh" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#0f172a" flood-opacity=".12"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="900" fill="url(#bg)"/>
+  <circle cx="1080" cy="120" r="220" fill="#bae6fd" opacity=".35"/>
+  <circle cx="120" cy="820" r="200" fill="#a7f3d0" opacity=".35"/>
+
+  <!-- window -->
+  <g filter="url(#sh)">
+    <rect x="70" y="70" width="1060" height="760" rx="22" fill="#fff"/>
+  </g>
+  <rect x="70" y="70" width="1060" height="56" rx="22" fill="#f8fafc"/>
+  <rect x="70" y="104" width="1060" height="22" fill="#f8fafc"/>
+  <circle cx="104" cy="98" r="7" fill="#f87171"/><circle cx="128" cy="98" r="7" fill="#fbbf24"/><circle cx="152" cy="98" r="7" fill="#34d399"/>
+  <rect x="420" y="86" width="360" height="24" rx="12" fill="#eef2f7"/>
+  <text x="600" y="103" font-size="13" fill="#64748b" text-anchor="middle">crm.yourcompany.com / sales</text>
+
+  <!-- sidebar -->
+  <rect x="70" y="126" width="190" height="704" fill="#0b78c9"/>
+  <rect x="70" y="806" width="190" height="24" fill="#0b78c9"/>
+  <rect x="94" y="152" width="34" height="34" rx="9" fill="#fff" opacity=".95"/>
+  <path d="M101 177h16a5 5 0 0 0 .9-9.9A7 7 0 0 0 104.6 166 5 5 0 0 0 101 177Z" fill="#0b78c9"/>
+  <text x="140" y="175" font-size="17" font-weight="700" fill="#fff">Sales</text>
+  <g font-size="14" fill="#e0f2fe">
+    <rect x="86" y="214" width="158" height="38" rx="9" fill="#fff" opacity=".16"/>
+    <text x="108" y="238" font-weight="600" fill="#fff">Home</text>
+    <text x="108" y="284">Leads</text>
+    <text x="108" y="324">Accounts</text>
+    <text x="108" y="364">Opportunities</text>
+    <text x="108" y="404">Cases</text>
+    <text x="108" y="444">Campaigns</text>
+    <text x="108" y="484">Reports</text>
+  </g>
+  <rect x="86" y="720" width="158" height="84" rx="12" fill="#fff" opacity=".12"/>
+  <text x="102" y="750" font-size="12" fill="#bae6fd">Data quality</text>
+  <text x="102" y="782" font-size="26" font-weight="700" fill="#fff">96%</text>
+  <rect x="176" y="768" width="54" height="8" rx="4" fill="#fff" opacity=".25"/>
+  <rect x="176" y="768" width="48" height="8" rx="4" fill="#34d399"/>
+
+  <!-- header -->
+  <text x="290" y="172" font-size="24" font-weight="700" fill="#0f172a">Revenue overview</text>
+  <text x="290" y="196" font-size="13" fill="#64748b">This quarter · All regions</text>
+  <rect x="958" y="152" width="144" height="38" rx="19" fill="#059669"/>
+  <text x="1030" y="176" font-size="14" font-weight="600" fill="#fff" text-anchor="middle">+ New deal</text>
+
+  <!-- KPI cards -->
+  <g font-size="12" fill="#64748b">
+    <rect x="290" y="222" width="194" height="96" rx="14" fill="#f8fafc" stroke="#e2e8f0"/>
+    <text x="308" y="248">Pipeline</text>
+    <text x="308" y="284" font-size="26" font-weight="700" fill="#0f172a">£2.4m</text>
+    <text x="308" y="304" fill="#059669" font-weight="600">▲ 12% vs last qtr</text>
+
+    <rect x="498" y="222" width="194" height="96" rx="14" fill="#f8fafc" stroke="#e2e8f0"/>
+    <text x="516" y="248">Win rate</text>
+    <text x="516" y="284" font-size="26" font-weight="700" fill="#0f172a">31%</text>
+    <text x="516" y="304" fill="#059669" font-weight="600">▲ 4 pts</text>
+
+    <rect x="706" y="222" width="194" height="96" rx="14" fill="#f8fafc" stroke="#e2e8f0"/>
+    <text x="724" y="248">Avg. deal cycle</text>
+    <text x="724" y="284" font-size="26" font-weight="700" fill="#0f172a">38 days</text>
+    <text x="724" y="304" fill="#059669" font-weight="600">▼ 6 days</text>
+
+    <rect x="914" y="222" width="188" height="96" rx="14" fill="#f8fafc" stroke="#e2e8f0"/>
+    <text x="932" y="248">Open cases</text>
+    <text x="932" y="284" font-size="26" font-weight="700" fill="#0f172a">142</text>
+    <text x="932" y="304" fill="#d97706" font-weight="600">● 9 at risk</text>
+  </g>
+
+  <!-- pipeline kanban -->
+  <text x="290" y="358" font-size="15" font-weight="700" fill="#0f172a">Opportunity pipeline</text>
+  <g font-size="12">
+    <!-- columns -->
+    <g>
+      <rect x="290" y="372" width="156" height="300" rx="12" fill="#f1f5f9"/>
+      <text x="304" y="396" font-weight="700" fill="#334155">Prospecting</text>
+      <rect x="302" y="410" width="132" height="62" rx="9" fill="#fff" stroke="#e2e8f0"/>
+      <rect x="314" y="424" width="80" height="8" rx="4" fill="#cbd5e1"/><text x="314" y="456" font-weight="700" fill="#0f172a">£48k</text>
+      <rect x="302" y="482" width="132" height="62" rx="9" fill="#fff" stroke="#e2e8f0"/>
+      <rect x="314" y="496" width="96" height="8" rx="4" fill="#cbd5e1"/><text x="314" y="528" font-weight="700" fill="#0f172a">£22k</text>
+      <rect x="302" y="554" width="132" height="62" rx="9" fill="#fff" stroke="#e2e8f0"/>
+      <rect x="314" y="568" width="70" height="8" rx="4" fill="#cbd5e1"/><text x="314" y="600" font-weight="700" fill="#0f172a">£15k</text>
+    </g>
+    <g>
+      <rect x="458" y="372" width="156" height="300" rx="12" fill="#f1f5f9"/>
+      <text x="472" y="396" font-weight="700" fill="#334155">Qualification</text>
+      <rect x="470" y="410" width="132" height="62" rx="9" fill="#fff" stroke="#e2e8f0"/>
+      <rect x="482" y="424" width="90" height="8" rx="4" fill="#cbd5e1"/><text x="482" y="456" font-weight="700" fill="#0f172a">£120k</text>
+      <rect x="470" y="482" width="132" height="62" rx="9" fill="#fff" stroke="#e2e8f0"/>
+      <rect x="482" y="496" width="64" height="8" rx="4" fill="#cbd5e1"/><text x="482" y="528" font-weight="700" fill="#0f172a">£36k</text>
+    </g>
+    <g>
+      <rect x="626" y="372" width="156" height="300" rx="12" fill="#f1f5f9"/>
+      <text x="640" y="396" font-weight="700" fill="#334155">Proposal</text>
+      <rect x="638" y="410" width="132" height="62" rx="9" fill="#fff" stroke="#38bdf8" stroke-width="2"/>
+      <rect x="650" y="424" width="84" height="8" rx="4" fill="#bae6fd"/><text x="650" y="456" font-weight="700" fill="#0f172a">£210k</text>
+      <rect x="638" y="482" width="132" height="62" rx="9" fill="#fff" stroke="#e2e8f0"/>
+      <rect x="650" y="496" width="100" height="8" rx="4" fill="#cbd5e1"/><text x="650" y="528" font-weight="700" fill="#0f172a">£64k</text>
+      <rect x="638" y="554" width="132" height="62" rx="9" fill="#fff" stroke="#e2e8f0"/>
+      <rect x="650" y="568" width="58" height="8" rx="4" fill="#cbd5e1"/><text x="650" y="600" font-weight="700" fill="#0f172a">£41k</text>
+    </g>
+    <g>
+      <rect x="794" y="372" width="148" height="300" rx="12" fill="#ecfdf5"/>
+      <text x="808" y="396" font-weight="700" fill="#047857">Closed won</text>
+      <rect x="806" y="410" width="124" height="62" rx="9" fill="#fff" stroke="#a7f3d0"/>
+      <rect x="818" y="424" width="76" height="8" rx="4" fill="#a7f3d0"/><text x="818" y="456" font-weight="700" fill="#047857">£185k ✓</text>
+      <rect x="806" y="482" width="124" height="62" rx="9" fill="#fff" stroke="#a7f3d0"/>
+      <rect x="818" y="496" width="92" height="8" rx="4" fill="#a7f3d0"/><text x="818" y="528" font-weight="700" fill="#047857">£92k ✓</text>
+    </g>
+  </g>
+
+  <!-- forecast chart -->
+  <rect x="956" y="372" width="146" height="300" rx="12" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="970" y="396" font-size="12" font-weight="700" fill="#334155">Forecast</text>
+  <g>
+    <rect x="974" y="560" width="18" height="90" rx="4" fill="#bae6fd"/>
+    <rect x="1000" y="530" width="18" height="120" rx="4" fill="#7dd3fc"/>
+    <rect x="1026" y="500" width="18" height="150" rx="4" fill="#38bdf8"/>
+    <rect x="1052" y="460" width="18" height="190" rx="4" fill="#0ea5e9"/>
+    <rect x="1078" y="430" width="14" height="220" rx="4" fill="#059669"/>
+  </g>
+
+  <!-- trend chart -->
+  <rect x="290" y="688" width="652" height="118" rx="12" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="306" y="712" font-size="12" font-weight="700" fill="#334155">Bookings trend</text>
+  <path d="M306 790 C360 782 390 770 440 774 S520 748 570 752 S650 722 700 726 S800 700 860 704 S910 690 926 686 L926 798 L306 798Z" fill="url(#area)"/>
+  <path d="M306 790 C360 782 390 770 440 774 S520 748 570 752 S650 722 700 726 S800 700 860 704 S910 690 926 686" fill="none" stroke="#059669" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- AI assistant card -->
+  <g filter="url(#sh)">
+    <rect x="770" y="618" width="380" height="196" rx="18" fill="#0f172a"/>
+  </g>
+  <circle cx="806" cy="654" r="16" fill="#10b981"/>
+  <path d="M799 654l5 5 9-10" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="832" y="650" font-size="14" font-weight="700" fill="#fff">AI sales assistant</text>
+  <text x="832" y="668" font-size="11" fill="#94a3b8">Grounded in your CRM data</text>
+  <rect x="790" y="686" width="252" height="34" rx="12" fill="#1e293b"/>
+  <text x="804" y="708" font-size="12" fill="#e2e8f0">Which deals are at risk this month?</text>
+  <rect x="842" y="730" width="290" height="66" rx="12" fill="#ecfdf5"/>
+  <text x="856" y="752" font-size="12" font-weight="700" fill="#065f46">3 deals worth £296k</text>
+  <text x="856" y="772" font-size="11" fill="#065f46">No activity in 14+ days. Drafting</text>
+  <text x="856" y="788" font-size="11" fill="#065f46">follow-up emails for review…</text>
+</svg>

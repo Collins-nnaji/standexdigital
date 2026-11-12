@@ -22,6 +22,7 @@ const columns = [
       { href: "/solutions/power-automate", label: "Power Automate" },
       { href: "/solutions/power-bi", label: "Power BI & Fabric" },
       { href: "/solutions/copilot-studio", label: "Copilot Studio" },
+      { href: "/solutions/salesforce", label: "Salesforce" },
     ],
   },
   {

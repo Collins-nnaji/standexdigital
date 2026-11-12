@@ -5,6 +5,7 @@ import {
   BarChart3,
   Bot,
   Building2,
+  Cloud,
   ClipboardList,
   Compass,
   Factory,
@@ -56,13 +57,14 @@ const practices = [
     number: "02",
     label: "Build capability",
     title: "Business Intelligence Solutions",
-    text: "Power Apps, Power Automate, Power BI with Microsoft Fabric, and Copilot Studio agents—connected systems that capture better data, remove manual work and power decisions.",
+    text: "Power Apps, Power Automate, Power BI with Microsoft Fabric, Copilot Studio agents and Salesforce CRM—connected systems that capture better data, remove manual work and power decisions.",
     image: "/DataIntelligenceLarge.webp",
     links: [
       { href: "/solutions/power-apps", label: "Power Apps", icon: Layers3 },
       { href: "/solutions/power-automate", label: "Power Automate", icon: Workflow },
       { href: "/solutions/power-bi", label: "Power BI & Fabric", icon: BarChart3 },
       { href: "/solutions/copilot-studio", label: "Copilot Studio", icon: Bot },
+      { href: "/solutions/salesforce", label: "Salesforce", icon: Cloud },
     ],
     cta: "Explore BI Solutions",
   },
@@ -93,7 +95,7 @@ const industries = [
   { icon: Wrench, label: "Construction & trades" },
 ];
 
-const platforms = ["Google Ads", "Google Analytics 4", "Meta", "LinkedIn", "HubSpot", "Power Apps", "Power Automate", "Power BI", "Microsoft Fabric", "Fabric data agents", "Copilot Studio", "Dataverse"];
+const platforms = ["Google Ads", "Google Analytics 4", "Meta", "LinkedIn", "HubSpot", "Power Apps", "Power Automate", "Power BI", "Microsoft Fabric", "Fabric data agents", "Copilot Studio", "Salesforce", "Dataverse"];
 
 const faqs = [
   { q: "Do we have to use both practices?", a: "No. Many clients start with one—often Google Ads, analytics or a Power BI dashboard. Because both practices share one team, it's easy to add the other when it makes sense, without onboarding a new supplier." },
@@ -130,7 +132,7 @@ export default function HomePage() {
                   <ButtonLink href="#practices" variant="outline">See what we do</ButtonLink>
                 </div>
                 <div className="mt-10 grid max-w-lg grid-cols-3 gap-6 border-t border-zinc-200 pt-6">
-                  {[["2", "specialist practices"], ["9", "core services"], ["1", "accountable team"]].map(([n, l]) => (
+                  {[["2", "specialist practices"], ["10", "core services"], ["1", "accountable team"]].map(([n, l]) => (
                     <div key={l}>
                       <p className="text-3xl font-bold text-zinc-950">{n}</p>
                       <p className="mt-1 text-xs font-medium text-zinc-500">{l}</p>

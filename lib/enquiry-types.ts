@@ -6,6 +6,7 @@ export const ENQUIRY_TYPES = [
   "Power Platform Solutions",
   "Power BI & Microsoft Fabric",
   "Copilot Studio & AI Agents",
+  "Salesforce CRM",
   "AI & Agentic Systems",
   "Training & Academy",
   "Partnership & Collaboration",

@@ -9,7 +9,7 @@ import { biSolutions } from "@/lib/bi-solutions";
 
 export const metadata: Metadata = {
   title: "Business Intelligence Solutions | Standex Digital",
-  description: "Complete business intelligence systems built with Power Apps, Power Automate, Power BI, Microsoft Fabric and Copilot Studio—from data analysis and implementation to adoption.",
+  description: "Complete business intelligence systems built with Power Apps, Power Automate, Power BI, Microsoft Fabric, Copilot Studio and Salesforce—from data analysis and implementation to adoption.",
 };
 
 const problems = [
@@ -109,8 +109,8 @@ export default function BISolutionsPage() {
 
         {/* Products */}
         <Section id="products">
-          <SectionHeading eyebrow="One connected Microsoft system" title="Capture. Automate. Analyse. Ask." intro="Each product solves a distinct part of the information journey. Together, they create a practical BI system—from frontline input to leadership reporting and AI agents that answer questions." />
-          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+          <SectionHeading eyebrow="One connected system" title="Capture. Automate. Analyse. Ask." intro="Each platform solves a distinct part of the information journey. Together, they create a practical BI system—from customer and frontline data to leadership reporting and AI agents that answer questions." />
+          <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {biSolutions.map((s) => (
               <Link key={s.slug} href={s.href} className="group flex flex-col rounded-2xl border border-zinc-200 bg-white p-7 transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-[0_24px_50px_-28px_rgba(16,24,40,0.35)]">
                 <div className="flex items-center justify-between">
@@ -134,6 +134,14 @@ export default function BISolutionsPage() {
                 </span>
               </Link>
             ))}
+            <div className="flex flex-col justify-between rounded-2xl bg-zinc-950 p-7 text-white">
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-emerald-400">Not sure where to start?</p>
+                <h3 className="mt-4 text-2xl font-bold text-white">Start with a Discovery & Roadmap.</h3>
+                <p className="mt-3 text-sm leading-relaxed text-zinc-400">We&apos;ll map your processes, CRM and data sources, then recommend the simplest combination of platforms that solves the problem.</p>
+              </div>
+              <ButtonLink href="/Contact" className="mt-8 self-start">Book a discovery call</ButtonLink>
+            </div>
           </div>
         </Section>
 
