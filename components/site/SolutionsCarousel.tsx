@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, ChevronRight, TrendingUp } from "lucide-react";
-import { AIArt, AppsArt, BIArt, CRMArt, GrowthArt } from "./SolutionArt";
+import { AIArt, AppsArt, BIArt, CRMArt, GrowthArt, TrainingArt } from "./SolutionArt";
 
 const SOLUTIONS = [
   {
@@ -12,9 +12,9 @@ const SOLUTIONS = [
     number: "01",
     title: "Artificial Intelligence",
     tagline: "Agents & Copilot Studio",
-    summary: "Custom AI agents and Copilot Studio assistants that triage leads in seconds and run workflows 24/7.",
-    metric: "+44% lead velocity",
-    tags: ["Autonomous Agents", "Copilot Studio", "RAG"],
+    summary: "Custom AI agents and Copilot Studio assistants that triage leads and handle routine workflows.",
+    metric: "Faster lead response",
+    tags: ["AI Agents", "Copilot Studio", "RAG"],
     Art: AIArt,
     bg: "from-violet-100 via-violet-50 to-white",
     accent: "text-violet-700",
@@ -24,9 +24,9 @@ const SOLUTIONS = [
     href: "/solutions#power-bi",
     number: "02",
     title: "Power BI & Fabric",
-    tagline: "Real-time analytics",
+    tagline: "Reporting and analytics",
     summary: "Unified semantic models that give leadership live visibility into pipeline, margin and operations.",
-    metric: "Daily data vs 14-day lag",
+    metric: "Up-to-date reporting",
     tags: ["Microsoft Fabric", "Semantic Models", "OneLake"],
     Art: BIArt,
     bg: "from-amber-100 via-amber-50 to-white",
@@ -39,7 +39,7 @@ const SOLUTIONS = [
     title: "Power Apps & Automate",
     tagline: "Apps & automation",
     summary: "Replace fragile spreadsheets and email approvals with secure apps and automated workflows.",
-    metric: "-82% manual hours",
+    metric: "Less manual work",
     tags: ["Power Apps", "Power Automate", "Dataverse"],
     Art: AppsArt,
     bg: "from-emerald-100 via-emerald-50 to-white",
@@ -52,7 +52,7 @@ const SOLUTIONS = [
     title: "Salesforce CRM",
     tagline: "Connected pipeline",
     summary: "Modernise Salesforce to capture leads faster and sync cleanly with Microsoft 365 and Power BI.",
-    metric: "Sub-minute lead intake",
+    metric: "Faster lead intake",
     tags: ["Sales Cloud", "Service Cloud", "Integration"],
     Art: CRMArt,
     bg: "from-sky-100 via-sky-50 to-white",
@@ -65,12 +65,25 @@ const SOLUTIONS = [
     title: "Digital Marketing & Growth",
     tagline: "Demand engine",
     summary: "Google Ads, paid social, SEO and lifecycle email run as one measurable acquisition system.",
-    metric: "Multi-channel demand",
+    metric: "Measurable demand",
     tags: ["Google Ads", "Paid Social", "SEO", "GA4"],
     Art: GrowthArt,
     bg: "from-rose-100 via-rose-50 to-white",
     accent: "text-rose-700",
     chip: "bg-rose-50 text-rose-700",
+  },
+  {
+    href: "/Training",
+    number: "06",
+    title: "Training",
+    tagline: "Upskill your team",
+    summary: "Hands-on courses in Power Platform, AI tools and data skills, so your team can run and extend what we build.",
+    metric: "Practical, role-based learning",
+    tags: ["Power Platform", "AI Tools", "Team Workshops"],
+    Art: TrainingArt,
+    bg: "from-indigo-100 via-indigo-50 to-white",
+    accent: "text-indigo-700",
+    chip: "bg-indigo-50 text-indigo-700",
   },
 ];
 

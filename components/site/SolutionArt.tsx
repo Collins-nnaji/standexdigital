@@ -149,3 +149,19 @@ export function DataArt({ className }: Props) {
     </svg>
   );
 }
+
+export function TrainingArt({ className }: Props) {
+  return (
+    <svg viewBox="0 0 300 220" className={className ?? wrap} aria-hidden="true">
+      <g className="site-float">
+        <path d="M150 28 L250 70 L150 112 L50 70 Z" fill="#6366f1" />
+        <path d="M92 92 V132 C92 146 120 156 150 156 S208 146 208 132 V92 L150 116 Z" fill="#818cf8" />
+        <path d="M250 70 V112" stroke="#4f46e5" strokeWidth="4" strokeLinecap="round" />
+        <circle cx="250" cy="118" r="7" fill="#4f46e5" />
+      </g>
+      <rect x="40" y="176" width="220" height="12" rx="6" fill="#e0e7ff" />
+      <rect x="40" y="176" width="150" height="12" rx="6" fill="#6366f1" className="site-bar" style={{ transformOrigin: "left", animationName: "none" }} />
+      <circle cx="190" cy="182" r="6" fill="#fff" stroke="#4f46e5" strokeWidth="3" />
+    </svg>
+  );
+}

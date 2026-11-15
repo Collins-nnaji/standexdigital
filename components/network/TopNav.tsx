@@ -30,8 +30,8 @@ const navigation: NavItem[] = [
         text: "Connected Artificial Intelligence, Power BI, Power Apps, Salesforce, and Digital Marketing systems engineered to eliminate bottlenecks and drive commercial growth.",
       },
       items: [
-        { href: "/solutions#artificial-intelligence", label: "Artificial Intelligence", text: "Autonomous AI agents, Copilot Studio & swarms", icon: Bot },
-        { href: "/solutions#power-bi", label: "Power BI & Fabric", text: "Real-time dashboards & unified data models", icon: BarChart3 },
+        { href: "/solutions#artificial-intelligence", label: "Artificial Intelligence", text: "AI agents, Copilot Studio and automation", icon: Bot },
+        { href: "/solutions#power-bi", label: "Power BI & Fabric", text: "Live dashboards & unified data models", icon: BarChart3 },
         { href: "/solutions#power-apps", label: "Power Apps & Automate", text: "Custom business apps & process automation", icon: Layers3 },
         { href: "/solutions#salesforce", label: "Salesforce CRM", text: "CRM implementation & data integration", icon: Cloud },
         { href: "/solutions#digital-growth", label: "Digital Marketing & Growth", text: "Google Ads, paid social, SEO & email journeys", icon: Megaphone },

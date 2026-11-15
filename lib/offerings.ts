@@ -26,8 +26,8 @@ export const SOLUTION_GROUPS: SolutionGroup[] = [
     number: "01",
     title: "Artificial Intelligence",
     tagline: "Agents that do the work",
-    summary: "Copilot Studio assistants and autonomous agents that triage leads, answer questions from your data and run workflows around the clock.",
-    metric: "+44% lead velocity",
+    summary: "Copilot Studio assistants and AI agents that triage leads, answer questions from your data and run routine workflows.",
+    metric: "Faster lead response",
     tone: "violet",
     offerings: [
       {
@@ -39,12 +39,12 @@ export const SOLUTION_GROUPS: SolutionGroup[] = [
         timeline: "3-6 weeks",
       },
       {
-        title: "Autonomous Agent Workflows",
+        title: "AI Agent Workflows",
         part: 1,
         blurb: "Multi-step work completed without hand-holding.",
         details: "Agents that qualify leads, chase approvals, update records and escalate exceptions to a human when it matters.",
         includes: ["Lead triage and routing", "Tool and API orchestration", "Human-in-the-loop approvals", "Audit trail for every action"],
-        outcome: "24/7 execution with full oversight",
+        outcome: "Routine work handled, with full oversight",
         timeline: "4-8 weeks",
       },
       {
@@ -62,7 +62,7 @@ export const SOLUTION_GROUPS: SolutionGroup[] = [
         blurb: "Azure OpenAI inside your tenant.",
         details: "Secure model deployments connected to your systems, with governance, cost control and data that never leaves your boundary.",
         includes: ["Azure OpenAI architecture", "Prompt and evaluation framework", "Security and access review", "Cost and usage monitoring"],
-        outcome: "Enterprise AI without data-leak risk",
+        outcome: "AI that keeps your data in your tenant",
         timeline: "3-5 weeks",
       },
     ],
@@ -73,7 +73,7 @@ export const SOLUTION_GROUPS: SolutionGroup[] = [
     title: "Power BI & Fabric",
     tagline: "One version of the truth",
     summary: "Unified semantic models and live dashboards that show leadership pipeline, margin and operations daily instead of fortnightly.",
-    metric: "Daily data vs 14-day lag",
+    metric: "Up-to-date reporting",
     tone: "amber",
     offerings: [
       {
@@ -116,7 +116,7 @@ export const SOLUTION_GROUPS: SolutionGroup[] = [
     title: "Power Apps & Automate",
     tagline: "Replace spreadsheets for good",
     summary: "Secure business apps, portals and automated workflows that remove manual re-keying and stuck approvals.",
-    metric: "-82% manual hours",
+    metric: "Less manual work",
     tone: "emerald",
     offerings: [
       {
@@ -160,7 +160,7 @@ export const SOLUTION_GROUPS: SolutionGroup[] = [
     title: "Salesforce CRM",
     tagline: "A pipeline you can trust",
     summary: "Salesforce set up to capture leads fast, automate follow-up and sync cleanly with Microsoft 365 and Power BI.",
-    metric: "Sub-minute lead intake",
+    metric: "Faster lead intake",
     tone: "sky",
     offerings: [
       {
@@ -203,7 +203,7 @@ export const SOLUTION_GROUPS: SolutionGroup[] = [
     title: "Digital Marketing & Growth",
     tagline: "One accountable growth team",
     summary: "Paid search, social, SEO, email and analytics managed as a single system aimed at qualified pipeline.",
-    metric: "Transparent ROAS",
+    metric: "Clear return on ad spend",
     tone: "rose",
     offerings: [
       {

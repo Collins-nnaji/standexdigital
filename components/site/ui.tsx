@@ -65,7 +65,7 @@ export function SectionHeading({
     <div className={cn("max-w-5xl", align === "center" && "mx-auto text-center", className)}>
       {eyebrow && <Eyebrow className={cn(dark && "text-emerald-400", align === "center" && "justify-center")}>{eyebrow}</Eyebrow>}
       <h2 className={cn("mt-4 text-balance text-2xl font-bold tracking-tight min-[480px]:text-3xl sm:text-4xl lg:text-[2.5rem] lg:leading-[1.1]", oneLine && "lg:whitespace-nowrap", dark ? "text-white" : "text-zinc-950")}>{title}</h2>
-      {intro && <p className={cn("mt-5 max-w-3xl text-base leading-relaxed sm:text-lg", align === "center" && "mx-auto", dark ? "text-zinc-300" : "text-zinc-600")}>{intro}</p>}
+      {intro && <p className={cn("mt-5 max-w-5xl text-base leading-relaxed sm:text-lg", align === "center" && "mx-auto", dark ? "text-zinc-300" : "text-zinc-600")}>{intro}</p>}
     </div>
   );
 }

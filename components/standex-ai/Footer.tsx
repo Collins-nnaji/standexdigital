@@ -17,11 +17,11 @@ const columns = [
   {
     title: "How We Drive Growth",
     links: [
-      { href: "/#growth-system", label: "Lead Intake & Velocity" },
+      { href: "/#growth-system", label: "Lead Intake" },
       { href: "/#growth-system", label: "Process Automation" },
       { href: "/#growth-system", label: "Executive BI Dashboards" },
-      { href: "/#growth-system", label: "24/7 Autonomous AI" },
-      { href: "/#growth-system", label: "Commercial Outcomes" },
+      { href: "/#growth-system", label: "AI Agents" },
+      { href: "/#growth-system", label: "Business Outcomes" },
     ],
   },
   {
@@ -51,7 +51,7 @@ export default function Footer() {
           <div>
             <Image src="/StandexLogo.webp" alt="Standex Digital" width={160} height={68} loading="lazy" className="h-12 w-auto" />
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-zinc-400">
-              Focused enterprise AI and Business Intelligence solutions—autonomous AI agents, Microsoft Power Platform, and Fabric BI systems that eliminate manual bottlenecks and drive measurable company growth.
+              Focused enterprise AI and Business Intelligence solutions—AI agents, Microsoft Power Platform, and Fabric BI systems that eliminate manual bottlenecks and drive measurable company growth.
             </p>
             <Link href="/contact" className="mt-6 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-500">
               Contact us <ArrowRight className="h-4 w-4" />

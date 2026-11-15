@@ -65,7 +65,7 @@ export function HeroFlipCard() {
           <div className={`${face} flex flex-col`} aria-hidden={side === 1}>
             <div className="flex items-start justify-between gap-3">
               <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-zinc-500">Qualified Pipeline</p>
+                <p className="text-xs font-bold uppercase tracking-wider text-zinc-500">Example: qualified pipeline</p>
                 <div className="mt-1 flex items-end gap-2">
                   <p className="text-5xl font-black leading-none tracking-tight text-zinc-950">+{count}%</p>
                   <p className="pb-1 text-xs font-semibold text-zinc-500">vs. before automation</p>

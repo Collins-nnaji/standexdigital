@@ -29,7 +29,7 @@ export const GROWTH_GOALS: GrowthGoalOption[] = [
   {
     id: "ai-agents",
     label: "Artificial Intelligence",
-    desc: "Autonomous AI agents, Copilot Studio & swarms",
+    desc: "AI agents, Copilot Studio and automation",
     enquiryType: "AI & Agentic Systems",
     icon: Bot,
   },
@@ -190,7 +190,7 @@ export function GrowthIntakeForm({
             <ul className="mt-2 space-y-1.5 list-disc pl-4 text-zinc-600">
               <li>We analyze your current tech stack and operational bottlenecks.</li>
               <li>We map the highest-ROI solution (AI agents, Power BI, Power Apps, or Salesforce).</li>
-              <li>We schedule a 30-minute discovery call with zero sales pitch.</li>
+              <li>We schedule a 30-minute discovery call with no sales pitch.</li>
             </ul>
           </div>
 
