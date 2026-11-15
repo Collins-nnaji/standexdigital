@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Plus, TrendingUp } from "lucide-react";
@@ -38,9 +40,9 @@ export function SolutionsExplorer() {
 
   return (
     <>
-      {/* Sticky, swipeable section nav */}
-      <div className="border-b border-zinc-200 bg-white">
-        <div className="mx-auto flex max-w-7xl flex-wrap gap-2 px-4 py-3 sm:px-6 lg:px-8">
+      {/* Mobile / tablet: simple chip row */}
+      <div className="border-b border-zinc-200 bg-white lg:hidden">
+        <div className="mx-auto flex max-w-[90rem] flex-wrap gap-2 px-4 py-3 sm:px-6">
           {SOLUTION_GROUPS.map((g) => (
             <a
               key={g.id}
@@ -55,13 +57,62 @@ export function SolutionsExplorer() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl space-y-20 px-4 py-14 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[90rem] gap-8 px-4 py-14 sm:px-6 lg:grid lg:grid-cols-[230px_1fr] lg:px-8">
+        {/* Desktop: modern left rail that tracks scroll and can be selected */}
+        <aside className="hidden lg:block">
+          <nav aria-label="Solutions" className="sticky top-28">
+            <p className="px-3 text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400">Solutions</p>
+            <ul className="relative mt-4 space-y-1">
+              {SOLUTION_GROUPS.map((g) => {
+                const isActive = current === g.id;
+                const t = TONES[g.tone];
+                return (
+                  <li key={g.id} className="relative">
+                    {isActive && (
+                      <motion.span
+                        layoutId="rail-active"
+                        className="absolute inset-0 rounded-2xl bg-zinc-950 shadow-lg shadow-zinc-950/20"
+                        transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                      />
+                    )}
+                    <a
+                      href={`#${g.id}`}
+                      onClick={() => setCurrent(g.id)}
+                      className="relative flex items-center gap-3 rounded-2xl px-3 py-3 transition"
+                    >
+                      <span
+                        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-[11px] font-black transition ${
+                          isActive ? "bg-white text-zinc-950" : `${t.chip}`
+                        }`}
+                      >
+                        {g.number}
+                      </span>
+                      <span className="min-w-0">
+                        <span className={`block text-sm font-bold leading-tight transition ${isActive ? "text-white" : "text-zinc-800"}`}>{g.title}</span>
+                        <span className={`mt-0.5 block truncate text-[11px] transition ${isActive ? "text-zinc-300" : "text-zinc-500"}`}>{g.tagline}</span>
+                      </span>
+                      {isActive && <span className={`ml-auto h-2 w-2 shrink-0 rounded-full ${t.dot} site-ring-dot`} />}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+            <Link
+              href="/contact"
+              className="mt-6 flex min-h-11 items-center justify-between rounded-2xl border border-zinc-200 bg-white px-4 text-sm font-semibold text-zinc-900 transition hover:border-emerald-500 hover:text-emerald-700"
+            >
+              Contact Us <ArrowRight className="h-4 w-4" />
+            </Link>
+          </nav>
+        </aside>
+
+        <div className="min-w-0 space-y-20">
         {SOLUTION_GROUPS.map((g, gi) => {
           const t = TONES[g.tone];
           const Art = ART[g.id as keyof typeof ART];
           return (
-            <section key={g.id} id={g.id} className="scroll-mt-24">
-              <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-12">
+            <section key={g.id} id={g.id} className="scroll-mt-28">
+              <div className="grid gap-8 xl:grid-cols-[0.8fr_1.2fr] xl:gap-10">
                 <motion.div
                   initial={{ opacity: 0, y: 28 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -77,7 +128,7 @@ export function SolutionsExplorer() {
                   </div>
                   <h2 className="mt-6 text-3xl font-bold tracking-tight text-zinc-950">{g.title}</h2>
                   <p className="mt-3 text-[15px] leading-relaxed text-zinc-600">{g.summary}</p>
-                  <p className={`mt-4 inline-flex items-center gap-2 text-sm font-bold ${t.text}`}>
+                  <p className={`mt-4 flex items-center gap-2 text-sm font-bold ${t.text}`}>
                     <TrendingUp className="h-4 w-4" /> {g.metric}
                   </p>
                   <button
@@ -118,6 +169,7 @@ export function SolutionsExplorer() {
             </section>
           );
         })}
+        </div>
       </div>
 
       <AnimatePresence>

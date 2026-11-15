@@ -939,3 +939,6 @@ section#how:not(.landing-how-revealed) .landing-how-flow-connector {
 @media (prefers-reduced-motion: reduce) {
   .site-marquee-track, .site-blob, .site-float, .site-dash, .site-ring, .site-bar, .site-gradient-text { animation: none; }
 }
+
+@keyframes site-dot-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(255,255,255,.5); } 50% { box-shadow: 0 0 0 6px rgba(255,255,255,0); } }
+.site-ring-dot { animation: site-dot-pulse 2s ease-in-out infinite; }

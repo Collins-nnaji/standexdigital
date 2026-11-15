@@ -69,7 +69,7 @@ export default function Footer() {
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white">{col.title}</p>
                 <ul className="mt-4 space-y-2.5">
                   {col.links.map((link) => (
-                    <li key={link.href}>
+                    <li key={`${link.href}-${link.label}`}>
                       <Link href={link.href} className="text-sm text-zinc-400 transition hover:text-emerald-400">{link.label}</Link>
                     </li>
                   ))}

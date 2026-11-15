@@ -19,7 +19,7 @@ function Block({ eyebrow, title, intro, children, tone }: { eyebrow: string; tit
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.6 }}
       data-sec={eyebrow}
-      className="mx-auto max-w-6xl scroll-mt-32 px-4 py-12 sm:px-8 sm:py-16"
+      className="mx-auto max-w-[88rem] scroll-mt-32 px-4 py-12 sm:px-8 sm:py-16"
     >
       <p className={`text-xs font-bold uppercase tracking-[0.18em] ${tone.text}`}>{eyebrow}</p>
       <h2 className="mt-3 max-w-3xl text-balance text-2xl font-bold tracking-tight text-zinc-950 sm:text-4xl">{title}</h2>
@@ -33,7 +33,7 @@ function PartBody({ part, tone }: { part: Part; tone: Tone }) {
   return (
     <>
       {part.intro && (
-        <div className="mx-auto max-w-6xl px-4 pt-12 sm:px-8">
+        <div className="mx-auto max-w-[88rem] px-4 pt-12 sm:px-8">
           <p className="max-w-3xl text-lg leading-relaxed text-zinc-700 sm:text-xl">{part.intro}</p>
         </div>
       )}
@@ -127,16 +127,16 @@ function PartBody({ part, tone }: { part: Part; tone: Tone }) {
       )}
 
       {((part.outcomes && part.outcomes.length > 0) || (part.metrics && part.metrics.length > 0)) && (
-        <section data-sec="Outcomes" className={`scroll-mt-32 bg-gradient-to-br ${tone.dark} py-14 text-white sm:py-20`}>
-          <div className="mx-auto max-w-6xl px-4 sm:px-8">
+        <section data-sec="Outcomes" className={`mx-4 my-6 scroll-mt-32 rounded-3xl bg-gradient-to-br ${tone.dark} py-12 text-white sm:mx-8 sm:py-16`}>
+          <div className="mx-auto max-w-[88rem] px-4 sm:px-8">
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/60">Outcomes</p>
-            <h2 className="mt-3 text-2xl font-bold sm:text-4xl">What you can expect.</h2>
+            <h2 className="mt-3 text-2xl font-bold text-white sm:text-4xl">What you can expect.</h2>
             {part.metrics && part.metrics.length > 0 && (
               <div className="mt-8 grid gap-4 sm:grid-cols-3">
                 {part.metrics.map((m) => (
                   <div key={m.label} className="rounded-2xl border border-white/10 bg-white/[0.05] p-6 backdrop-blur">
-                    <p className="text-4xl font-black tracking-tight">{m.value}</p>
-                    <p className="mt-2 font-semibold">{m.label}</p>
+                    <p className="text-4xl font-black tracking-tight text-white">{m.value}</p>
+                    <p className="mt-2 font-semibold text-white">{m.label}</p>
                     <p className="mt-1 text-sm text-white/60">{m.note}</p>
                   </div>
                 ))}
@@ -338,7 +338,7 @@ export function SolutionPage({
     >
       {/* Top bar */}
       <div className="sticky top-0 z-20 border-b border-zinc-200 bg-white/85 backdrop-blur-md">
-        <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3 sm:px-8">
+        <div className="mx-auto flex max-w-[88rem] items-center gap-3 px-4 py-3 sm:px-8">
           <button type="button" onClick={onClose} className="flex shrink-0 items-center gap-2 rounded-full border border-zinc-300 px-3.5 py-2 text-sm font-semibold text-zinc-800 transition hover:border-zinc-950">
             <ArrowLeft className="h-4 w-4" /> <span className="hidden sm:inline">All solutions</span>
           </button>
@@ -364,8 +364,8 @@ export function SolutionPage({
           </button>
         </div>
         {sections.length > 1 && (
-          <div className="border-t border-zinc-100">
-            <div className="site-hide-scrollbar mx-auto flex max-w-6xl gap-1 overflow-x-auto px-4 py-2 sm:px-8">
+          <div className="border-t border-zinc-100 lg:hidden">
+            <div className="site-hide-scrollbar mx-auto flex max-w-[88rem] gap-1 overflow-x-auto px-4 py-2 sm:px-8">
               {sections.map((label) => (
                 <button
                   key={label}
@@ -385,12 +385,12 @@ export function SolutionPage({
       <section className={`relative overflow-hidden bg-gradient-to-br ${tone.dark} text-white`}>
         <div className={`site-blob pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full ${tone.glow} blur-3xl`} />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:radial-gradient(ellipse_at_top_right,black_20%,transparent_70%)]" />
-        <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-4 py-14 sm:px-8 sm:py-20 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="relative mx-auto grid max-w-[88rem] items-center gap-10 px-4 py-14 sm:px-8 sm:py-20 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
             <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider">
                {group.number} · {part.eyebrow ?? group.tagline}
             </span>
-            <h1 className="mt-6 text-4xl font-black leading-[1.05] tracking-tight sm:text-6xl">
+            <h1 className="mt-6 text-4xl font-black text-white leading-[1.05] tracking-tight sm:text-6xl">
               {group.title}
               {detail.parts.length > 1 && <span className="block text-white/60">{part.name}</span>}
             </h1>
@@ -412,7 +412,7 @@ export function SolutionPage({
 
       {/* The offering the visitor tapped */}
       {offering && (
-        <div className="mx-auto -mt-8 max-w-6xl px-4 sm:px-8">
+        <div className="mx-auto -mt-8 max-w-[88rem] px-4 sm:px-8">
           <div className="relative z-10 rounded-3xl border border-zinc-200 bg-white p-6 shadow-[0_30px_60px_-30px_rgba(16,24,40,0.35)] sm:p-8">
             <p className={`flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] ${tone.text}`}><Plus className="h-3.5 w-3.5" /> You opened</p>
             <h2 className="mt-2 text-2xl font-bold text-zinc-950">{offering.title}</h2>
@@ -435,12 +435,43 @@ export function SolutionPage({
         </div>
       )}
 
-      <PartBody part={part} tone={tone} />
+      <div className="mx-auto max-w-[88rem] gap-2 lg:flex lg:px-4">
+        {sections.length > 1 && (
+          <aside className="hidden w-56 shrink-0 lg:block">
+            <nav aria-label="Sections" className="sticky top-24 py-12">
+              <p className="px-3 text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400">On this page</p>
+              <ul className="relative mt-3 border-l border-zinc-200">
+                {sections.map((label) => {
+                  const on = activeSec === label;
+                  return (
+                    <li key={label} className="relative">
+                      {on && <motion.span layoutId="detail-rail" className={`absolute -left-px top-1 bottom-1 w-0.5 rounded-full bg-gradient-to-b ${tone.grad}`} />}
+                      <button
+                        type="button"
+                        onClick={() => jump(label)}
+                        className={`block w-full py-2 pl-4 pr-2 text-left text-sm transition ${on ? "font-bold text-zinc-950" : "font-medium text-zinc-500 hover:text-zinc-800"}`}
+                      >
+                        {label}
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+              <Link href="/contact" className={`mt-6 flex min-h-11 items-center justify-between rounded-2xl bg-gradient-to-r ${tone.grad} px-4 text-sm font-semibold text-white`}>
+                Contact Us <ArrowRight className="h-4 w-4" />
+              </Link>
+            </nav>
+          </aside>
+        )}
+        <div className="min-w-0 flex-1">
+          <PartBody part={part} tone={tone} />
+        </div>
+      </div>
 
-      <section className="mx-auto max-w-6xl px-4 pb-16 sm:px-8">
+      <section className="mx-auto max-w-[88rem] px-4 pb-16 sm:px-8">
         <div className={`flex flex-col items-start justify-between gap-6 rounded-3xl bg-gradient-to-br ${tone.dark} p-8 text-white sm:flex-row sm:items-center sm:p-12`}>
           <div>
-            <h2 className="text-2xl font-bold sm:text-3xl">Talk to a senior architect about {group.title}.</h2>
+            <h2 className="text-2xl font-bold text-white sm:text-3xl">Talk to a senior architect about {group.title}.</h2>
             <p className="mt-2 text-white/70">Reply within one business day. No sales pressure.</p>
           </div>
           <Link href="/contact" className="inline-flex min-h-12 shrink-0 items-center gap-2 rounded-full bg-white px-6 text-sm font-semibold text-zinc-950 transition hover:bg-emerald-50">

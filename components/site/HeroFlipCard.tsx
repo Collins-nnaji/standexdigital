@@ -30,6 +30,20 @@ const WORDS: { t: string; s: number; c: string }[] = [
 export function HeroFlipCard() {
   const [side, setSide] = useState<0 | 1>(0);
   const [paused, setPaused] = useState(false);
+  const [count, setCount] = useState(0);
+
+  // Count the headline figure up each time the chart face comes into view.
+  useEffect(() => {
+    if (side !== 0) return;
+    setCount(0);
+    let n = 0;
+    const id = setInterval(() => {
+      n += 2;
+      setCount(Math.min(n, 44));
+      if (n >= 44) clearInterval(id);
+    }, 35);
+    return () => clearInterval(id);
+  }, [side]);
 
   useEffect(() => {
     if (paused) return;
@@ -41,37 +55,86 @@ export function HeroFlipCard() {
 
   return (
     <div className="mx-auto w-full max-w-xl" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
-      <div className="relative h-[24rem] [perspective:1400px] sm:h-[26rem]">
+      <div className="relative h-[28rem] [perspective:1400px] sm:h-[29rem]">
         <motion.div
           className="relative h-full w-full [transform-style:preserve-3d]"
           animate={{ rotateY: side * 180 }}
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
         >
           {/* Front: pipeline chart */}
-          <div className={face} aria-hidden={side === 1}>
-            <div className="flex items-start justify-between">
+          <div className={`${face} flex flex-col`} aria-hidden={side === 1}>
+            <div className="flex items-start justify-between gap-3">
               <div>
                 <p className="text-xs font-bold uppercase tracking-wider text-zinc-500">Qualified Pipeline</p>
-                <p className="mt-1 text-5xl font-black text-zinc-950">+44%</p>
+                <div className="mt-1 flex items-end gap-2">
+                  <p className="text-5xl font-black leading-none tracking-tight text-zinc-950">+{count}%</p>
+                  <p className="pb-1 text-xs font-semibold text-zinc-500">vs. before automation</p>
+                </div>
               </div>
-              <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-extrabold text-emerald-700">Trending up</span>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-extrabold text-emerald-700">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-70" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                </span>
+                Live
+              </span>
             </div>
-            <svg viewBox="0 0 400 160" className="mt-6 h-52 w-full" aria-hidden="true">
+
+            <svg viewBox="0 0 400 170" className="mt-4 min-h-0 w-full flex-1" preserveAspectRatio="none" aria-hidden="true">
               <defs>
                 <linearGradient id="hero-flip-area" x1="0" x2="0" y1="0" y2="1">
-                  <stop offset="0%" stopColor="#10b981" stopOpacity=".3" />
+                  <stop offset="0%" stopColor="#10b981" stopOpacity=".32" />
                   <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
                 </linearGradient>
               </defs>
-              {[40, 80, 120].map((y) => (
+              {[30, 70, 110, 150].map((y) => (
                 <line key={y} x1="0" x2="400" y1={y} y2={y} stroke="#eef2f1" />
               ))}
-              <path d="M0 140 C60 130, 110 116, 160 94 S250 60, 300 38 S360 16, 400 10 L400 160 L0 160 Z" fill="url(#hero-flip-area)" />
-              <path d="M0 140 C60 130, 110 116, 160 94 S250 60, 300 38 S360 16, 400 10" fill="none" stroke="#059669" strokeWidth="3.5" strokeLinecap="round" />
-              <circle cx="400" cy="10" r="6" fill="#059669" />
-              <circle cx="400" cy="10" r="6" fill="#10b981" className="site-ring" />
+              {/* baseline (before) */}
+              <path d="M0 140 C80 138, 160 136, 240 134 S350 130, 400 128" fill="none" stroke="#cbd5d1" strokeWidth="2" strokeDasharray="5 5" />
+              <motion.path
+                key={`area-${side}`}
+                d="M0 142 C60 134, 110 120, 160 96 S250 62, 300 40 S360 18, 400 10 L400 170 L0 170 Z"
+                fill="url(#hero-flip-area)"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.9, duration: 0.8 }}
+              />
+              <motion.path
+                key={`line-${side}`}
+                d="M0 142 C60 134, 110 120, 160 96 S250 62, 300 40 S360 18, 400 10"
+                fill="none"
+                stroke="#059669"
+                strokeWidth="3.5"
+                strokeLinecap="round"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ delay: 0.5, duration: 1.4, ease: "easeInOut" }}
+              />
+              {[[0, 142, "Start"], [160, 96, "+18%"], [300, 40, "+32%"]].map(([x, y, l]) => (
+                <g key={String(l)}>
+                  <circle cx={Number(x) || 4} cy={y as number} r="5" fill="#fff" stroke="#059669" strokeWidth="2.5" />
+                </g>
+              ))}
+              <circle cx="396" cy="10" r="6" fill="#059669" />
+              <circle cx="396" cy="10" r="6" fill="#10b981" className="site-ring" />
             </svg>
-            <p className="text-xs font-semibold text-zinc-500">Live telemetry across automated lead intake</p>
+            <div className="flex justify-between px-1 text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
+              <span>Week 0</span><span>Week 4</span><span>Week 8</span><span>Week 12</span>
+            </div>
+
+            <div className="mt-4 grid grid-cols-3 gap-2">
+              {[
+                ["< 60s", "Lead response"],
+                ["+32%", "Conversion"],
+                ["-28%", "Cost per lead"],
+              ].map(([v, l]) => (
+                <div key={l} className="rounded-xl bg-zinc-50 px-3 py-2.5">
+                  <p className="text-lg font-black leading-none text-zinc-950">{v}</p>
+                  <p className="mt-1 text-[11px] font-semibold text-zinc-500">{l}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Back: word cloud */}

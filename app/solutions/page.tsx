@@ -19,7 +19,7 @@ export default function SolutionsPage() {
         <section className="relative overflow-hidden pb-10 pt-28 sm:pt-32">
           <HeroBackdrop />
           <div className="site-blob pointer-events-none absolute right-1/4 top-20 h-72 w-72 rounded-full bg-violet-200/40 blur-3xl" />
-          <Container className="relative">
+          <Container className="relative max-w-[90rem] lg:px-6">
             <Reveal>
               <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/90 px-3.5 py-1.5 text-xs font-semibold text-emerald-800 shadow-sm">
                 

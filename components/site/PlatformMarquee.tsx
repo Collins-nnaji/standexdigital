@@ -24,14 +24,14 @@ const PLATFORMS = [
 /** Infinite scrolling strip of platform logos. */
 export function PlatformMarquee() {
   const row = (suffix: string, hidden = false) => (
-    <ul className="flex shrink-0 items-center gap-4 pr-4" aria-hidden={hidden || undefined}>
+    <ul className="flex shrink-0 items-center gap-8 pr-8" aria-hidden={hidden || undefined}>
       {PLATFORMS.map((p) => (
         <li
           key={p.name + suffix}
-          className="flex items-center gap-2.5 rounded-full border border-zinc-200 bg-white px-4 py-2 shadow-sm"
+          className="flex items-center gap-3 px-5"
         >
-          <Image src={p.src} alt={hidden ? "" : p.name} width={24} height={24} className="h-6 w-6 object-contain" unoptimized />
-          <span className="whitespace-nowrap text-sm font-semibold text-zinc-700">{p.name}</span>
+          <Image src={p.src} alt={hidden ? "" : p.name} width={32} height={32} className="h-8 w-8 object-contain" unoptimized />
+          <span className="whitespace-nowrap text-base font-semibold text-zinc-600">{p.name}</span>
         </li>
       ))}
     </ul>
