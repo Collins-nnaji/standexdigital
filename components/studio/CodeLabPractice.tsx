@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AlertCircle, CheckCircle2, ClipboardPaste, Dumbbell, Loader2, PlayCircle, Sparkles } from "lucide-react";
+import { AlertCircle, CheckCircle2, ClipboardPaste, Dumbbell, Loader2, PlayCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ConsoleTheme } from "@/components/console/console-theme";
 import type { LearningLevel } from "@/lib/code-lab/modules";
@@ -135,7 +135,7 @@ export function CodeLabPractice({ theme, isDark, language, level, editorCode, on
             disabled={generating || !topic.trim()}
             className="mt-1.5 inline-flex w-full items-center justify-center gap-1.5 rounded-lg bg-emerald-500 px-2.5 py-1.5 text-[11.5px] font-bold text-white transition-colors hover:bg-emerald-600 disabled:opacity-50"
           >
-            {generating ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />}
+            {generating ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
             New scenario
           </button>
           {genError && <p className="mt-1.5 text-[11px] text-rose-500">{genError}</p>}

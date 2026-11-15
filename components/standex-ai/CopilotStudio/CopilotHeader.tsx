@@ -27,7 +27,7 @@ const CopilotHeader = () => {
         {/* CTA Button */}
         <div className="text-center mb-12">
           <a 
-            href="/Contact"
+            href="/contact"
             className="inline-block bg-[#7C5CFC] text-zinc-900 font-medium py-3 px-6 rounded hover:bg-[#7C5CFC] transition-colors duration-300"
           >
             Book A Free Consultation Call &rarr;

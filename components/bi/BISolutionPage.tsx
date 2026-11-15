@@ -21,7 +21,7 @@ export function BISolutionPage({ solution }: { solution: BISolution }) {
         <section className="relative overflow-hidden pb-20 pt-28 sm:pt-32">
           <HeroBackdrop />
           <Container className="relative">
-            <Breadcrumbs items={[{ href: "/", label: "Home" }, { href: "/data-solutions", label: "BI Solutions" }, { label: name }]} />
+            <Breadcrumbs items={[{ href: "/", label: "Home" }, { href: "/solutions", label: "Solutions" }, { label: name }]} />
             <div className="mt-10 grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
               <div>
                 <div className="flex items-center gap-3">
@@ -35,7 +35,7 @@ export function BISolutionPage({ solution }: { solution: BISolution }) {
                 </h1>
                 <p className="mt-6 max-w-2xl text-xl leading-relaxed text-zinc-600">{solution.promise}</p>
                 <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-                  <ButtonLink href="/Contact">Discuss your project</ButtonLink>
+                  <ButtonLink href="/contact">Discuss your project</ButtonLink>
                   <ButtonLink href="#use-cases" variant="outline">See use cases</ButtonLink>
                 </div>
               </div>
@@ -136,7 +136,7 @@ export function BISolutionPage({ solution }: { solution: BISolution }) {
                     <p className="text-sm leading-relaxed text-zinc-700">{solution.spotlight.note}</p>
                   </div>
                 )}
-                <ButtonLink href="/Contact" className="mt-8">{solution.spotlight.cta ?? "Discuss your data platform"}</ButtonLink>
+                <ButtonLink href="/contact" className="mt-8">{solution.spotlight.cta ?? "Discuss your data platform"}</ButtonLink>
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 {solution.spotlight.items.map((item) => (
@@ -223,7 +223,7 @@ export function BISolutionPage({ solution }: { solution: BISolution }) {
                   <h3 className="mt-2 text-2xl font-bold">{e.name}</h3>
                   <p className="mt-3 text-sm leading-relaxed text-zinc-600">{e.text}</p>
                   <CheckList items={e.items} className="mt-6 border-t border-zinc-100 pt-6" />
-                  <ButtonLink href="/Contact" variant={e.featured ? "primary" : "outline"} className="mt-8 self-start">Discuss this option</ButtonLink>
+                  <ButtonLink href="/contact" variant={e.featured ? "primary" : "outline"} className="mt-8 self-start">Discuss this option</ButtonLink>
                 </article>
               ))}
             </div>
@@ -279,7 +279,7 @@ export function BISolutionPage({ solution }: { solution: BISolution }) {
           eyebrow={fullName}
           title="Let's scope your solution."
           text="Tell us about the process or reporting challenge. We'll suggest an approach, an indicative timeline and the licensing you'll need."
-          primary={{ href: "/Contact", label: "Discuss your project" }}
+          primary={{ href: "/contact", label: "Discuss your project" }}
           secondary={{ href: "/data-solutions", label: "All BI solutions" }}
         />
       </main>

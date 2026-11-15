@@ -64,7 +64,7 @@ const PowerBiHeader = () => {
 
         <div className="text-center mb-20">
           <a
-            href="/Contact"
+            href="/contact"
             className="inline-flex items-center gap-3 rounded-2xl bg-[#F2C811] px-10 py-5 text-sm font-bold uppercase tracking-widest text-zinc-900 hover:bg-[#D4AF0E] transition-all active:scale-95 shadow-[0_20px_40px_-5px_rgba(242,200,17,0.4)]"
           >
             Book A Free Consultation Call

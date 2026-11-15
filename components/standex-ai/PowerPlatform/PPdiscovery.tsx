@@ -86,7 +86,7 @@ const PPdiscovery = () => {
             
             {/* CTA Button - links to Contact page */}
             <a 
-              href="/Contact"
+              href="/contact"
               className={`inline-flex items-center bg-[#7C5CFC] text-white py-4 px-8 rounded-md font-medium transition-all duration-300 hover:bg-[#6B4FE0] hover:scale-105 transform ${
                 animationStarted ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
               }`}

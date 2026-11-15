@@ -4,33 +4,32 @@ import { ArrowRight } from "lucide-react";
 
 const columns = [
   {
-    title: "Digital Growth",
+    title: "Solutions",
     links: [
-      { href: "/digital-growth", label: "Overview" },
-      { href: "/digital-growth/google-ads", label: "Google Ads" },
-      { href: "/digital-growth/analytics", label: "Analytics & Measurement" },
-      { href: "/digital-growth/social-media-ads", label: "Social Media Advertising" },
-      { href: "/digital-growth/email-marketing", label: "Email Marketing" },
-      { href: "/digital-growth/seo-content", label: "SEO & Content" },
+      { href: "/solutions", label: "Overview" },
+      { href: "/solutions#artificial-intelligence", label: "Artificial Intelligence" },
+      { href: "/solutions#power-bi", label: "Power BI & Fabric" },
+      { href: "/solutions#power-apps", label: "Power Apps & Automate" },
+      { href: "/solutions#salesforce", label: "Salesforce CRM" },
+      { href: "/solutions#digital-growth", label: "Digital Marketing & Growth" },
     ],
   },
   {
-    title: "BI Solutions",
+    title: "How We Drive Growth",
     links: [
-      { href: "/data-solutions", label: "Overview" },
-      { href: "/solutions/power-apps", label: "Power Apps" },
-      { href: "/solutions/power-automate", label: "Power Automate" },
-      { href: "/solutions/power-bi", label: "Power BI & Fabric" },
-      { href: "/solutions/copilot-studio", label: "Copilot Studio" },
-      { href: "/solutions/salesforce", label: "Salesforce" },
+      { href: "/#growth-system", label: "Lead Intake & Velocity" },
+      { href: "/#growth-system", label: "Process Automation" },
+      { href: "/#growth-system", label: "Executive BI Dashboards" },
+      { href: "/#growth-system", label: "24/7 Autonomous AI" },
+      { href: "/#growth-system", label: "Commercial Outcomes" },
     ],
   },
   {
     title: "Company",
     links: [
-      { href: "/Training", label: "Training" },
-      { href: "/Contact", label: "Contact" },
-      { href: "/studio", label: "Studio" },
+      { href: "/contact", label: "Contact Us" },
+      { href: "/Training", label: "Enterprise Training" },
+      { href: "/studio", label: "Studio (In-House)" },
       { href: "/terms", label: "Terms of Service" },
       { href: "/privacy", label: "Privacy Policy" },
     ],
@@ -52,15 +51,16 @@ export default function Footer() {
           <div>
             <Image src="/StandexLogo.webp" alt="Standex Digital" width={160} height={68} loading="lazy" className="h-12 w-auto" />
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-zinc-400">
-              Two connected practices—digital growth and Microsoft business intelligence and AI—helping established organisations win demand and run on better data.
+              Focused enterprise AI and Business Intelligence solutions—autonomous AI agents, Microsoft Power Platform, and Fabric BI systems that eliminate manual bottlenecks and drive measurable company growth.
             </p>
-            <Link href="/Contact" className="mt-6 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-500">
-              Book a consultation <ArrowRight className="h-4 w-4" />
+            <Link href="/contact" className="mt-6 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-500">
+              Contact us <ArrowRight className="h-4 w-4" />
             </Link>
             <div className="mt-8 space-y-1.5 text-sm">
               <a href="mailto:support@standexdigital.com" className="block text-zinc-400 transition hover:text-emerald-400">support@standexdigital.com</a>
               <a href="mailto:hr@standexdigital.com" className="block text-zinc-400 transition hover:text-emerald-400">hr@standexdigital.com</a>
               <p className="text-zinc-500">London, United Kingdom</p>
+              <p className="text-zinc-500">Lagos, Nigeria</p>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">

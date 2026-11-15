@@ -1,0 +1,7 @@
+export const TONES = {
+  violet: { bg: "from-violet-100 via-violet-50 to-white", chip: "bg-violet-100 text-violet-800", text: "text-violet-700", ring: "hover:border-violet-300", dot: "bg-violet-500", grad: "from-violet-600 to-indigo-500", dark: "from-violet-950 via-zinc-950 to-zinc-950", glow: "bg-violet-500/30" },
+  amber: { bg: "from-amber-100 via-amber-50 to-white", chip: "bg-amber-100 text-amber-800", text: "text-amber-700", ring: "hover:border-amber-300", dot: "bg-amber-500", grad: "from-amber-500 to-orange-500", dark: "from-amber-950 via-zinc-950 to-zinc-950", glow: "bg-amber-500/30" },
+  emerald: { bg: "from-emerald-100 via-emerald-50 to-white", chip: "bg-emerald-100 text-emerald-800", text: "text-emerald-700", ring: "hover:border-emerald-300", dot: "bg-emerald-500", grad: "from-emerald-600 to-teal-500", dark: "from-emerald-950 via-zinc-950 to-zinc-950", glow: "bg-emerald-500/30" },
+  sky: { bg: "from-sky-100 via-sky-50 to-white", chip: "bg-sky-100 text-sky-800", text: "text-sky-700", ring: "hover:border-sky-300", dot: "bg-sky-500", grad: "from-sky-600 to-blue-500", dark: "from-sky-950 via-zinc-950 to-zinc-950", glow: "bg-sky-500/30" },
+  rose: { bg: "from-rose-100 via-rose-50 to-white", chip: "bg-rose-100 text-rose-800", text: "text-rose-700", ring: "hover:border-rose-300", dot: "bg-rose-500", grad: "from-rose-600 to-pink-500", dark: "from-rose-950 via-zinc-950 to-zinc-950", glow: "bg-rose-500/30" },
+} as const;

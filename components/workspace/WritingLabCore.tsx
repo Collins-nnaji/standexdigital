@@ -4,7 +4,7 @@ import { Suspense, useState, useEffect, useRef, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import type { LucideIcon } from "lucide-react";
 import {
-  FileText, Sparkles, Loader2, AlertTriangle, AlertCircle, Info,
+  FileText, Loader2, AlertTriangle, AlertCircle, Info,
   PenTool, Smile, CheckCircle2, TrendingUp, Eye, ChevronDown, ChevronUp,
   ShieldAlert, Brain, Shield, Copy, ScanSearch, Bot, User, Wand2,
   Zap, Minus, RefreshCw, Plus, Trash2, X, BookOpen, LayoutList, Users, BadgeAlert,
@@ -1642,7 +1642,7 @@ function WritingLabInner({
                           t.btnPrimary,
                         )}
                       >
-                        <Sparkles className="h-4 w-4 opacity-90" aria-hidden />
+                        
                         Generate with AI
                       </button>
                     </div>
@@ -1785,7 +1785,7 @@ function WritingLabInner({
               {studioResult?.summary ? (
                 <div className={cn("shrink-0 px-4 py-2 sm:px-5", t.s1)}>
                   <p className={cn("text-[10px] font-medium leading-snug", t.muted)}>
-                    <Sparkles className="mr-1 inline h-3 w-3 text-[var(--brand-teal)]" />
+                    
                     {studioResult.summary}
                     {studioResult.toneShift ? (
                       <span className={cn("ml-1.5 font-normal", t.muted2)}>· {studioResult.toneShift}</span>
@@ -1982,7 +1982,7 @@ function WritingLabInner({
                       themeMode === "dark" ? "bg-[var(--brand-teal)]/15 text-[var(--brand-teal)]" : "bg-[var(--brand-teal)]/12 text-[#0d6b5c]",
                     )}
                   >
-                    <Sparkles className="h-5 w-5" />
+                    
                   </span>
                   <div>
                     <h2 id="ai-generate-modal-title" className={cn("text-base font-semibold tracking-tight", t.text)}>
@@ -2120,7 +2120,7 @@ function WritingLabInner({
                   t.btnPrimary,
                 )}
               >
-                {genLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4 opacity-90" />}
+                {genLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
                 {genLoading ? "Generating…" : "Generate first draft"}
               </button>
             </div>
@@ -2213,7 +2213,7 @@ function WritingLabInner({
                       t.btnPrimary,
                     )}
                   >
-                    {personaGenLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+                    {personaGenLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
                     Generate draft
                   </button>
                 </div>

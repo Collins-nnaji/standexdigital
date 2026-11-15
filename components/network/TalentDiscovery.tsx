@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   User, 
-  Sparkles, 
+  CircleDot, 
   ShieldCheck, 
   ArrowRight, 
   ExternalLink, 
@@ -213,7 +213,7 @@ export function TalentDiscovery({ researchers, initialSelectedId, currentUserEma
                         )}
                         {selectedResearcher.isVetted && (
                           <div className="inline-flex items-center gap-2 rounded-full bg-amber-500/10 border border-amber-500/20 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-amber-600 shadow-sm">
-                             <Sparkles className="h-3.5 w-3.5" /> Standex Vetted
+                             <CircleDot className="h-3.5 w-3.5" /> Standex Vetted
                           </div>
                         )}
                       </div>
@@ -343,7 +343,7 @@ export function TalentDiscovery({ researchers, initialSelectedId, currentUserEma
                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                           {[
                             { label: "Network Momentum", value: `${selectedResearcher.ranks[0]?.score || 0} Points`, sub: "+12% this month", icon: Zap, color: "text-amber-500" },
-                            { label: "Global Standing", value: `#${selectedResearcher.ranks[0]?.rankPosition || "None"}`, sub: `In ${selectedResearcher.ranks[0]?.domain || "AI Research"}`, icon: Sparkles, color: "text-[#7C5CFC]" },
+                            { label: "Global Standing", value: `#${selectedResearcher.ranks[0]?.rankPosition || "None"}`, sub: `In ${selectedResearcher.ranks[0]?.domain || "AI Research"}`, icon: CircleDot, color: "text-[#7C5CFC]" },
                             { label: "Verified Artifacts", value: selectedResearcher.workItems.length, sub: "Peer reviewed items", icon: CheckCircle2, color: "text-emerald-500" }
                           ].map((card, i) => (
                             <div key={i} className="group p-6 rounded-[32px] bg-white border border-zinc-100 shadow-sm transition-all hover:shadow-xl hover:-translate-y-1">
@@ -457,7 +457,7 @@ export function TalentDiscovery({ researchers, initialSelectedId, currentUserEma
                          })
                        ) : (
                          <div className="py-24 text-center rounded-[40px] border border-dashed border-zinc-200">
-                            <Sparkles className="h-8 w-8 text-zinc-200 mx-auto mb-4" />
+                            <CircleDot className="h-8 w-8 text-zinc-200 mx-auto mb-4" />
                             <p className="text-[11px] font-bold uppercase tracking-widest text-zinc-400">Awaiting Primary Artifact Signals</p>
                          </div>
                        )}

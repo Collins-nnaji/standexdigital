@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-import { Activity, ArrowDownToLine, ArrowRight, Check, FolderOpen, PenLine, Sparkles, UploadCloud } from 'lucide-react';
+import { Activity, ArrowDownToLine, ArrowRight, Check, FolderOpen, PenLine, UploadCloud } from 'lucide-react';
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { StudioShell } from '@/components/studio/StudioShell';
 import { analyse, autoMap, demoWorkspace, fields, normalizeRows, type Mapping, type Workspace } from '@/lib/marketing/analytics';
@@ -238,7 +238,7 @@ function MarketingBody({ themeMode }: { themeMode: 'light' | 'dark' }) {
               </div>
               {view !== 'performance' ? (
                 <button className={styles.primary} disabled={genBusy || !brand.offer.trim()} onClick={() => void generate(view === 'ads' ? 'ads' : 'campaigns')}>
-                  <Sparkles size={16} />{genBusy ? 'Working…' : view === 'ads' ? 'Create Google Ads copy' : 'Brainstorm campaigns'}
+                  {genBusy ? 'Working…' : view === 'ads' ? 'Create Google Ads copy' : 'Brainstorm campaigns'}
                 </button>
               ) : (
                 <button className={styles.primary} onClick={() => document.getElementById('marketing-upload')?.click()}>
@@ -269,7 +269,7 @@ function MarketingBody({ themeMode }: { themeMode: 'light' | 'dark' }) {
                   </Panel>
                 )) : (
                   <Panel>
-                    <Sparkles size={24} />
+                    
                     <h3>No campaign ideas yet</h3>
                     <p>Fill the brand brief above, then brainstorm. Ideas can be rewritten in Writing Lab or stored in Data Hub.</p>
                   </Panel>
@@ -333,7 +333,7 @@ function MarketingBody({ themeMode }: { themeMode: 'light' | 'dark' }) {
             {view === 'performance' && <>
               {workspace.demo && (
                 <div className={styles.demo}>
-                  <Sparkles size={16} />
+                  
                   <span>Sample data is showing. Upload a Google Ads or campaign export to analyse your own numbers.</span>
                 </div>
               )}
@@ -418,7 +418,7 @@ function MarketingBody({ themeMode }: { themeMode: 'light' | 'dark' }) {
                     if (version === contextVersion.current) setBriefing(data.briefing);
                   } catch (error) { setNotice(error instanceof Error ? error.message : 'Briefing failed.'); }
                   finally { setAnalystBusy(false); }
-                }}><Sparkles size={16} />{analystBusy ? 'Preparing…' : 'Write observations'}</button>
+                }}>{analystBusy ? 'Preparing…' : 'Write observations'}</button>
                 {briefing && (
                   <>
                     <div className={styles.review}>{briefing}</div>

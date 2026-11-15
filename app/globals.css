@@ -880,3 +880,62 @@ section#how:not(.landing-how-revealed) .landing-how-flow-connector {
   }
 }
 
+
+/* Public site — platform logo marquee + ambient motion */
+@keyframes site-marquee {
+  to { transform: translate3d(-50%, 0, 0); }
+}
+.site-marquee {
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+.site-marquee-track {
+  animation: site-marquee 45s linear infinite;
+  will-change: transform;
+}
+.site-marquee:hover .site-marquee-track { animation-play-state: paused; }
+
+@keyframes site-blob {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33% { transform: translate3d(40px, -30px, 0) scale(1.08); }
+  66% { transform: translate3d(-30px, 30px, 0) scale(0.95); }
+}
+.site-blob { animation: site-blob 18s ease-in-out infinite; }
+
+@keyframes site-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.site-float { animation: site-float 6s ease-in-out infinite; }
+
+@keyframes site-dash {
+  to { stroke-dashoffset: -40; }
+}
+.site-dash { stroke-dasharray: 6 6; animation: site-dash 2s linear infinite; }
+
+@keyframes site-pulse-ring {
+  0% { transform: scale(0.8); opacity: 0.6; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+.site-ring { transform-origin: center; transform-box: fill-box; animation: site-pulse-ring 2.6s ease-out infinite; }
+
+@keyframes site-grow {
+  from { transform: scaleY(0.15); }
+  to { transform: scaleY(1); }
+}
+.site-bar { transform-origin: bottom; transform-box: fill-box; animation: site-grow 1.6s ease-in-out infinite alternate; }
+
+@keyframes site-gradient-shift {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+.site-gradient-text {
+  background-size: 200% 200%;
+  animation: site-gradient-shift 6s ease-in-out infinite alternate;
+}
+
+.site-hide-scrollbar { scrollbar-width: none; }
+.site-hide-scrollbar::-webkit-scrollbar { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .site-marquee-track, .site-blob, .site-float, .site-dash, .site-ring, .site-bar, .site-gradient-text { animation: none; }
+}

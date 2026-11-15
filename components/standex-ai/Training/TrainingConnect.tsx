@@ -40,7 +40,7 @@ const TrainingConnect = () => {
     e.preventDefault();
     
     // If we're already on the contact page, just scroll to the section
-    if (location === '/Contact') {
+    if (location === '/contact') {
       const emailElement = document.getElementById('contact-email');
       if (emailElement) {
         emailElement.scrollIntoView({ behavior: 'smooth' });
@@ -52,7 +52,7 @@ const TrainingConnect = () => {
       }
     } else {
       // Navigate to contact page with a hash for the email section
-      navigate.push('/Contact?section=email');
+      navigate.push('/contact?section=email');
     }
   };
 

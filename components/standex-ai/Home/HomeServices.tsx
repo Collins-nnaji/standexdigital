@@ -10,7 +10,7 @@ const services = [
     subtitle: "Apps · Automate · BI · Governance",
     desc: "Our primary area of expertise. We engineer production-grade Power Apps, Power Automate flows, Power BI dashboards, and platform governance structures that transform how your organisation operates.",
     accent: "#7C5CFC",
-    href: "/solutions/power-platform",
+    href: "/solutions#power-apps",
     cta: "Explore Power Platform",
   },
   {
@@ -19,7 +19,7 @@ const services = [
     subtitle: "Autonomous AI Agents & Swarms",
     desc: "We build production-grade AI agents that reason, act, and orchestrate across complex enterprise workflows. Multi-agent systems, RAG pipelines, and real-time decisioning — deployed infrastructure, not demos.",
     accent: "#049DCB",
-    href: "/solutions/artificial-intelligence",
+    href: "/solutions#artificial-intelligence",
     cta: "Explore AI Solutions",
   },
   {
@@ -28,7 +28,7 @@ const services = [
     subtitle: "Low-Code Application Engineering",
     desc: "Bespoke canvas and model-driven apps built for real business complexity. Custom PCF components, offline sync, Dataverse architecture, and full ALM pipelines — ready in days, not months.",
     accent: "#D25BB1",
-    href: "/solutions/power-apps",
+    href: "/solutions#power-apps",
     cta: "Explore Power Apps",
   },
   {
@@ -37,7 +37,7 @@ const services = [
     subtitle: "Autonomous Workflow Orchestration",
     desc: "Eliminate manual friction with high-throughput cloud flows and desktop RPA. We engineer retry-resilient, error-handled automations that connect your legacy systems to modern cloud APIs.",
     accent: "#0078D4",
-    href: "/solutions/power-automate",
+    href: "/solutions#power-apps",
     cta: "Explore Power Automate",
   },
   {
@@ -47,7 +47,7 @@ const services = [
     desc: "From raw telemetry to executive dashboards. We engineer DAX semantic models, DirectQuery layers, and real-time reporting pipelines — turning your data into your most valuable asset.",
     accent: "#F2C811",
     accentText: "#c9a700",
-    href: "/solutions/power-bi",
+    href: "/solutions#power-bi",
     cta: "Explore Power BI",
   },
   {
@@ -56,7 +56,7 @@ const services = [
     subtitle: "Compliance, DLP & AI Readiness",
     desc: "Before you scale, you govern. We design DLP policies, CoE toolkits, environment strategies, and AI-readiness audits — ensuring your platform and data estate are secure, compliant, and model-ready.",
     accent: "#10b981",
-    href: "/solutions/power-platform",
+    href: "/solutions#power-apps",
     cta: "Explore Governance",
   },
   {
@@ -65,7 +65,7 @@ const services = [
     subtitle: "Pipelines, Analytics & AI Infrastructure",
     desc: "End-to-end data engineering from ingestion to AI deployment. Schema profiling, compliance mapping, entity linkage, and vector-indexing — the infrastructure behind every intelligent solution we ship.",
     accent: "#f59e0b",
-    href: "/solutions/data-readiness",
+    href: "/solutions",
     cta: "Explore Data Engineering",
   },
 ];

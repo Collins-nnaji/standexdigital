@@ -43,7 +43,7 @@ const PowerAppsHeader = () => {
         </p>
 
         <a
-          href="/Contact"
+          href="/contact"
           className="inline-flex items-center gap-3 rounded-2xl bg-[#D25BB1] px-10 py-5 text-sm font-bold uppercase tracking-widest text-white hover:bg-[#B04B95] transition-all active:scale-95 shadow-[0_20px_40px_-5px_rgba(210,91,177,0.4)]"
         >
           Book A Free Consultation Call

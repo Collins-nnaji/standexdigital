@@ -67,7 +67,7 @@ const PowerPagesHeader = () => {
         
         <div className="mb-8">
           <a
-            href="/Contact"
+            href="/contact"
             className="bg-[#7C5CFC] text-white font-medium py-3 px-6 rounded-md hover:bg-[#6B4FE0] transition-colors inline-flex items-center"
           >
             Book A Free Consultation Call

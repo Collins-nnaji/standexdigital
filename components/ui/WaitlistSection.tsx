@@ -36,7 +36,7 @@ export function WaitlistSection() {
                 className="w-full sm:w-80 h-16 rounded-2xl bg-white/10 border border-white/20 px-6 text-white text-sm font-medium focus:outline-none focus:border-[#7C5CFC] transition-colors placeholder:text-zinc-500"
               />
               <Link
-                href="/Contact"
+                href="/contact"
                 className="w-full sm:w-auto flex h-16 items-center justify-center gap-3 rounded-2xl bg-[#7C5CFC] text-white hover:bg-[#6c4de0] transition-all active:scale-95 px-10 text-xs font-black uppercase tracking-widest shadow-xl shadow-[#7C5CFC]/20"
               >
                 Join the waitlist

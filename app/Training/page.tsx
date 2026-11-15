@@ -7,7 +7,7 @@ import { TopNav } from "@/components/network/TopNav";
 import ContactEnquiryForm from "@/components/standex-ai/Contact/ContactEnquiryForm";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  ArrowRight, Sparkles, Rocket,
+  ArrowRight, Rocket,
   GraduationCap, Layers, Bot, Database, Zap, 
   BarChart3, ShieldCheck, CreditCard, ChevronRight
 } from "lucide-react";
@@ -833,7 +833,7 @@ export default function TrainingPage() {
           <section className="mt-32 pt-20 border-t border-zinc-100 mb-20">
              <div className="flex flex-col items-center text-center mb-16">
                 <div className="inline-flex items-center gap-2 rounded-full border border-violet-100 bg-violet-50 px-3 py-1 mb-4">
-                   <Sparkles className="h-3.5 w-3.5 text-violet-500" />
+                   
                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-violet-600">Verification Phase</span>
                 </div>
                 <h2 className="text-4xl md:text-5xl font-bold tracking-[-0.03em] text-zinc-950 mb-4 italic uppercase">Capstone Graduation Mastery</h2>
@@ -870,7 +870,7 @@ export default function TrainingPage() {
                                onClick={() => setShowCertificate(true)}
                                className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-violet-50 border border-violet-100 text-[11px] font-bold uppercase tracking-[0.2em] text-violet-600 hover:bg-violet-100 transition-all group"
                             >
-                               View Digital Mastery Badge <Sparkles className="h-4 w-4 group-hover:rotate-12 transition-transform" />
+                               View Digital Mastery Badge 
                             </button>
                          </div>
 

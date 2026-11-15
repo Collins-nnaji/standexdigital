@@ -2,7 +2,6 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
 
 const ContactHeader = () => {
   return (
@@ -13,9 +12,9 @@ const ContactHeader = () => {
         transition={{ duration: 0.6 }}
         className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white px-3 py-1.5 shadow-sm mb-5"
       >
-        <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
+        
         <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-800">
-          Free consultation
+          Contact Us
         </span>
       </motion.div>
 
@@ -25,7 +24,7 @@ const ContactHeader = () => {
         transition={{ duration: 0.7, delay: 0.05 }}
         className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05] text-zinc-950 mb-5"
       >
-        Let&apos;s talk about what you need.
+        Let&apos;s map your growth blueprint.
       </motion.h1>
 
       <motion.p
@@ -34,8 +33,8 @@ const ContactHeader = () => {
         transition={{ duration: 0.7, delay: 0.1 }}
         className="text-base sm:text-lg text-zinc-600 leading-relaxed max-w-md mb-8"
       >
-        Whether it&apos;s winning more customers or building better systems and reporting,
-        tell us where you are and what&apos;s getting in the way. We&apos;ll identify the strongest place to start.
+        Tell us about your current systems and what&apos;s slowing your growth. A Senior Solutions Architect
+        will deliver a tailored architecture roadmap, timeline, and ROI estimate within one business day.
       </motion.p>
 
       <motion.ul
@@ -46,15 +45,15 @@ const ContactHeader = () => {
       >
         <li className="flex items-center gap-2.5">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-          Response within one business day
+          Response within one business day from a Senior Architect
         </li>
         <li className="flex items-center gap-2.5">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-          Strategy, advertising & analytics enquiries
+          Tailored architecture roadmap & licensing guidance
         </li>
         <li className="flex items-center gap-2.5">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-          Power Apps, Power Automate & Power BI projects
+          100% confidential · Direct WhatsApp & email support
         </li>
       </motion.ul>
     </div>

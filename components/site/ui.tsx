@@ -50,8 +50,10 @@ export function SectionHeading({
   intro,
   align = "left",
   dark = false,
+  oneLine = false,
   className,
 }: {
+  oneLine?: boolean;
   eyebrow?: string;
   title: ReactNode;
   intro?: ReactNode;
@@ -60,10 +62,10 @@ export function SectionHeading({
   className?: string;
 }) {
   return (
-    <div className={cn("max-w-3xl", align === "center" && "mx-auto text-center", className)}>
+    <div className={cn("max-w-5xl", align === "center" && "mx-auto text-center", className)}>
       {eyebrow && <Eyebrow className={cn(dark && "text-emerald-400", align === "center" && "justify-center")}>{eyebrow}</Eyebrow>}
-      <h2 className={cn("mt-4 text-3xl font-bold tracking-tight sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]", dark ? "text-white" : "text-zinc-950")}>{title}</h2>
-      {intro && <p className={cn("mt-5 text-base leading-relaxed sm:text-lg", dark ? "text-zinc-300" : "text-zinc-600")}>{intro}</p>}
+      <h2 className={cn("mt-4 text-balance text-2xl font-bold tracking-tight min-[480px]:text-3xl sm:text-4xl lg:text-[2.5rem] lg:leading-[1.1]", oneLine && "lg:whitespace-nowrap", dark ? "text-white" : "text-zinc-950")}>{title}</h2>
+      {intro && <p className={cn("mt-5 max-w-3xl text-base leading-relaxed sm:text-lg", align === "center" && "mx-auto", dark ? "text-zinc-300" : "text-zinc-600")}>{intro}</p>}
     </div>
   );
 }
@@ -178,7 +180,7 @@ export function FAQSection({ faqs, title = "Questions we're often asked" }: { fa
       <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
         <div>
           <SectionHeading eyebrow="FAQ" title={title} intro="Can't see your question here? We're happy to talk it through on a short call." />
-          <ButtonLink href="/Contact" variant="outline" className="mt-8">Ask us directly</ButtonLink>
+          <ButtonLink href="/contact" variant="outline" className="mt-8">Ask us directly</ButtonLink>
         </div>
         <FAQList faqs={faqs} />
       </div>
@@ -190,7 +192,7 @@ export function CTABand({
   eyebrow = "Next step",
   title,
   text,
-  primary = { href: "/Contact", label: "Book a consultation" },
+  primary = { href: "/contact", label: "Book a consultation" },
   secondary,
 }: {
   eyebrow?: string;

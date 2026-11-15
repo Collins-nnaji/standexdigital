@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ClipboardPaste, Loader2, Sparkles } from "lucide-react";
+import { ClipboardPaste, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ConsoleTheme } from "@/components/console/console-theme";
 import type { CodeLanguage } from "@/lib/code-lab/runtimes";
@@ -106,7 +106,7 @@ export function CodeLabReview({ language, theme, isDark, editorCode }: CodeLabRe
           disabled={loading || !code.trim()}
           className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-500 px-3.5 py-1.5 text-[12px] font-bold text-white transition-colors hover:bg-emerald-600 disabled:opacity-50"
         >
-          {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />}
+          {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
           Review code
         </button>
         {code.trim() && (

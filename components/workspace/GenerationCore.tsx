@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Loader2, Sparkles, Copy, RotateCcw, ArrowLeft, Wand2 } from "lucide-react";
+import { Loader2, Copy, RotateCcw, ArrowLeft, Wand2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CONSOLE_THEMES, type ConsoleThemeMode } from "@/components/console/console-theme";
 
@@ -265,7 +265,7 @@ export function GenerationCore({ themeMode }: Props) {
                 themeMode === "dark" && "shadow-[#EDEBE4]/10",
               )}
             >
-              {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Sparkles className="h-5 w-5 opacity-90" />}
+              {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : null}
               {loading ? "Generating…" : "Generate first draft"}
             </button>
 
@@ -286,7 +286,7 @@ export function GenerationCore({ themeMode }: Props) {
                     themeMode === "dark" ? "from-white/[0.04] to-transparent" : "from-black/[0.03] to-transparent",
                   )}
                 >
-                  <Sparkles className="h-7 w-7 opacity-35" />
+                  
                 </div>
                 <div className="space-y-1">
                   <p className={cn("text-[15px] font-semibold", t.text)}>Draft preview</p>

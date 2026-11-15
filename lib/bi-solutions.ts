@@ -47,7 +47,7 @@ export type BISolution = {
 export const biSolutions: BISolution[] = [
   {
     slug: "power-apps",
-    href: "/solutions/power-apps",
+    href: "/solutions#power-apps",
     title: "Power Apps",
     role: "Capture & operate",
     eyebrow: "Custom business applications",
@@ -121,7 +121,7 @@ export const biSolutions: BISolution[] = [
   },
   {
     slug: "power-automate",
-    href: "/solutions/power-automate",
+    href: "/solutions#power-apps",
     title: "Power Automate",
     role: "Connect & automate",
     eyebrow: "Workflow & process automation",
@@ -194,7 +194,7 @@ export const biSolutions: BISolution[] = [
   },
   {
     slug: "power-bi",
-    href: "/solutions/power-bi",
+    href: "/solutions#power-bi",
     title: "Power BI & Fabric",
     displayName: "Power BI & Microsoft Fabric",
     role: "Analyse & decide",
@@ -295,7 +295,7 @@ export const biSolutions: BISolution[] = [
   },
   {
     slug: "copilot-studio",
-    href: "/solutions/copilot-studio",
+    href: "/solutions#artificial-intelligence",
     title: "Copilot Studio",
     displayName: "Copilot Studio",
     role: "Ask & act",
@@ -370,7 +370,7 @@ export const biSolutions: BISolution[] = [
   },
   {
     slug: "salesforce",
-    href: "/solutions/salesforce",
+    href: "/solutions#salesforce",
     title: "Salesforce",
     displayName: "Salesforce CRM & Analytics",
     vendor: "",

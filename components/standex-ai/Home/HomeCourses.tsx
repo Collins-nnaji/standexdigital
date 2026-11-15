@@ -4,7 +4,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, Bot, Sparkles, GraduationCap } from "lucide-react";
+import { ArrowRight, Bot, GraduationCap } from "lucide-react";
 
 const tracks = [
   {
@@ -43,7 +43,7 @@ export default function HomeCourses() {
         {/* Section Header */}
         <div className="flex flex-col items-center text-center mb-12 sm:mb-16 lg:mb-20">
           <div className="inline-flex items-center gap-2 rounded-full border border-violet-100 bg-violet-50 px-3 sm:px-4 py-1.5 mb-4 sm:mb-6">
-            <Sparkles className="h-3.5 w-3.5 text-[#7C5CFC]" />
+            
             <span className="text-[10px] font-bold uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#7C5CFC]">Standex Digital Academy</span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-zinc-950 leading-tight px-2">

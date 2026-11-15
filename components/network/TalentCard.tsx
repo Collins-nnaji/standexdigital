@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { User, Sparkles, Briefcase, ChevronRight, UserPlus, Share2, ExternalLink, ShieldCheck } from "lucide-react";
+import { User, Briefcase, ChevronRight, UserPlus, Share2, ExternalLink, ShieldCheck } from "lucide-react";
 import { RankBadge } from "./RankBadge";
 import { useState } from "react";
 import { InviteToCollabModal } from "./InviteToCollabModal";
@@ -80,7 +80,7 @@ export function TalentCard({
         
         {!rankPosition && (
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-50 border border-zinc-100 text-[#7C5CFC]">
-            <Sparkles className="h-5 w-5" />
+            
           </div>
         )}
       </div>

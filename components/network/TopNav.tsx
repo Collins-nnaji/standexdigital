@@ -4,7 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, BarChart3, Bot, ChevronDown, ChevronRight, Cloud, Layers3, Mail, Megaphone, Menu, Search, Target, Workflow, X } from "lucide-react";
+import { ArrowRight, BarChart3, Bot, ChevronDown, ChevronRight, Cloud, Cpu, Layers3, Megaphone, Menu, ShieldCheck, Workflow, X } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils";
@@ -15,40 +16,29 @@ export interface TopNavProps {
   forceDark?: boolean;
 }
 
-type MenuItem = { href: string; label: string; text: string; icon: typeof Target };
+type MenuItem = { href: string; label: string; text: string; icon: LucideIcon };
 type NavItem = { href: string; label: string; menu?: { overview: { href: string; label: string; text: string }; items: MenuItem[] } };
 
 const navigation: NavItem[] = [
   {
-    href: "/digital-growth",
-    label: "Digital Growth",
+    href: "/solutions",
+    label: "Solutions",
     menu: {
-      overview: { href: "/digital-growth", label: "Digital Strategy & Growth", text: "A complete growth function—strategy, acquisition, analytics and conversion, managed as one system." },
+      overview: {
+        href: "/solutions",
+        label: "All Solutions",
+        text: "Connected Artificial Intelligence, Power BI, Power Apps, Salesforce, and Digital Marketing systems engineered to eliminate bottlenecks and drive commercial growth.",
+      },
       items: [
-        { href: "/digital-growth/google-ads", label: "Google Ads", text: "High-intent paid search", icon: Target },
-        { href: "/digital-growth/analytics", label: "Analytics & Measurement", text: "GA4, tracking & dashboards", icon: BarChart3 },
-        { href: "/digital-growth/social-media-ads", label: "Social Media Advertising", text: "Meta & LinkedIn campaigns", icon: Megaphone },
-        { href: "/digital-growth/email-marketing", label: "Email Marketing & Automation", text: "Lifecycle journeys", icon: Mail },
-        { href: "/digital-growth/seo-content", label: "SEO & Content Growth", text: "Organic & AI-search visibility", icon: Search },
-      ],
-    },
-  },
-  {
-    href: "/data-solutions",
-    label: "BI Solutions",
-    menu: {
-      overview: { href: "/data-solutions", label: "Business Intelligence Solutions", text: "Power Platform, Power BI & Fabric, Copilot Studio and Salesforce—one connected system for customers, data, decisions and AI agents." },
-      items: [
-        { href: "/solutions/power-apps", label: "Power Apps", text: "Custom business applications", icon: Layers3 },
-        { href: "/solutions/power-automate", label: "Power Automate", text: "Workflow & process automation", icon: Workflow },
-        { href: "/solutions/power-bi", label: "Power BI & Fabric", text: "Dashboards, Fabric & data agents", icon: BarChart3 },
-        { href: "/solutions/copilot-studio", label: "Copilot Studio", text: "Custom AI agents", icon: Bot },
-        { href: "/solutions/salesforce", label: "Salesforce", text: "CRM implementation & integration", icon: Cloud },
+        { href: "/solutions#artificial-intelligence", label: "Artificial Intelligence", text: "Autonomous AI agents, Copilot Studio & swarms", icon: Bot },
+        { href: "/solutions#power-bi", label: "Power BI & Fabric", text: "Real-time dashboards & unified data models", icon: BarChart3 },
+        { href: "/solutions#power-apps", label: "Power Apps & Automate", text: "Custom business apps & process automation", icon: Layers3 },
+        { href: "/solutions#salesforce", label: "Salesforce CRM", text: "CRM implementation & data integration", icon: Cloud },
+        { href: "/solutions#digital-growth", label: "Digital Marketing & Growth", text: "Google Ads, paid social, SEO & email journeys", icon: Megaphone },
       ],
     },
   },
   { href: "/Training", label: "Training" },
-  { href: "/Contact", label: "Contact" },
 ];
 
 function Logo() {
@@ -181,10 +171,10 @@ export function TopNav(_props: TopNavProps) {
           </nav>
 
           <Link
-            href="/Contact"
+            href="/contact"
             className="hidden items-center gap-2 rounded-full bg-zinc-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 lg:inline-flex"
           >
-            Book a consultation <ArrowRight className="h-4 w-4" />
+            Contact Us <ArrowRight className="h-4 w-4" />
           </Link>
 
           <button
@@ -240,8 +230,8 @@ export function TopNav(_props: TopNavProps) {
                   ))}
                 </div>
                 <div className="border-t border-zinc-200 p-4">
-                  <Link href="/Contact" className="flex min-h-12 items-center justify-center gap-2 rounded-full bg-emerald-600 px-4 text-[15px] font-semibold text-white">
-                    Book a consultation <ArrowRight className="h-4 w-4" />
+                  <Link href="/contact" className="flex min-h-12 items-center justify-center gap-2 rounded-full bg-emerald-600 px-4 text-[15px] font-semibold text-white">
+                    Contact Us <ArrowRight className="h-4 w-4" />
                   </Link>
                 </div>
               </motion.div>

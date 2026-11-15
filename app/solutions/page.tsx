@@ -1,111 +1,58 @@
+import type { Metadata } from "next";
 import { TopNav } from "@/components/network/TopNav";
 import Footer from "@/components/standex-ai/Footer";
-import Link from "next/link";
-import { Bot, Cpu, ArrowRight, Sparkles } from "lucide-react";
+import { ButtonLink, CTABand, Container, HeroBackdrop } from "@/components/site/ui";
+import { Reveal } from "@/components/site/Reveal";
+import { SolutionsExplorer } from "@/components/site/SolutionsExplorer";
 
-export default function Page() {
+export const metadata: Metadata = {
+  title: "Solutions | Standex Digital",
+  description:
+    "AI, Power BI and Fabric, Power Apps, Salesforce, digital marketing and data readiness on one page. Open any offering for details.",
+};
+
+export default function SolutionsPage() {
   return (
-    <div className="flex min-h-[100dvh] flex-col overflow-hidden bg-[#f6fbf8] text-zinc-900">
+    <div data-site className="min-h-screen bg-white text-zinc-950">
       <TopNav />
-      
-      <main className="relative flex-1 flex flex-col z-10 pt-32 pb-24">
-        {/* Hub Hero */}
-        <section className="max-w-7xl mx-auto px-6 lg:px-12 w-full mb-24">
-          <div className="flex flex-col items-center text-center">
-            <div className="inline-flex items-center gap-2 rounded-full border border-violet-500/20 bg-violet-500/10 px-4 py-1.5 mb-8">
-              <Sparkles className="h-3.5 w-3.5 text-[#7C5CFC]" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#7C5CFC]">Enterprise Solutions</span>
-            </div>
-            <h1 className="text-5xl md:text-8xl font-bold tracking-tight text-zinc-900 leading-[0.95] mb-10">
-              Future-Proof <br /> Engineering.
-            </h1>
-            <p className="text-xl font-medium text-zinc-500 max-w-2xl">
-              From Multi-Agent Orchestration to Microsoft Power Platform architecture. 
-              We build the systems that drive modern enterprise performance.
-            </p>
-          </div>
+      <main>
+        <section className="relative overflow-hidden pb-10 pt-28 sm:pt-32">
+          <HeroBackdrop />
+          <div className="site-blob pointer-events-none absolute right-1/4 top-20 h-72 w-72 rounded-full bg-violet-200/40 blur-3xl" />
+          <Container className="relative">
+            <Reveal>
+              <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/90 px-3.5 py-1.5 text-xs font-semibold text-emerald-800 shadow-sm">
+                
+                Everything we build, in one place
+              </span>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <h1 className="mt-4 text-[1.65rem] font-black leading-[1.1] tracking-tight min-[400px]:text-3xl sm:text-5xl sm:whitespace-nowrap">
+                Connected systems.{" "}
+                <span className="site-gradient-text bg-gradient-to-r from-emerald-600 via-teal-500 to-violet-500 bg-clip-text text-transparent">
+                  Measurable growth.
+                </span>
+              </h1>
+            </Reveal>
+            <Reveal delay={0.16}>
+              <p className="mt-4 text-sm leading-relaxed text-zinc-600 sm:whitespace-nowrap sm:text-lg">
+                Tap any offering to see what is included, the outcome and the timeline.
+              </p>
+              
+            </Reveal>
+          </Container>
         </section>
 
-        {/* Pillars Grid */}
-        <section className="max-w-7xl mx-auto px-6 lg:px-12 w-full grid grid-cols-1 lg:grid-cols-2 gap-8">
-          
-          {/* Pillar 1: Artificial Intelligence */}
-          <div className="group relative rounded-[40px] border border-zinc-100 bg-emerald-50/70 p-1 overflow-hidden transition-all duration-700 hover:shadow-[0_48px_100px_-20px_rgba(124,92,252,0.15)] hover:border-zinc-200">
-            <div className="bg-white rounded-[39px] p-10 flex flex-col h-full">
-              <div className="flex items-center justify-between mb-12">
-                <div className="h-14 w-14 flex items-center justify-center rounded-2xl bg-[#7C5CFC]/10 text-[#7C5CFC]">
-                  <Bot className="h-7 w-7" />
-                </div>
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500">Pillar 01</span>
-              </div>
-              
-              <h2 className="text-4xl font-bold text-zinc-900 tracking-tight mb-6">
-                Artificial <br /> Intelligence.
-              </h2>
-              <p className="text-base font-semibold text-zinc-500 leading-relaxed mb-10 flex-1">
-                Autonomous agentic workflows, multi-agent swarms, and enterprise LLM integration 
-                designed for verifiable accuracy and production performance.
-              </p>
+        <SolutionsExplorer />
 
-              <div className="grid grid-cols-1 gap-3">
-                <Link href="/solutions/data-readiness" className="flex items-center justify-between p-4 rounded-2xl border border-zinc-200 bg-emerald-500/5 hover:border-emerald-500 transition-all group/item ring-1 ring-emerald-500/20">
-                  <span className="text-sm font-bold tracking-tight text-[#34D399]">Data Readiness & Audit</span>
-                  <ArrowRight className="h-4 w-4 text-[#34D399]" />
-                </Link>
-                <Link href="/solutions/artificial-intelligence" className="flex items-center justify-between p-4 rounded-2xl border border-zinc-100 bg-emerald-50/70 hover:border-[#7C5CFC] hover:bg-emerald-50/80 transition-all group/item">
-                  <span className="text-sm font-bold tracking-tight text-zinc-900 group-hover/item:text-[#7C5CFC]">Autonomous AI Swarms</span>
-                  <ArrowRight className="h-4 w-4 text-zinc-500 group-hover/item:translate-x-1 group-hover/item:text-[#7C5CFC] transition-all" />
-                </Link>
-                <Link href="/solutions/ai-integration" className="flex items-center justify-between p-4 rounded-2xl border border-zinc-100 bg-emerald-50/70 hover:border-[#7C5CFC] hover:bg-emerald-50/80 transition-all group/item">
-                  <span className="text-sm font-bold uppercase tracking-widest text-zinc-900 group-hover/item:text-[#7C5CFC]">Enterprise Integration</span>
-                  <ArrowRight className="h-4 w-4 text-zinc-500 group-hover/item:translate-x-1 group-hover/item:text-[#7C5CFC] transition-all" />
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* Pillar 2: Power Platform */}
-          <div className="group relative rounded-[40px] border border-zinc-100 bg-emerald-50/70 p-1 overflow-hidden transition-all duration-700 hover:shadow-[0_48px_100px_-20px_rgba(4,157,203,0.15)] hover:border-zinc-200">
-            <div className="bg-white rounded-[39px] p-10 flex flex-col h-full">
-              <div className="flex items-center justify-between mb-12">
-                <div className="h-14 w-14 flex items-center justify-center rounded-2xl bg-[#049DCB]/10 text-[#049DCB]">
-                  <Cpu className="h-7 w-7" />
-                </div>
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500">Pillar 02</span>
-              </div>
-              
-              <h2 className="text-4xl font-bold text-zinc-900 tracking-tight mb-6">
-                Power <br /> Platform.
-              </h2>
-              <p className="text-base font-semibold text-zinc-500 leading-relaxed mb-10 flex-1">
-                High-fidelity Microsoft Power Platform engineering. From governance strategy to 
-                custom Power Apps and high-throughput process automation.
-              </p>
-
-              <div className="grid grid-cols-2 gap-3">
-                <Link href="/solutions/power-platform-ai" className="col-span-2 flex items-center justify-between p-4 rounded-2xl border border-[#049DCB]/40 bg-[#049DCB]/5 hover:border-[#049DCB] transition-all group/item ring-1 ring-[#049DCB]/20">
-                  <span className="text-sm font-bold tracking-tight text-[#049DCB]">Power Platform + AI</span>
-                  <ArrowRight className="h-4 w-4 text-[#049DCB]" />
-                </Link>
-                <Link href="/solutions/power-apps" className="flex items-center justify-between p-4 rounded-2xl border border-zinc-100 bg-emerald-50/70 hover:border-[#049DCB] hover:bg-emerald-50/80 transition-all group/item">
-                  <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-900 group-hover/item:text-[#049DCB]">Power Apps</span>
-                </Link>
-                <Link href="/solutions/power-automate" className="flex items-center justify-between p-4 rounded-2xl border border-zinc-100 bg-emerald-50/70 hover:border-[#049DCB] hover:bg-emerald-50/80 transition-all group/item">
-                  <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-900 group-hover/item:text-[#049DCB]">Automate</span>
-                </Link>
-                <Link href="/solutions/power-bi" className="flex items-center justify-between p-4 rounded-2xl border border-zinc-100 bg-emerald-50/70 hover:border-[#049DCB] hover:bg-emerald-50/80 transition-all group/item">
-                  <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-900 group-hover/item:text-[#049DCB]">Power BI</span>
-                </Link>
-                <Link href="/solutions/copilot-studio" className="flex items-center justify-between p-4 rounded-2xl border border-zinc-100 bg-emerald-50/70 hover:border-[#049DCB] hover:bg-emerald-50/80 transition-all group/item">
-                  <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-900 group-hover/item:text-[#049DCB]">Copilot</span>
-                </Link>
-              </div>
-            </div>
-          </div>
-
-        </section>
+        <CTABand
+          eyebrow="Not sure where to start?"
+          title="Tell us your biggest bottleneck. We will point to the fastest win."
+          text="A senior architect will reply within one business day with a recommended starting point."
+          primary={{ href: "/contact", label: "Contact Us" }}
+          secondary={{ href: "/", label: "Back to home" }}
+        />
       </main>
-
       <Footer />
     </div>
   );

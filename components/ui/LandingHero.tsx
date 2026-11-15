@@ -67,7 +67,7 @@ export function LandingHero() {
             <div className="flex flex-col items-center lg:items-start gap-4">
               <div className="flex flex-wrap gap-4 sm:gap-5 justify-center lg:justify-start w-full">
                 <Link
-                  href="/Contact"
+                  href="/contact"
                   className="group relative flex h-12 sm:h-14 lg:h-16 w-full sm:w-auto items-center justify-center gap-3 sm:gap-4 overflow-hidden rounded-2xl bg-emerald-500 px-6 sm:px-8 lg:px-10 text-xs sm:text-sm font-bold tracking-widest text-white transition-all hover:bg-emerald-600 shadow-lg shadow-emerald-200"
                 >
                   <span>BOOK A GROWTH CONSULTATION</span>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, SlidersHorizontal, MapPin, Briefcase, Zap, Sparkles } from "lucide-react";
+import { Search, SlidersHorizontal, MapPin, Briefcase, Zap } from "lucide-react";
 import { cn } from "../../lib/utils";
 
 export interface SearchFilters {
@@ -122,7 +122,7 @@ export function ScoutSearch({ onFiltersChange, isLab }: ScoutSearchProps) {
               className="h-3.5 w-3.5 rounded-md border-amber-200 text-amber-500 focus:ring-amber-500/20"
             />
             <span className="flex items-center gap-2">
-              <Sparkles className="h-3 w-3" />
+              
               Vetted Only
             </span>
           </label>

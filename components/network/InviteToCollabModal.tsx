@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { UserPlus, X, Loader2, Sparkles } from "lucide-react";
+import { UserPlus, X, Loader2 } from "lucide-react";
 
 interface InviteToCollabModalProps {
   targetUserId: string;
@@ -106,7 +106,7 @@ export function InviteToCollabModal({ targetUserId, targetUserName, isOpen, onCl
               placeholder={`Share what you'd like to work on with ${targetUserName}...`}
             />
             <p className="mt-1.5 text-[11px] text-zinc-500 flex items-center gap-1">
-              <Sparkles className="h-3 w-3" /> They will be instantly invited to a private collab room.
+               They will be instantly invited to a private collab room.
             </p>
           </div>
 

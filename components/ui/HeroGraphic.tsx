@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Terminal, Users, Sparkles, CheckCircle2, Zap, Layout } from "lucide-react";
+import { Terminal, Users, CheckCircle2, Zap, Layout } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const RESEARCHERS = [

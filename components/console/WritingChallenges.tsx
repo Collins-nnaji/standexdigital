@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AlertCircle, CheckCircle2, Dumbbell, History, Loader2, Sparkles, Target } from "lucide-react";
+import { AlertCircle, CheckCircle2, Dumbbell, History, Loader2, Target } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ConsoleTheme } from "@/components/console/console-theme";
 import { WRITING_LEVELS, WRITING_SKILLS, type WritingLevel } from "@/lib/writing-lab/skills";
@@ -158,7 +158,7 @@ export function WritingChallenges({ t, editorText }: WritingChallengesProps) {
         disabled={generating}
         className={cn("inline-flex w-full items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-[12.5px] font-bold shadow-none disabled:opacity-60", t.btnPrimary)}
       >
-        {generating ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />}
+        {generating ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
         New challenge
       </button>
       {genError && <p className={cn("text-xs font-medium", t.danger)}>{genError}</p>}

@@ -65,7 +65,7 @@ export default function BISolutionsPage() {
                   We combine Microsoft Power Apps, Power Automate, Power BI with Microsoft Fabric, and Copilot Studio to capture better data, remove manual work, turn information into decisions—and let people simply ask.
                 </p>
                 <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-                  <ButtonLink href="/Contact">Discuss a BI solution</ButtonLink>
+                  <ButtonLink href="/contact">Discuss a BI solution</ButtonLink>
                   <ButtonLink href="#products" variant="outline">Explore the system</ButtonLink>
                 </div>
                 <div className="mt-10 flex flex-wrap items-center gap-4">
@@ -140,7 +140,7 @@ export default function BISolutionsPage() {
                 <h3 className="mt-4 text-2xl font-bold text-white">Start with a Discovery & Roadmap.</h3>
                 <p className="mt-3 text-sm leading-relaxed text-zinc-400">We&apos;ll map your processes, CRM and data sources, then recommend the simplest combination of platforms that solves the problem.</p>
               </div>
-              <ButtonLink href="/Contact" className="mt-8 self-start">Book a discovery call</ButtonLink>
+              <ButtonLink href="/contact" className="mt-8 self-start">Book a discovery call</ButtonLink>
             </div>
           </div>
         </Section>
@@ -157,8 +157,8 @@ export default function BISolutionsPage() {
               {[
                 { title: "Microsoft Fabric", text: "OneLake, lakehouse, warehouse, Data Factory pipelines and Real-Time Intelligence.", href: "/solutions/power-bi#spotlight" },
                 { title: "Fabric data agents", text: "Conversational Q&A over your governed lakehouse, warehouse and semantic models.", href: "/solutions/power-bi#spotlight" },
-                { title: "Copilot Studio agents", text: "Custom agents grounded in your knowledge that take action through your systems.", href: "/solutions/copilot-studio" },
-                { title: "Copilot in Power BI", text: "Generate report pages, summaries and DAX from a well-prepared semantic model.", href: "/solutions/power-bi" },
+                { title: "Copilot Studio agents", text: "Custom agents grounded in your knowledge that take action through your systems.", href: "/solutions#artificial-intelligence" },
+                { title: "Copilot in Power BI", text: "Generate report pages, summaries and DAX from a well-prepared semantic model.", href: "/solutions#power-bi" },
               ].map((c) => (
                 <Link key={c.title} href={c.href} className="group rounded-2xl border border-emerald-100 bg-white p-6 transition hover:border-emerald-300 hover:shadow-lg">
                   <h3 className="font-semibold text-zinc-950">{c.title}</h3>
@@ -221,7 +221,7 @@ export default function BISolutionsPage() {
                 <h3 className="mt-2 text-2xl font-bold">{e.name}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-zinc-600">{e.text}</p>
                 <CheckList items={e.items} className="mt-6 border-t border-zinc-100 pt-6" />
-                <ButtonLink href="/Contact" variant={e.featured ? "primary" : "outline"} className="mt-8 self-start">Discuss this option</ButtonLink>
+                <ButtonLink href="/contact" variant={e.featured ? "primary" : "outline"} className="mt-8 self-start">Discuss this option</ButtonLink>
               </article>
             ))}
           </div>
@@ -268,8 +268,8 @@ export default function BISolutionsPage() {
                 ]}
               />
               <p className="mt-8 text-sm text-zinc-600">
-                Want marketing performance in the same reports?{" "}
-                <Link href="/digital-growth/analytics" className="font-semibold text-emerald-700 underline-offset-2 hover:underline">See Analytics & Measurement</Link>.
+                Want autonomous AI agents querying this data model?{" "}
+                <Link href="/solutions#artificial-intelligence" className="font-semibold text-emerald-700 underline-offset-2 hover:underline">Explore AI Solutions</Link>.
               </p>
             </div>
           </div>
@@ -281,7 +281,7 @@ export default function BISolutionsPage() {
           eyebrow="Power Apps + Power Automate + Power BI"
           title="Build one connected system for data and decisions."
           text="Tell us about the process or reporting challenge. We'll suggest an approach, a realistic timeline and the licensing you'll need."
-          primary={{ href: "/Contact", label: "Discuss your requirements" }}
+          primary={{ href: "/contact", label: "Discuss your requirements" }}
         />
       </main>
       <Footer />

@@ -61,7 +61,7 @@ const AutomateHeader = () => {
         </p>
 
         <a
-          href="/Contact"
+          href="/contact"
           className="inline-flex items-center gap-3 rounded-2xl bg-[#0078D4] px-10 py-5 text-sm font-bold uppercase tracking-widest text-white hover:bg-[#005a9e] transition-all active:scale-95 shadow-[0_20px_40px_-5px_rgba(0,120,212,0.4)]"
         >
           Book A Free Consultation Call

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Sparkles, GraduationCap, Code, Building2, ChevronRight } from "lucide-react";
+import { CircleDot, GraduationCap, Code, Building2, ChevronRight } from "lucide-react";
 
 const tracks = [
   {
@@ -11,7 +11,7 @@ const tracks = [
     description: "Master prompting, ChatGPT, Claude, and Gemini. Get productive in days.",
     modules: "6 modules",
     level: "Beginner",
-    icon: Sparkles,
+    icon: CircleDot,
     color: "text-zinc-900",
     border: "border-zinc-200",
   },

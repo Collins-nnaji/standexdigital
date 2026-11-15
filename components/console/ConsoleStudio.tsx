@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
-  Sparkles, Loader2, PenTool, Smile, Zap, CheckCircle2, Minus, Minimize2,
+  Loader2, PenTool, Smile, Zap, CheckCircle2, Minus, Minimize2,
   Briefcase, HeartHandshake, Volume2, Copy, Download, Wand2, PanelRightClose,
   PanelRightOpen, X, Dumbbell, MessageSquare,
 } from "lucide-react";
@@ -344,7 +344,7 @@ export function ConsoleStudio({ themeMode = "light" }: Props) {
               onClick={() => { setGenError(""); setGenPreview(null); if (!text.trim()) setGenPrompt(""); setView("generate"); }}
               className={cn("gap-1.5 shadow-none", t.btnPrimary)}
             >
-              <Sparkles className="h-4 w-4 opacity-90" />
+              
               Generate
             </Button>
             <Button
@@ -421,7 +421,7 @@ export function ConsoleStudio({ themeMode = "light" }: Props) {
               )}
               {rewriteResult?.summary && (
                 <p className={cn("mt-2 text-[11px] leading-snug", t.muted2)}>
-                  <Sparkles className="mr-1 inline h-3 w-3 text-[var(--brand-teal)]" />
+                  
                   {rewriteResult.summary}
                   {rewriteResult.toneShift ? <span className="ml-1.5">· {rewriteResult.toneShift}</span> : null}
                 </p>
@@ -490,7 +490,7 @@ export function ConsoleStudio({ themeMode = "light" }: Props) {
             <div className={cn("flex shrink-0 items-start justify-between gap-3 border-b px-5 py-4", t.border)}>
               <div className="flex items-start gap-3">
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--brand-teal)]/[0.12] text-[var(--brand-teal)]">
-                  <Sparkles className="h-5 w-5" />
+                  
                 </span>
                 <div>
                   <h2 className={cn("text-base font-semibold tracking-tight", t.text)}>Generate</h2>
@@ -527,7 +527,7 @@ export function ConsoleStudio({ themeMode = "light" }: Props) {
                 </button>
               ) : null}
               <button type="button" onClick={() => void runGenerate()} disabled={!genPrompt.trim() || genLoading} className={cn("inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-[12px] font-semibold shadow-sm disabled:opacity-45", t.btnPrimary)}>
-                {genLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4 opacity-90" />}
+                {genLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
                 {genLoading ? "Generating…" : "Generate draft"}
               </button>
             </div>
