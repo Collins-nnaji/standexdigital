@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { CheckCircle2, Bot, BarChart3, Layers3, Cloud, Megaphone, GraduationCap } from "lucide-react";
+import { CheckCircle2, Bot, BarChart3, Layers3, Cloud, Megaphone, GraduationCap, FileText, ClipboardList, Receipt, KeyRound } from "lucide-react";
 import { TopNav } from "@/components/network/TopNav";
 import Footer from "@/components/standex-ai/Footer";
 import { HeroFlipCard } from "@/components/site/HeroFlipCard";
@@ -27,6 +27,29 @@ export const metadata: Metadata = {
   description:
     "Enterprise AI, Power BI, Power Apps, Salesforce and digital marketing solutions designed to eliminate manual bottlenecks, capture leads, and accelerate company growth.",
 };
+
+const contractTerms = [
+  {
+    icon: FileText,
+    title: "Paperwork on request",
+    text: "Mutual NDA, Statement of Work and a UK GDPR Data Processing Agreement, ready to review before we start. English law, Standex Digital Limited as the contracting party.",
+  },
+  {
+    icon: ClipboardList,
+    title: "Agreed scope first",
+    text: "Every project has a written SOW: deliverables, what is out of scope, milestones and acceptance criteria. Changes are agreed in writing before any extra work.",
+  },
+  {
+    icon: Receipt,
+    title: "Milestone billing",
+    text: "Fixed price or an agreed day rate. Fixed-price work is invoiced in stages: a deposit on signature, the balance as milestones are accepted.",
+  },
+  {
+    icon: KeyRound,
+    title: "You own what we build",
+    text: "Work is built in your own tenant. Rights in custom deliverables pass to you on payment, and each deliverable comes with a defect-fix warranty period.",
+  },
+] as const;
 
 const faqs = [
   {
@@ -170,6 +193,29 @@ export default function HomePage() {
 
           </Container>
         </section>
+
+        {/* HOW WE CONTRACT */}
+        <Section id="how-we-contract">
+          <SectionHeading
+            eyebrow="How We Contract"
+            title="Clear terms before any work starts."
+            intro="What your procurement or legal team can expect when working with us."
+          />
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {contractTerms.map((t) => (
+              <IconCard key={t.title} icon={t.icon} title={t.title} text={t.text} />
+            ))}
+          </div>
+          <div className="mt-8 flex flex-col gap-4 rounded-2xl border border-zinc-200 bg-zinc-50 p-6 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-sm text-zinc-600">
+              <span className="font-semibold text-zinc-900">Standex Digital Limited</span>, registered in England and Wales,
+              company no. 15642053.
+            </p>
+            <ButtonLink href="mailto:support@standexdigital.com?subject=Contract%20documents%20request" variant="outline">
+              Request our documents
+            </ButtonLink>
+          </div>
+        </Section>
 
         {/* ========================================================= */}
         {/* FAQS                                                      */}
