@@ -59,8 +59,9 @@ export default function Footer() {
             <div className="mt-8 space-y-1.5 text-sm">
               <a href="mailto:support@standexdigital.com" className="block text-zinc-400 transition hover:text-emerald-400">support@standexdigital.com</a>
               <a href="mailto:hr@standexdigital.com" className="block text-zinc-400 transition hover:text-emerald-400">hr@standexdigital.com</a>
-              <p className="text-zinc-500">London, United Kingdom</p>
-              <p className="text-zinc-500">Lagos, Nigeria</p>
+              <a href="https://wa.me/447918262629" target="_blank" rel="noopener noreferrer" className="block text-zinc-400 transition hover:text-emerald-400">+44 7918 262629 (WhatsApp)</a>
+              <a href="https://calendly.com/standexdigital" target="_blank" rel="noopener noreferrer" className="block font-semibold text-emerald-400 transition hover:text-emerald-300">Book a call</a>
+              <p className="pt-2 text-zinc-500">London, United Kingdom · Lagos, Nigeria</p>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
@@ -80,7 +81,13 @@ export default function Footer() {
         </div>
 
         <div className="mt-14 flex flex-col gap-6 border-t border-white/10 pt-8 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs text-zinc-500">© {new Date().getFullYear()} Standex Digital. All rights reserved.</p>
+          <div className="space-y-1.5 text-xs leading-relaxed text-zinc-500">
+            <p>© {new Date().getFullYear()} Standex Digital Limited. All rights reserved.</p>
+            <p>
+              Registered in England and Wales, company no. 15642053. Registered office: 37 Chelsea House,
+              599 Witan Gate, Milton Keynes, England, MK9 2BU.
+            </p>
+          </div>
           <div className="flex gap-3">
             {socials.map((s) => (
               <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-zinc-400 transition hover:border-emerald-500 hover:text-emerald-400">

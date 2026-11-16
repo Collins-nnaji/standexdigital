@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 const WORDS: { t: string; s: number; c: string }[] = [
@@ -30,12 +30,18 @@ const WORDS: { t: string; s: number; c: string }[] = [
 export function HeroFlipCard() {
   const [side, setSide] = useState<0 | 1>(0);
   const [paused, setPaused] = useState(false);
-  const [count, setCount] = useState(0);
+  // Start at the final figure so the server-rendered HTML (what crawlers and
+  // reviewers see) never shows "+0%".
+  const [count, setCount] = useState(44);
+  const mounted = useRef(false);
 
-  // Count the headline figure up each time the chart face comes into view.
+  // Count the headline figure up each time the chart face comes back into view.
   useEffect(() => {
+    if (!mounted.current) {
+      mounted.current = true;
+      return;
+    }
     if (side !== 0) return;
-    setCount(0);
     let n = 0;
     const id = setInterval(() => {
       n += 2;
@@ -71,13 +77,6 @@ export function HeroFlipCard() {
                   <p className="pb-1 text-xs font-semibold text-zinc-500">vs. before automation</p>
                 </div>
               </div>
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-extrabold text-emerald-700">
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-70" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-                </span>
-                Live
-              </span>
             </div>
 
             <svg viewBox="0 0 400 170" className="mt-4 min-h-0 w-full flex-1" preserveAspectRatio="none" aria-hidden="true">

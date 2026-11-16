@@ -84,6 +84,14 @@ const TIMELINE_OPTIONS = [
   "Exploring / Roadmapping",
 ];
 
+const BUDGET_OPTIONS = [
+  "Not sure yet",
+  "Under £5k",
+  "£5k–£15k",
+  "£15k–£50k",
+  "£50k+",
+];
+
 const TEAM_SIZE_OPTIONS = [
   "1–20",
   "21–100",
@@ -115,6 +123,7 @@ const ContactEnquiryForm = ({
     "Power BI / Fabric",
   ]);
   const [timeline, setTimeline] = useState<string>("Immediate (< 30 days)");
+  const [budget, setBudget] = useState<string>("Not sure yet");
   const [teamSize, setTeamSize] = useState<string>("21–100");
 
   const [name, setName] = useState("");
@@ -147,6 +156,7 @@ const ContactEnquiryForm = ({
       `Company: ${company || "Not specified"}`,
       `Team Size: ${teamSize}`,
       `Timeline: ${timeline}`,
+      `Budget: ${budget}`,
       `Current Tech Stack: ${selectedStack.length > 0 ? selectedStack.join(", ") : "None specified"}`,
       `\n--- PROJECT REQUIREMENTS & BOTTLENECKS ---`,
       message,
@@ -356,7 +366,7 @@ const ContactEnquiryForm = ({
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
+        <div className="sm:col-span-2">
           <label htmlFor="blueprint-company" className="block text-xs font-semibold text-zinc-700 mb-1.5">
             Company or Organization
           </label>
@@ -380,6 +390,23 @@ const ContactEnquiryForm = ({
             className={inputClass}
           >
             {TIMELINE_OPTIONS.map((opt) => (
+              <option key={opt} value={opt}>
+                {opt}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label htmlFor="blueprint-budget" className="block text-xs font-semibold text-zinc-700 mb-1.5">
+            Approximate Budget
+          </label>
+          <select
+            id="blueprint-budget"
+            value={budget}
+            onChange={(e) => setBudget(e.target.value)}
+            className={inputClass}
+          >
+            {BUDGET_OPTIONS.map((opt) => (
               <option key={opt} value={opt}>
                 {opt}
               </option>

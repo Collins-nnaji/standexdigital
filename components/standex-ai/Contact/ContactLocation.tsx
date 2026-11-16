@@ -129,16 +129,43 @@ const ContactLocation = () => {
           ))}
         </div>
 
-        {/* London base */}
-        <div className="p-8 rounded-2xl bg-white border border-zinc-200 flex items-center gap-6">
-          <div className="h-12 w-12 flex items-center justify-center rounded-2xl bg-emerald-50 shrink-0">
-            <Globe className="h-5 w-5 text-emerald-600" />
+        {/* Company details & booking */}
+        <div className="grid gap-4 lg:grid-cols-[1.4fr_1fr]">
+          <div className="p-8 rounded-2xl bg-white border border-zinc-200 flex items-start gap-6">
+            <div className="h-12 w-12 flex items-center justify-center rounded-2xl bg-emerald-50 shrink-0">
+              <Globe className="h-5 w-5 text-emerald-600" />
+            </div>
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-500 mb-1">Company Details</p>
+              <p className="text-base font-bold text-zinc-950">Standex Digital Limited</p>
+              <p className="text-[13px] font-medium text-zinc-600 mt-1 leading-relaxed">
+                Registered in England and Wales, company no. 15642053
+                <br />
+                37 Chelsea House, 599 Witan Gate, Milton Keynes, England, MK9 2BU
+              </p>
+              <p className="text-[12px] font-medium text-zinc-500 mt-2">
+                Teams in London and Lagos, working with clients across the UK and internationally.
+              </p>
+            </div>
           </div>
-          <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-500 mb-1">Global Operations</p>
-            <p className="text-base font-bold text-zinc-950">London, United Kingdom</p>
-            <p className="text-[12px] font-medium text-zinc-500 mt-0.5">Working with clients across the UK and internationally.</p>
-          </div>
+          <a
+            href="https://calendly.com/standexdigital"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group p-8 rounded-2xl bg-emerald-600 text-white flex flex-col justify-between gap-4 transition hover:bg-emerald-700"
+          >
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-emerald-100 mb-1">Prefer to talk?</p>
+              <p className="text-xl font-bold">Book a call</p>
+              <p className="text-[13px] text-emerald-50 mt-1">Pick a time that suits you in our calendar.</p>
+            </div>
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest">
+              Open calendar
+              <svg className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" viewBox="0 0 24 24" fill="none">
+                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </span>
+          </a>
         </div>
 
       </div>
